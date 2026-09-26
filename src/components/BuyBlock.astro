@@ -1,0 +1,28 @@
+---
+// One affiliate link with its link-level disclosure directly above it.
+// The preflight checks this structure in the built HTML.
+import { copy, site } from "../config/active";
+import { AFFILIATE_REL, amazonUrl } from "../lib/amazon";
+
+interface Props {
+  asin: string;
+  /** Screen-reader context for the button, e.g. the product name. */
+  product: string;
+}
+
+const { asin, product } = Astro.props;
+---
+
+<div class="buy" data-affiliate-block>
+  <slot />
+  {
+    site.affiliate.enabled ? (
+      <p data-disclosure>{site.affiliate.linkDisclosure}</p>
+    ) : (
+      <p>{copy.entry.untaggedNote}</p>
+    )
+  }
+  <a class="button" href={amazonUrl(asin)} rel={AFFILIATE_REL} target="_blank" data-affiliate-link>
+    {copy.entry.buyLabel}<span class="sr-only">: {product}</span>
+  </a>
+</div>

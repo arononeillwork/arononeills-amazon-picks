@@ -1,0 +1,12 @@
+---
+import Base from "../layouts/Base.astro";
+import { copy } from "../config/active";
+---
+
+<Base title={copy.notFound.title} noindex>
+  <div class="prose">
+    <h1>{copy.notFound.title}</h1>
+    <p class="lead">{copy.notFound.lead}</p>
+    <p><a href="/">{copy.notFound.home}</a> · <a href="/kit/">{copy.notFound.all}</a></p>
+  </div>
+</Base>

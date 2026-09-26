@@ -1,0 +1,29 @@
+---
+// A list row. Links to the entry page, never straight to Amazon, so every
+// affiliate link sits beside its disclosure.
+import { categoryBySlug, copy, tagBySlug } from "../config/active";
+import { entryHref, type Entry } from "../lib/kit";
+
+interface Props {
+  entry: Entry;
+  showCategory?: boolean;
+}
+
+const { entry, showCategory = true } = Astro.props;
+const { data } = entry;
+---
+
+<li class="entry-row" data-category={data.category} data-tags={data.tags.join(" ")}>
+  <a href={entryHref(entry)}>
+    <span class="entry-title">{data.title}</span>
+    <span class="entry-product">{data.product}</span>
+    <span class="entry-summary">{data.summary}</span>
+    <span class="meta">
+      <span class:list={["chip", data.experience]}>
+        {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
+      </span>
+      {showCategory && <span class="chip">{categoryBySlug(data.category).name}</span>}
+      {data.tags.map((tag) => <span class="chip">{tagBySlug(tag).name}</span>)}
+    </span>
+  </a>
+</li>

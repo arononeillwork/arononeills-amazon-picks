@@ -1,0 +1,115 @@
+---
+import Base from "../../layouts/Base.astro";
+import EntryRow from "../../components/EntryRow.astro";
+import { catalogue, copy } from "../../config/active";
+import { getKit } from "../../lib/kit";
+
+const kit = await getKit();
+---
+
+<Base title={copy.kit.title} description={copy.kit.lead}>
+  <h1>{copy.kit.title}</h1>
+  <p class="lead">{copy.kit.lead}</p>
+
+  <!-- Hidden until the script runs: with JavaScript off the full list shows and there are no dead buttons. -->
+  <div class="filter" data-filter hidden>
+    <fieldset>
+      <legend>{copy.kit.filterCategory}</legend>
+      <div class="options">
+        <button type="button" data-kind="category" data-value="" aria-pressed="true">{copy.kit.allCategories}</button>
+        {
+          catalogue.categories.map((c) => (
+            <button type="button" data-kind="category" data-value={c.slug} aria-pressed="false">
+              {c.name}
+            </button>
+          ))
+        }
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>{copy.kit.filterTag}</legend>
+      <div class="options">
+        <button type="button" data-kind="tag" data-value="" aria-pressed="true">{copy.kit.allTags}</button>
+        {
+          catalogue.tags.map((t) => (
+            <button type="button" data-kind="tag" data-value={t.slug} aria-pressed="false">
+              {t.name}
+            </button>
+          ))
+        }
+      </div>
+    </fieldset>
+  </div>
+
+  <p class="count" data-count aria-live="polite" hidden></p>
+  <ul class="entries">
+    {kit.map((entry) => <EntryRow entry={entry} />)}
+  </ul>
+  <div class="empty" data-empty hidden>
+    <p>{copy.kit.empty}</p>
+    <button type="button" class="button" data-clear>{copy.kit.clear}</button>
+  </div>
+</Base>
+
+<script>
+  type Kind = "category" | "tag";
+
+  const filter = document.querySelector<HTMLElement>("[data-filter]")!;
+  const buttons = [...filter.querySelectorAll<HTMLButtonElement>("button[data-kind]")];
+  const rows = [...document.querySelectorAll<HTMLElement>(".entries [data-category]")];
+  const count = document.querySelector<HTMLElement>("[data-count]")!;
+  const empty = document.querySelector<HTMLElement>("[data-empty]")!;
+  const state: Record<Kind, string> = { category: "", tag: "" };
+
+  const known = (kind: Kind, value: string | null) =>
+    value !== null && buttons.some((b) => b.dataset.kind === kind && b.dataset.value === value);
+
+  function apply() {
+    let shown = 0;
+    for (const row of rows) {
+      const match =
+        (!state.category || row.dataset.category === state.category) &&
+        (!state.tag || (row.dataset.tags ?? "").split(" ").includes(state.tag));
+      row.hidden = !match;
+      if (match) shown++;
+    }
+    for (const button of buttons) {
+      button.setAttribute("aria-pressed", String(state[button.dataset.kind as Kind] === button.dataset.value));
+    }
+    count.textContent = shown === rows.length ? `${rows.length} picks` : `${shown} of ${rows.length} picks`;
+    empty.hidden = shown > 0;
+  }
+
+  function write() {
+    const params = new URLSearchParams();
+    if (state.category) params.set("category", state.category);
+    if (state.tag) params.set("tag", state.tag);
+    const query = params.toString();
+    history.replaceState(null, "", query ? `?${query}` : location.pathname);
+  }
+
+  const params = new URLSearchParams(location.search);
+  for (const kind of ["category", "tag"] as const) {
+    const value = params.get(kind);
+    if (known(kind, value)) state[kind] = value!;
+  }
+
+  filter.addEventListener("click", (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>("button[data-kind]");
+    if (!button) return;
+    state[button.dataset.kind as Kind] = button.dataset.value ?? "";
+    apply();
+    write();
+  });
+
+  empty.querySelector("[data-clear]")!.addEventListener("click", () => {
+    state.category = "";
+    state.tag = "";
+    apply();
+    write();
+  });
+
+  apply();
+  filter.hidden = false;
+  count.hidden = false;
+</script>

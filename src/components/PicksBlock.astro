@@ -1,0 +1,26 @@
+---
+// Multi-option entries (the laptop): one affiliate block per pick, each with
+// its own disclosure line directly above its link.
+import BuyBlock from "./BuyBlock.astro";
+import { copy } from "../config/active";
+import type { Entry } from "../lib/kit";
+
+interface Props {
+  picks: NonNullable<Entry["data"]["picks"]>;
+}
+
+const { picks } = Astro.props;
+---
+
+<section class="picks" aria-labelledby="picks-heading">
+  <h2 id="picks-heading">{copy.entry.picksHeading}</h2>
+  {
+    picks.map((pick) => (
+      <BuyBlock asin={pick.asin} product={pick.product}>
+        <h3 class="pick-label">{pick.label}</h3>
+        <p class="pick-product">{pick.product}</p>
+        <p class="pick-why">{pick.why}</p>
+      </BuyBlock>
+    ))
+  }
+</section>

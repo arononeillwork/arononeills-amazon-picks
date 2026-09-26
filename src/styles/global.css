@@ -1,0 +1,587 @@
+/* Self-hosted fonts, Latin subset only. Loading Google Fonts from Google's
+   servers has been held to breach GDPR, so they stay on this origin. */
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../assets/fonts/public-sans-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Fallbacks only. The profile palette is inlined in <head> as :root, which
+   loads before this file; :where() has zero specificity so the inline values
+   win regardless of order. Don't change this to plain :root. */
+:where(:root) {
+  color-scheme: light dark;
+  --bg: #faf7f2;
+  --surface: #ffffff;
+  --text: #2b221d;
+  --muted: #6a5d54;
+  --line: #e4dacf;
+  --accent: #a8481f;
+  --accent-text: #ffffff;
+  --focus: #1f5fa8;
+}
+
+:root {
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --measure: 40rem;
+  --wide: 64rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius: 0.75rem;
+}
+
+/* A stylesheet `display` rule beats the browser's [hidden] default, which once
+   showed dead filter buttons with JavaScript off. Keep this. */
+[hidden] {
+  display: none !important;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-feature-settings: "kern", "liga";
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding: 2rem var(--gutter) 4rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3.5vw, 2.1rem);
+  margin-top: 1.6em;
+}
+
+h3 {
+  font-size: 1.45rem;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip:focus {
+  left: var(--gutter);
+  top: 0.5rem;
+  z-index: 10;
+  background: var(--surface);
+  padding: 0.5rem 1rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose h2 {
+  font-size: 1.8rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Header and footer */
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.site-header .inner,
+.site-footer .inner {
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding: 1rem var(--gutter);
+}
+
+.site-header .inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.masthead {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.2;
+  view-transition-name: masthead;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-nav a[aria-current="page"],
+.site-nav a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.site-footer .inner {
+  padding-block: 2rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: var(--measure);
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer a {
+  color: var(--muted);
+}
+
+/* Home */
+
+.hero {
+  padding-block: 1rem 1.5rem;
+  max-width: 46rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  list-style: none;
+}
+
+.card {
+  display: block;
+  height: 100%;
+  padding: 1.25rem 1.25rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.card h3 {
+  color: var(--accent);
+  margin-bottom: 0.3em;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* Entry list rows */
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.entry-row {
+  border-bottom: 1px solid var(--line);
+}
+
+.entry-row a {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1.1rem 0.25rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.entry-row a:hover .entry-title {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.entry-title {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.entry-product {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.entry-summary {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-block;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.chip.owned {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Filter on /kit/ */
+
+.filter {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.5rem 0 1.25rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.filter fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.filter legend {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0;
+  margin-bottom: 0.45rem;
+}
+
+.filter .options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.filter button {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  min-height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.filter button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.count {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+}
+
+.empty {
+  padding: 1.5rem 0;
+}
+
+/* Entry page */
+
+.entry-header {
+  max-width: var(--measure);
+}
+
+.entry-header .product-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.note {
+  max-width: var(--measure);
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--line);
+  background: var(--surface);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.note p:last-child {
+  margin-bottom: 0;
+}
+
+.note.health {
+  border-left-color: var(--accent);
+  color: var(--text);
+}
+
+.drawback {
+  max-width: var(--measure);
+  margin-top: 2rem;
+}
+
+.buy {
+  max-width: var(--measure);
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.buy p {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.buy .pick-label {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.buy .pick-product {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.buy .pick-why {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button:hover {
+  filter: brightness(1.08);
+}
+
+.picks {
+  display: grid;
+  gap: 0;
+  max-width: var(--measure);
+}
+
+.reviewed {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 2rem;
+}
+
+.crumbs {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.crumbs a {
+  color: var(--muted);
+}
+
+/* Controller block on /privacy/ */
+
+.controller {
+  font-style: normal;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 1rem;
+}
+
+.controller dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.3rem 1rem;
+  margin: 0;
+}
+
+.controller dt {
+  color: var(--muted);
+}
+
+.controller dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 30rem) {
+  .controller dl {
+    grid-template-columns: 1fr;
+  }
+
+  .controller dd {
+    margin-bottom: 0.4rem;
+  }
+}

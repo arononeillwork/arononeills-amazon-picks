@@ -1,0 +1,108 @@
+---
+import "../styles/global.css";
+import publicSans from "../assets/fonts/public-sans-latin-wght-normal.woff2?url";
+import instrumentSerif from "../assets/fonts/instrument-serif-latin-400-normal.woff2?url";
+import { catalogue, site } from "../config/active";
+import { themeCss } from "../config/theme";
+
+interface Props {
+  /** Page title without the masthead. Omit on the home page. */
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  ogType?: "website" | "article";
+}
+
+const { title, description = site.identity.description, noindex = false, ogType = "website" } = Astro.props;
+const fullTitle = title ? `${title} · ${site.identity.masthead}` : `${site.identity.masthead}: ${site.identity.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: "/kit/", label: "All kit" },
+  ...catalogue.categories.map((c) => ({ href: `/kit/${c.slug}/`, label: c.name })),
+];
+
+// Prefetch without shipping JavaScript. The apartment page is excluded because
+// prerendering it would start a sign-in session check in the background.
+const speculationRules = {
+  prerender: [
+    {
+      where: {
+        and: [{ href_matches: "/*" }, { not: { href_matches: "/apartment/*" } }],
+      },
+      eagerness: "moderate",
+    },
+  ],
+};
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang={site.identity.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title ?? site.identity.masthead} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.identity.masthead} />
+    <meta property="og:locale" content={site.identity.locale} />
+    <meta name="theme-color" content={site.palette.light.bg} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={site.palette.dark.bg} media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href={publicSans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={instrumentSerif} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={themeCss(site.palette)}></style>
+    <script type="speculationrules" is:inline set:html={JSON.stringify(speculationRules)}></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="inner">
+        <a class="masthead" href="/">{site.identity.masthead}</a>
+        <nav class="site-nav" aria-label="Main">
+          <ul>
+            {
+              nav.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="inner">
+        {
+          site.affiliate.enabled && (
+            <div data-sitewide-disclosure>
+              {site.affiliate.sitewideStatement.map((statement) => (
+                <p>{statement}</p>
+              ))}
+            </div>
+          )
+        }
+        <ul>
+          <li><a href="/disclosure/">How this site is paid for</a></li>
+          <li><a href="/privacy/">Privacy and legal notice</a></li>
+        </ul>
+        <p>© {year} {site.owner.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Apartment from "../components/Apartment.tsx";
+import "../components/apartment.css";
+import { copy, site } from "../config/active";
+
+if (!site.features.apartment) return Astro.redirect("/");
+---
+
+<Base title={copy.apartment.title} noindex>
+  <div class="prose">
+    <h1>{copy.apartment.title}</h1>
+    <p class="lead">{copy.apartment.lead}</p>
+  </div>
+  <noscript><p>The calendar needs JavaScript switched on.</p></noscript>
+  <Apartment client:load copy={copy.apartment} />
+</Base>

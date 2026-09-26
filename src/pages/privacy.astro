@@ -1,0 +1,41 @@
+---
+import Base from "../layouts/Base.astro";
+import { copy, site } from "../config/active";
+
+const { legal } = site;
+---
+
+<Base title={copy.privacy.title}>
+  <div class="prose">
+    <h1>{copy.privacy.title}</h1>
+    <p class="lead">{copy.privacy.lead}</p>
+
+    <h2>{copy.privacy.controllerHeading}</h2>
+    <p>{copy.privacy.controllerLead}</p>
+    <address class="controller" data-controller>
+      <dl>
+        <dt>Name</dt>
+        <dd>{legal.fullName}</dd>
+        <dt>NIF</dt>
+        <dd>{legal.nif}</dd>
+        <dt>Address</dt>
+        <dd>{legal.address}</dd>
+        <dt>Email</dt>
+        <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
+        <dt>Website</dt>
+        <dd>{site.identity.url}</dd>
+      </dl>
+    </address>
+
+    {
+      copy.privacy.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
+          {section.paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
+        </section>
+      ))
+    }
+  </div>
+</Base>

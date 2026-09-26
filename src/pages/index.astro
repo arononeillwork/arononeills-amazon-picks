@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+import EntryRow from "../components/EntryRow.astro";
+import { catalogue, copy, site } from "../config/active";
+import { getKit } from "../lib/kit";
+
+const kit = await getKit();
+// One entry from each category, to give a first-time visitor a way in.
+const featured = catalogue.categories
+  .map((category) => kit.find((entry) => entry.data.category === category.slug))
+  .filter((entry) => entry !== undefined);
+const counts = Object.fromEntries(
+  catalogue.categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]),
+);
+---
+
+<Base>
+  <section class="hero">
+    <p class="eyebrow">{site.identity.tagline}</p>
+    <h1>{copy.home.title}</h1>
+    <p class="lead">{copy.home.lead}</p>
+    <p class="prose">{site.owner.about}</p>
+  </section>
+
+  <h2>{copy.home.categoriesHeading}</h2>
+  <ul class="cards">
+    {
+      catalogue.categories.map((category) => (
+        <li>
+          <a class="card" href={`/kit/${category.slug}/`}>
+            <h3>{category.name}</h3>
+            <p>{category.intro}</p>
+            <p>
+              {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p><a href="/kit/">{copy.home.allLink}</a></p>
+
+  <h2>{copy.home.featuredHeading}</h2>
+  <ul class="entries">
+    {featured.map((entry) => <EntryRow entry={entry} />)}
+  </ul>
+</Base>
