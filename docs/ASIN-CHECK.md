@@ -1,0 +1,28 @@
+# ASIN check for Aron
+
+The cloud container that researched these products couldn't open amazon.es, so nobody has yet seen these pages resolve. The brief's rule is to never ship an ASIN nobody has seen resolve. Open each link on your phone or laptop and check:
+
+1. It's the product named here (brand, model, size or variant).
+2. It's in stock and sold or shipped by the brand or by Amazon, not a random reseller.
+3. Anything listed under "Also check" for that row.
+
+If it's right, open the entry file, set `draft: false`, and leave `reviewed` as the date you checked. If it's wrong, tell Claude which one and it will switch to a backup ASIN from `docs/research/2026-09-26-products.md`.
+
+| Entry file | Product | Link | Also check |
+| --- | --- | --- | --- |
+| `anti-fatigue-mat.md` | Sky Solutions Anti-Fatigue Mat, 19 mm, 50 x 99 cm | https://www.amazon.es/dp/B00M8O122G | |
+| `compression-socks.md` | Relaxsan 830, 18-22 mmHg, X-Static | https://www.amazon.es/dp/B01FZQZYNQ | Size picker shows all sizes |
+| `insoles.md` | Scholl GelActiv Work (men's 40-46.5) | https://www.amazon.es/dp/B07FCCDN45 | |
+| `work-shoes.md` | DIAN Marsella, EN ISO 20347 SRC | https://www.amazon.es/dp/B09253K4MH | |
+| `massage-gun.md` | Hyperice Hypervolt Go 3 | https://www.amazon.es/dp/B0G82W9ZZK | Listing says 3 speeds; Hyperice says 5 (entry uses 5) |
+| `foam-roller.md` | BLACKROLL Standard 45, medium | https://www.amazon.es/dp/B01CEIGD06 | Medium ("Standard") hardness is selectable |
+| `foot-massage-ball.md` | BLACKROLL Blackbox Mini set | https://www.amazon.es/dp/B01M7XPBJM | |
+| `power-bank.md` | Anker 20,000 mAh 87 W, A1383 | https://www.amazon.es/dp/B0CXDXP8VR | Sold by Anker, not a reseller |
+| `laptop.md` (pick 1) | Lenovo IdeaPad Slim 3 Gen 10, i5-13420H, 16 GB, 512 GB | https://www.amazon.es/dp/B0GZHZ7HM7 | Spanish keyboard |
+| `laptop.md` (pick 2) | ASUS Zenbook A14 OLED UX3407QA | https://www.amazon.es/dp/B0DVCGC5MW | Spanish keyboard (title is cut off at "QWERTY") |
+| `laptop.md` (pick 3) | MacBook Air 13-inch M5, 16 GB, 512 GB | https://www.amazon.es/dp/B0GR1MZP3L | Spanish, not Portuguese, keyboard |
+| `water-bottle.md` | Hydro Flask Standard Mouth 709 ml, Flex Cap | https://www.amazon.es/dp/B01KXHGWQU | |
+| `work-backpack.md` | Thule Paramount Backpack 27L | https://www.amazon.es/dp/B09FPYMTQ9 | Paramount Backpack, not the Paramount Commuter |
+| `tens-unit.md` | Your own TENS unit | | Send the link to the one you own |
+
+Opening these links yourself is fine. Buying through them doesn't count toward the three qualifying sales, and the links aren't tagged yet anyway.

@@ -1,0 +1,331 @@
+# Build brief: arononeillspicks
+
+Status as of 26 September 2026. Owner: Aron O'Neill.
+
+This brief records what exists, what has been verified, the rules the site must never break, and the remaining work in order. Read all of it before changing anything; several sections exist because something went wrong once already.
+
+> **Rebuild note, 26 September 2026.** The original project archive from the claude.ai planning session never reached this repository (GitHub and Drive were both empty). The site was rebuilt from this brief in Claude Code. `supabase/schema.sql` and `supabase/tests/access.sql` were reconstructed from the live database and verified against it (§3). The twelve products were re-chosen, because the original drafts were lost with the archive.
+
+## 1. What this is
+
+A static website that recommends products for people with long, physical working days, monetised through Amazon Associates (Amazon.es). Aron runs a specialty café in San Pedro de Alcántara and stands for ten hours a day; that experience is the site's credibility. Alongside the public catalogue sits a private, friends-only calendar where invited friends request free stays at Aron's apartment.
+
+Nothing is sold directly. There is no checkout, no stock and no Stripe. Visitors click through to Amazon, Amazon handles the sale, and Amazon pays a commission.
+
+The goal for launch is a site that passes Amazon's review: at least ten genuine, substantial entries, compliant disclosures, and three qualifying sales from people outside Aron's circle within 180 days of signing up.
+
+## 2. Settled decisions
+
+| Area | Decision |
+| --- | --- |
+| Business model | Amazon affiliate recommendations only |
+| Framework | Astro 7, fully static output |
+| Hosting | Vercel Pro ($20/month, from launch). Claude deploys every update |
+| Address | `https://arononeillspicks.vercel.app`. No custom domain |
+| Marketplace | Amazon.es |
+| Associates account | Aron as persona física with his own NIF. **Never** the Easy Beans café entity |
+| Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
+| Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
+| Apartment | Free use by invited friends. No money ever changes hands |
+| Launch catalogue | 12 products, 3 categories of 4 |
+| Catalogue shape | Category landing pages plus one filterable list of everything |
+| Language | English (for the expat audience) unless the owner decides otherwise |
+| Deployment rule | Nothing deploys until the owner explicitly says so and the preflight passes |
+
+## 3. Current state
+
+### Built and verified
+
+The Astro site builds 21 static pages: home, `/kit/` (filterable list), three category pages, twelve product entries, `/disclosure/`, `/privacy/`, `/apartment/`, `/404`, plus `robots.txt` and a sitemap. `astro check` reports 0 errors, 0 warnings, 0 hints.
+
+Catalogue (category → entries):
+
+| Category | Slug | Entries |
+| --- | --- | --- |
+| On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes |
+| Recovery | `recovery` | tens-unit (owned), massage-gun, foam-roller, foot-massage-ball |
+| Carry and charge | `carry` | power-bank, laptop (three picks), water-bottle, work-backpack |
+
+Situation tags: `long-shifts`, `after-work`, `commute`, `travel`.
+
+Performance, measured by the preflight from the build with env vars set:
+
+| Page | JavaScript (gzip) | Budget |
+| --- | --- | --- |
+| Home, category, product entry | 0 KB | 0 KB |
+| `/kit/` | 0.6 KB | 3 KB |
+| `/apartment/` | 39.0 KB | 60 KB |
+| Fonts, all pages, downloaded once | 46.8 KB | 55 KB |
+
+Fonts: Public Sans (variable, body) and Instrument Serif (headings), Latin subset, self-hosted from `src/assets/fonts/`.
+
+Lighthouse (mobile, local build, 26 September 2026): 100 performance, accessibility, best practices and SEO on home, `/kit/` and an entry; 100 performance on `/apartment/` (SEO 66 there is the intended `noindex`).
+
+Palette contrast (WCAG): every text/background pair is at least 5.4:1 in light mode and 7.0:1 in dark mode.
+
+Amazon links: 25 when all entries are built (two buy blocks on each single-product entry, three on the laptop). Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
+
+### Live infrastructure
+
+**Supabase** project `arononeillspicks`, ref `zmxkwaedfiqepyfywtbe`, region `eu-west-3` (Paris), free plan, $0/month. The org has four other projects; the free plan allows two active.
+
+`supabase/schema.sql` was reconstructed from the live catalog on 26 September 2026 and diffed section by section against it (columns, constraints, indexes, policies, function bodies, grants). It matches, and re-running it is a no-op. `supabase/tests/access.sql` passes 17 of 17 against the live project inside a rolled-back transaction, leaving no rows. Both advisors report zero issues.
+
+Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm this is the address he'll sign in with).
+
+`.env.example` holds the project URL and publishable key. Both are public by design.
+
+**Vercel:** nothing created yet. The account is a personal Hobby account with no team.
+
+**Network note:** the Claude Code cloud container that did the rebuild could not reach amazon.es, vercel.app or supabase.co directly (egress policy), so live checks happen from Aron's browser or after deploy.
+
+### Not done
+
+- Legal details in `src/profiles/aron/site.ts` are placeholders
+- The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN
+- All eleven researched entries are written (200–400 words, pass every content check) but stay `draft: true` because nobody has yet seen their ASINs resolve on amazon.es. Aron confirms them with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
+- The Supabase sign-up hook and URL configuration are not yet switched on in the dashboard
+- The live magic-link round trip has never been tested
+
+## 4. Repository map
+
+```
+CLAUDE.md                    standing rules; imports this brief
+docs/BRIEF.md                this file
+astro.config.ts              static output, trailingSlash: "always", sitemap excludes /apartment
+vercel.json                  trailing slashes, immutable asset caching, noindex header on /apartment
+package.json                 scripts: dev, build, preview, check, preflight; Node >= 22.12
+.env.example                 SITE_PROFILE, PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY
+scripts/preflight.ts         the deploy gate
+supabase/schema.sql          matches the live database; safe to re-run
+supabase/tests/access.sql    17-case access-control test
+public/favicon.svg
+src/
+  content.config.ts          product collection and its zod schema
+  env.d.ts                   import.meta.env types
+  assets/fonts/              self-hosted woff2 files and their OFL licences
+  config/
+    schema.ts                site config schema; rejects "amazon" in names and URLs
+    active.ts                profile registry; SITE_PROFILE selects one
+    theme.ts                 palette to CSS variables
+  profiles/aron/
+    site.ts                  identity, legal, palette, features, affiliate switch and tag
+    catalogue.ts             3 categories, 4 situation tags
+    copy.ts                  all non-entry copy
+    kit/*.md                 one file per product; filename is the URL slug
+  lib/
+    amazon.ts                the only place an Amazon URL is built
+    kit.ts                   loads and orders entries; entry URLs
+    supabase.ts              auth-js + postgrest-js clients
+  layouts/Base.astro         head, theme injection, speculation rules, nav, footer
+  components/
+    EntryRow.astro           list row; links to the entry, never to Amazon
+    BuyBlock.astro           disclosure line + Amazon button
+    PicksBlock.astro         multi-option entries (the laptop)
+    Apartment.tsx            Preact island: sign-in, calendar, requests, owner actions
+    apartment.css            calendar styles, bundled on /apartment/ only
+  pages/                     index, kit/, kit/[category]/, kit/[category]/[product],
+                             disclosure, privacy, apartment, 404, robots.txt
+  styles/global.css
+```
+
+### Entry frontmatter
+
+```yaml
+title: "Headline naming the need"   # <= 70 chars, no "Amazon"
+product: "Brand Model"               # no "Amazon"
+category: on-your-feet               # a catalogue.ts slug
+tags: [long-shifts, after-work]      # 1-3 catalogue.ts tag slugs
+summary: "<= 160 chars"
+experience: owned | researched
+asin: B0XXXXXXXX                     # or `picks:` (exactly three: label, product, asin, why)
+drawback: "honest, specific"
+health: false                        # true requires healthNote
+healthNote: "manufacturer contraindications"
+order: 1                             # position within the category
+reviewed: 2026-09-26
+draft: true | false
+```
+
+## 5. Rules that must never break
+
+### Amazon Associates
+
+- "Amazon", "amzn" or any variant never appears in the site name, title, URL, subdomain or social handles. `src/config/schema.ts` and `src/content.config.ts` enforce this at build; the preflight re-checks every built `<title>` and internal URL
+- Every Amazon link is built by `src/lib/amazon.ts`. No shorteners, no redirects through the site, no cloaking
+- Every affiliate link sits inside a `data-affiliate-block` with a link-level disclosure directly above it, and the sitewide statement appears in the footer of every page. The preflight checks both
+- No prices anywhere, in text or filters. Amazon only allows prices pulled live from its Product Advertising API
+- No Amazon product images, and no copied Amazon customer reviews. Own photos only
+- Links keep `noopener` but must not gain `noreferrer`; Amazon may check that clicks come from the registered site. `vercel.json` sets `Referrer-Policy: strict-origin-when-cross-origin`, which sends the site's origin
+- Home, category and list pages link to entries, never straight to Amazon, so every affiliate link has its disclosure beside it
+- Purchases by Aron, friends or family are not eligible. Never suggest otherwise, and never put affiliate links in email, PDF, WhatsApp or DMs
+
+### Honesty and health
+
+- Never write first-person experience Aron hasn't given you. Entries marked `experience: owned` describe only what Aron has actually said; use bracketed prompts where his words are missing. The preflight refuses brackets
+- `experience: researched` entries say so visibly and never imply personal use. The preflight flags first-person use phrases in researched entries
+- Health products describe experience or research, never treatment. No claim that a product treats, cures or prevents a condition. Set `health: true` and give a specific `healthNote` with the manufacturer's contraindications. The preflight flags treatment language in health entries
+- Every entry has an honest `drawback`. The schema requires it
+
+### Security
+
+- Row-level security in Postgres is the security boundary. Browser code is not
+- Never reintroduce a client-side or anonymous-callable allowlist check. An earlier `is_allowed(email)` function let anyone probe who was invited; it was removed. The `hook_allowlist_signup` sign-up hook refuses uninvited addresses on the server, and the sign-in form shows the same neutral message whatever happens
+- The publishable key goes in the `apikey` header only, never as a `Bearer` token; it is not a JWT. `Authorization` carries the user's session token or nothing. The preflight refuses a key that isn't `sb_publishable_…`
+- Every database change is a migration applied to the live project **and** mirrored in `supabase/schema.sql`. Afterwards, run both Supabase advisors and `supabase/tests/access.sql`; all must be clean
+- The apartment stays free. If anyone ever proposes charging, stop: paid stays need a VFT licence from the Junta de Andalucía
+
+### Performance
+
+- Catalogue pages ship zero JavaScript. Page transitions use CSS `@view-transition`; prefetch uses a Speculation Rules JSON block. Do not add Astro's `ClientRouter`, which ships JavaScript to every page
+- Budgets are in the table above. The preflight enforces them
+
+### Privacy
+
+- Fonts stay self-hosted. Loading Google Fonts from Google's servers has been held to breach GDPR
+- No analytics or tracking scripts without updating `/privacy/` first
+- The privacy page's controller block comes from config and must be real before launch. It doubles as the LSSI-CE identification (name, NIF, address, email)
+
+## 6. Things that already went wrong once
+
+Each of these was found by testing rather than by the build passing. Keep the fixes.
+
+- **The theme never applied.** The inline theme `<style>` lands before the bundled stylesheet, so fallback colours in `:root` overrode the profile palette and dark mode never worked. Fallbacks now live in `:where(:root)`, which has zero specificity. Don't move them back
+- **Hidden elements showed.** `.filter { display: grid }` beat the browser's `[hidden]` rule, so dead filter buttons appeared with JavaScript off. `global.css` has `[hidden] { display: none !important; }`
+- **A false bundle size.** Building without Supabase env vars makes Vite tree-shake the whole client away; the island measured 9 KB instead of 64 KB. Always measure with env vars set; the preflight fails if they're missing, and checks the Supabase URL is actually in the apartment bundle
+- **supabase-js was too heavy.** It pushed `/apartment/` to 64 KB against a 60 KB budget by bundling realtime, storage and function clients. The site uses `@supabase/auth-js` and `@supabase/postgrest-js` directly. Keep their versions in step with each other
+- **`astro check` refuses TypeScript 7.** TypeScript is pinned to 6
+- **Zod.** Import from `astro/zod`, not `astro:content`. Use `z.email()` and `z.url()`, not the deprecated string methods
+- **Images.** Multiple output formats need `<Picture>`, not `<Image>`
+- **Invented experience.** The first TENS draft contained made-up details in Aron's voice. They were replaced with prompts. Don't repeat this
+- **Implicit auth flow is deliberate.** PKCE fails when a friend requests a link on one device and opens it on another or in a mail app's browser
+- **The project archive never arrived.** The first build lived only in a claude.ai sandbox. Everything now lives in this repository; push after every working session
+
+## 7. The work, in order
+
+Owner tasks are marked **Aron**. Everything else is Claude Code's.
+
+### Phase 0: set up locally
+
+- [x] Project in git, `.env` gitignored, `npm run check` clean
+- [x] `npm run preflight` shows only the expected failures
+
+### Phase 1: owner inputs
+
+Ask Aron for anything missing. Don't guess any of it.
+
+- [ ] **Aron:** full name, NIF, postal address and a contact email, for `legal` in `site.ts`
+- [ ] **Aron:** confirm `arononeillwork@gmail.com` is the owner address for the calendar (already seeded)
+- [ ] **Aron:** which of the twelve products he owns and uses
+- [ ] **Aron:** his real TENS experience: how long, how often, what changed. Two or three lines is enough. Plus the brand/model he has
+- [ ] **Aron:** masthead name, "Aron" or "Aron O'Neill" (currently "Aron O'Neill")
+- [ ] **Aron:** Supabase keep-alive, weekly ping or manual restore (see Phase 7)
+- [ ] **Aron:** read the non-entry copy in `src/profiles/aron/copy.ts` (home, disclosure, privacy) and confirm he'd sign it
+
+Acceptance: `legal` has no placeholders, and the owner row exists in the live database.
+
+### Phase 2: Supabase dashboard and live auth
+
+- [ ] **Aron:** Authentication → Hooks → *Before User Created* → Postgres → schema `public` → `hook_allowlist_signup`. It must be on before launch; without it anyone can create an account (they see nothing, but Supabase emails them)
+- [ ] **Aron:** Authentication → URL Configuration. Site URL `https://arononeillspicks.vercel.app`. Redirect URLs `http://localhost:4321/apartment/` and `https://arononeillspicks.vercel.app/apartment/`
+- [ ] **Aron:** check Authentication → Emails → SMTP. Supabase's built-in sender is heavily rate-limited and may only deliver to members of the Supabase organisation; if a friend's link never arrives, set up custom SMTP (for example Resend or Brevo)
+- [x] Seed the owner
+- [ ] Live round trip on localhost with Aron: sign in, request dates, confirm as owner, sign out. Then invite a second address Aron controls and repeat as a friend: request dates, withdraw a request, confirm the friend sees no owner buttons
+- [ ] Check an uninvited address: the form shows the neutral message, no email arrives, and no user appears under Authentication → Users
+
+Acceptance: both round trips work, and the uninvited address never gets an account.
+
+### Phase 3: content
+
+For each **researched** entry:
+
+- [x] Choose one specific product sold on Amazon.es that meets the criteria in the entry
+- [ ] Record its ASIN from the `/dp/` part of the Amazon.es URL. If Amazon blocks automated fetches, list the candidate ASINs for Aron to confirm by opening `https://www.amazon.es/dp/<ASIN>`; never ship an ASIN nobody has seen resolve
+- [x] Body of 200–400 words: what to look for, why this product meets it, who it suits, who should skip it. Researched voice, no personal-use claims, no prices
+- [x] Keep `drawback` honest. Paraphrase widely reported weaknesses; don't copy review text
+- [ ] Set `reviewed` to the date checked and `draft: false` once the ASIN is confirmed
+
+For **owned** entries, build the body from Aron's own words only, then have him read it and confirm he'd sign his name to it.
+
+The laptop entry needs three picks with real ASINs, framed as use cases, and a review date at most three months old.
+
+Acceptance: `npm run preflight` shows every entry passing.
+
+### Phase 4: quality assurance
+
+- [ ] `npm run preflight` passes with zero failures
+- [x] `npm run check` is clean
+- [x] Lighthouse, mobile: 100 performance on home, `/kit/` and one entry; 95 or more on `/apartment/` (re-run on the live URL after deploy)
+- [x] Visual check in light and dark mode at phone and desktop widths
+- [x] With JavaScript disabled, the full list shows and the filter is hidden
+- [ ] Every entry opened once and read through by a person
+
+### Phase 5: deploy to Vercel
+
+Only after Aron explicitly says to host it.
+
+- [ ] **Aron:** upgrade to Vercel Pro. Pro belongs to a team, so Vercel will ask him to create one. (Claude can start the purchase through the Vercel connector, but only with Aron's explicit go-ahead)
+- [ ] Link or create project `arononeillspicks` in the Pro team. Framework: Astro. Node 22.x
+- [ ] Add production env vars: `SITE_PROFILE`, `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_PUBLISHABLE_KEY`, with the values from `.env.example`
+- [ ] `npm run preflight`, then `vercel pull --yes --environment=production`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Building locally and deploying prebuilt means what ships is exactly what passed the gate
+- [ ] Confirm the production URL loads while logged out of Vercel. Deployment Protection may cover previews; it must not cover production
+- [ ] If Vercel assigns a different address because the name is taken, update `identity.url` in `site.ts` and the Supabase URL configuration, then redeploy before anything is registered with Amazon
+- [ ] Smoke test live: every route, the filter, the 404, `robots.txt`, `sitemap-index.xml`, and the apartment round trip from Phase 2
+
+The first deploy goes out with `affiliate.enabled: false`. Links are untagged and link-level disclosures are replaced by a neutral "Opens Amazon.es" note, which is correct until Amazon issues a tag.
+
+### Phase 6: Amazon Associates
+
+The 180-day clock starts at signup, not at launch. Sign up only once the site is live and complete.
+
+- [ ] **Aron:** sign up at afiliados.amazon.es as persona física with his own name and NIF. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview. Never use Easy Beans' details
+- [ ] **Aron:** send the tracking ID (ends `-21`) and the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
+- [ ] Set `affiliate.tag`, `affiliate.sitewideStatement` and `affiliate.enabled: true`, then preflight and deploy
+- [ ] Verify on the live site that buy buttons carry `?tag=`, and that both disclosures show
+
+Acceptance: tagged links live within a day of signup.
+
+### Phase 7: after launch
+
+- **First three sales** must come from outside Aron's circle. Channels: a personal Instagram or TikTok registered in Associates Central as an additional site, and genuinely useful answers in hospitality and Marbella expat communities that link to the site's pages, never to Amazon directly. Keep Easy Beans' accounts out of it
+- **Supabase free projects pause** after inactivity. Either Aron restores it from the dashboard when needed, or add a weekly keep-alive (for example a scheduled GitHub Action calling the REST endpoint). Decide in Phase 1
+- **Review cadence:** the preflight warns on entries not checked in six months; the laptop entry every three
+- **Adding a friend:** `insert into public.allowed_emails (email, name) values ('friend@example.com', 'Name');`. Delete the row to remove access
+- **Possible privacy improvement:** RLS lets every invited friend read all columns of every stay, including other guests' emails and messages. The UI only shows friends "Booked"/"Asked", but a view exposing only dates and status to non-owners would close the gap at the database. It's a schema change, so it follows the migration rule above
+
+## 8. Business and tax notes for Aron
+
+Not legal or tax advice; confirm with a gestor.
+
+Affiliate income belongs to Aron personally, not to Easy Beans, which has a co-owner. Once commissions arrive regularly, Hacienda treats the activity as habitual regardless of amount, and Aron needs to be registered as autónomo with an advertising epígrafe (IAE 844 is the usual one). Amazon pays EU affiliates through Amazon Europe Core Sàrl in Luxembourg, so invoices are intra-community at 0% IVA, which requires ROI/VIES registration and modelo 349.
+
+Stripe is not needed for any of this: Amazon takes the payment from the buyer and pays the commission to Aron's bank account.
+
+## 9. Reference
+
+### Commands
+
+```bash
+npm run dev          # localhost:4321
+npm run build        # static build to dist/
+npm run check        # astro check (TypeScript 6)
+npm run preflight    # build, then the deploy gate; exits non-zero on any failure
+```
+
+### Identifiers
+
+| Thing | Value |
+| --- | --- |
+| Live address | `https://arononeillspicks.vercel.app` |
+| Supabase project ref | `zmxkwaedfiqepyfywtbe` |
+| Supabase region | `eu-west-3` (Paris) |
+| Supabase org | `arononeill's org` (`mrnpwcpadkzwxxvghrsw`), free plan |
+| Vercel project | `arononeillspicks` (to be created in a Pro team) |
+| Placeholder ASIN | `B0PLACEHLD`; the preflight rejects it |
+
+### Sources
+
+- Amazon Associates do's and don'ts: https://affiliate-program.amazon.sg/help/node/topic/G5CHSDWVK9JWVXRK
+- Amazon Associates application review: https://affiliate-program.amazon.com/help/node/topic/G8TW5AE9XL2VX9VM
+- Supabase auth hooks: https://supabase.com/docs/guides/auth/auth-hooks
+- Vercel fair use guidelines: https://vercel.com/docs/limits/fair-use-guidelines

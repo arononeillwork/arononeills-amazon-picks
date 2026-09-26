@@ -37,4 +37,4 @@ If you're choosing one, these are the things that matter day to day:
 
 ## Who should skip it
 
-Anyone the contraindications below apply to, and anyone who doesn't like the sensation of the current. If you're not sure whether a TENS unit is suitable for you, ask your doctor or pharmacist before buying one.
+Anyone the "Before you buy" note at the top of this page applies to, and anyone who doesn't like the sensation of the current. If you're not sure whether a TENS unit is suitable for you, ask your doctor or pharmacist before buying one.

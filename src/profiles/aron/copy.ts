@@ -99,7 +99,7 @@ export const copy = {
       {
         heading: "Links to Amazon.es",
         paragraphs: [
-          "When you follow a link to Amazon.es, Amazon receives this site's address as the referrer and handles everything from then on under its own privacy notice and cookie settings. I never learn who you are or what you bought; Amazon only reports aggregate, anonymous sales totals to affiliates.",
+          "When you follow a link to Amazon.es, Amazon receives this site's address as the referrer and handles everything from then on under its own privacy notice and cookie settings. Amazon's reports tell me which products were bought through links on this site, but never who bought them.",
         ],
       },
       {

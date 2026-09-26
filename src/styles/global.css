@@ -273,7 +273,7 @@ a:hover {
 /* Home */
 
 .hero {
-  padding-block: 1rem 1.5rem;
+  padding-block: 1rem 0;
   max-width: 46rem;
 }
 
