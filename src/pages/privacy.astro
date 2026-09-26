@@ -3,6 +3,9 @@ import Base from "../layouts/Base.astro";
 import { copy, site } from "../config/active";
 
 const { legal } = site;
+// The calendar section describes Supabase processing, so it only appears while the calendar exists.
+const sections = [...copy.privacy.sections];
+if (site.features.apartment) sections.splice(sections.length - 1, 0, copy.privacy.calendar);
 ---
 
 <Base title={copy.privacy.title}>
@@ -28,7 +31,7 @@ const { legal } = site;
     </address>
 
     {
-      copy.privacy.sections.map((section) => (
+      sections.map((section) => (
         <section>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((p) => (

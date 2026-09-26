@@ -7,6 +7,7 @@ Static Astro site recommending kit for long, physical working days, monetised th
 ## Standing rules (summary; the brief is authoritative)
 
 - Nothing deploys until Aron explicitly says so **and** `npm run preflight` passes.
+- Drafts (`draft: true`) never ship; production builds leave them out. The apartment calendar is switched off for launch (`features.apartment: false`).
 - Never write first-person experience Aron hasn't given you. Owned entries use `[Aron: ...]` prompts where his words are missing; the preflight refuses brackets.
 - No prices, no Amazon images, no copied reviews. Every Amazon URL comes from `src/lib/amazon.ts`, inside a `data-affiliate-block` with its disclosure directly above the link. Keep `noopener`, never add `noreferrer`.
 - "Amazon"/"amzn" never appears in the site name, titles, URLs or handles (`src/config/schema.ts` enforces it).

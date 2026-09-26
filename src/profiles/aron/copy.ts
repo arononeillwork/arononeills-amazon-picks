@@ -103,20 +103,21 @@ export const copy = {
         ],
       },
       {
-        heading: "The friends' calendar",
-        paragraphs: [
-          "The apartment page is private and only works for people I have personally invited. For them it stores their email address and name, the dates they ask for, and any message they add. It's used for one purpose: arranging free stays between friends.",
-          "The data is held by Supabase Inc., acting as my processor, in its Paris (EU) region. Signing in stores a session token in your browser's local storage so you stay signed in; it is not used for anything else. Sign-in emails are sent by Supabase.",
-          "The legal basis is my legitimate interest in organising stays with friends who ask for them. Requests are kept only while they're useful for arranging stays. Ask me and I'll delete your invitation and everything linked to it.",
-        ],
-      },
-      {
         heading: "Your rights",
         paragraphs: [
           "You can ask to see, correct or delete your data, to restrict or object to its use, or to receive a copy, by emailing the address above. If you're unhappy with my reply you can complain to the Agencia Española de Protección de Datos (aepd.es).",
         ],
       },
     ] satisfies Section[],
+    /** Only shown while the apartment calendar is switched on. Keep it true to what the site does. */
+    calendar: {
+      heading: "The friends' calendar",
+      paragraphs: [
+        "The apartment page is private and only works for people I have personally invited. For them it stores their email address and name, the dates they ask for, and any message they add. It's used for one purpose: arranging free stays between friends.",
+        "The data is held by Supabase Inc., acting as my processor, in its Paris (EU) region. Signing in stores a session token in your browser's local storage so you stay signed in; it is not used for anything else. Sign-in emails are sent by Supabase.",
+        "The legal basis is my legitimate interest in organising stays with friends who ask for them. Requests are kept only while they're useful for arranging stays. Ask me and I'll delete your invitation and everything linked to it.",
+      ],
+    } satisfies Section,
   },
   apartment: {
     title: "The apartment",

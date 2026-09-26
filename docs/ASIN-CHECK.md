@@ -6,7 +6,7 @@ The cloud container that researched these products couldn't open amazon.es, so n
 2. It's in stock and sold or shipped by the brand or by Amazon, not a random reseller.
 3. Anything listed under "Also check" for that row.
 
-If it's right, open the entry file, set `draft: false`, and leave `reviewed` as the date you checked. If it's wrong, tell Claude which one and it will switch to a backup ASIN from `docs/research/2026-09-26-products.md`.
+If it's right, tell Claude (or set `draft: false` in the entry file yourself). If it's wrong, tell Claude which one and it will switch to a backup ASIN from `docs/research/2026-09-26-products.md`. At least ten confirmed entries are needed to launch; drafts simply don't appear on the site.
 
 | Entry file | Product | Link | Also check |
 | --- | --- | --- | --- |
@@ -23,6 +23,6 @@ If it's right, open the entry file, set `draft: false`, and leave `reviewed` as 
 | `laptop.md` (pick 3) | MacBook Air 13-inch M5, 16 GB, 512 GB | https://www.amazon.es/dp/B0GR1MZP3L | Spanish, not Portuguese, keyboard |
 | `water-bottle.md` | Hydro Flask Standard Mouth 709 ml, Flex Cap | https://www.amazon.es/dp/B01KXHGWQU | |
 | `work-backpack.md` | Thule Paramount Backpack 27L | https://www.amazon.es/dp/B09FPYMTQ9 | Paramount Backpack, not the Paramount Commuter |
-| `tens-unit.md` | Your own TENS unit | | Send the link to the one you own |
+| `tens-unit.md` | Your own TENS unit | | Optional for launch: send the link to the one you own, plus a few lines on how you use it |
 
 Opening these links yourself is fine. Buying through them doesn't count toward the three qualifying sales, and the links aren't tagged yet anyway.

@@ -26,17 +26,20 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Associates account | Aron as persona física with his own NIF. **Never** the Easy Beans café entity |
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
-| Apartment | Free use by invited friends. No money ever changes hands |
+| Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
 | Launch catalogue | 12 products, 3 categories of 4 |
 | Catalogue shape | Category landing pages plus one filterable list of everything |
 | Language | English (for the expat audience) unless the owner decides otherwise |
 | Deployment rule | Nothing deploys until the owner explicitly says so and the preflight passes |
+| Drafts | `draft: true` entries show in `npm run dev` but never ship; production builds leave them out |
 
 ## 3. Current state
 
 ### Built and verified
 
-The Astro site builds 21 static pages: home, `/kit/` (filterable list), three category pages, twelve product entries, `/disclosure/`, `/privacy/`, `/apartment/`, `/404`, plus `robots.txt` and a sitemap. `astro check` reports 0 errors, 0 warnings, 0 hints.
+A production build contains home, `/kit/` (filterable list), one page per category that has a published entry, one page per published entry, `/disclosure/`, `/privacy/` and `/404`, plus `robots.txt` and a sitemap. `/apartment/` is only built while the calendar is switched on. With the eleven researched entries confirmed and the calendar off, that is 19 pages and 23 Amazon links. `astro check` reports 0 errors, 0 warnings, 0 hints.
+
+With the calendar off, the build ships no JavaScript except the 0.6 KB `/kit/` filter: `astro.config.ts` only loads Preact and injects `src/routes/apartment.astro` when `features.apartment` is true, and the privacy page only describes Supabase processing while the calendar exists.
 
 Catalogue (category → entries):
 
@@ -63,7 +66,7 @@ Lighthouse (mobile, local build, 26 September 2026): 100 performance, accessibil
 
 Palette contrast (WCAG): every text/background pair is at least 5.4:1 in light mode and 7.0:1 in dark mode.
 
-Amazon links: 25 when all entries are built (two buy blocks on each single-product entry, three on the laptop). Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
+Amazon links: two buy blocks on each single-product entry, three on the laptop (25 with all twelve entries published). Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
 
 ### Live infrastructure
 
@@ -81,18 +84,18 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 
 ### Not done
 
-- Legal details in `src/profiles/aron/site.ts` are placeholders
-- The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN
+- Legal details: `fullName` is set (Aron O'Neill). NIF, postal address and contact email are still placeholders. The only NIF in Aron's "Cafe" sheet is `B27576347`, the café company's CIF, so it was not used: the site's operator is Aron personally (§2). Aron to give his own NIF/NIE, or decide explicitly that the café company runs the site (then the legal name, NIF and the Associates account all become the company's)
+- The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN. It's a draft, so it doesn't block launch
 - All eleven researched entries are written (200–400 words, pass every content check) but stay `draft: true` because nobody has yet seen their ASINs resolve on amazon.es. Aron confirms them with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
-- The Supabase sign-up hook and URL configuration are not yet switched on in the dashboard
-- The live magic-link round trip has never been tested
+- Calendar (deferred): the Supabase sign-up hook, URL configuration and SMTP are not yet set in the dashboard, and the live magic-link round trip has never been tested. None of this blocks launch while `features.apartment` is false
 
 ## 4. Repository map
 
 ```
 CLAUDE.md                    standing rules; imports this brief
 docs/BRIEF.md                this file
-astro.config.ts              static output, trailingSlash: "always", sitemap excludes /apartment
+astro.config.ts              static output, trailingSlash: "always", sitemap excludes /apartment;
+                             injects the calendar route and Preact only when features.apartment is on
 vercel.json                  trailing slashes, immutable asset caching, noindex header on /apartment
 package.json                 scripts: dev, build, preview, check, preflight; Node >= 22.12
 .env.example                 SITE_PROFILE, PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY
@@ -115,7 +118,7 @@ src/
     kit/*.md                 one file per product; filename is the URL slug
   lib/
     amazon.ts                the only place an Amazon URL is built
-    kit.ts                   loads and orders entries; entry URLs
+    kit.ts                   loads and orders entries (drafts left out of production); entry URLs
     supabase.ts              auth-js + postgrest-js clients
   layouts/Base.astro         head, theme injection, speculation rules, nav, footer
   components/
@@ -125,7 +128,8 @@ src/
     Apartment.tsx            Preact island: sign-in, calendar, requests, owner actions
     apartment.css            calendar styles, bundled on /apartment/ only
   pages/                     index, kit/, kit/[category]/, kit/[category]/[product],
-                             disclosure, privacy, apartment, 404, robots.txt
+                             disclosure, privacy, 404, robots.txt
+  routes/apartment.astro     the calendar page, injected only when features.apartment is on
   styles/global.css
 ```
 
@@ -199,6 +203,7 @@ Each of these was found by testing rather than by the build passing. Keep the fi
 - **Images.** Multiple output formats need `<Picture>`, not `<Image>`
 - **Invented experience.** The first TENS draft contained made-up details in Aron's voice. They were replaced with prompts. Don't repeat this
 - **Implicit auth flow is deliberate.** PKCE fails when a friend requests a link on one device and opens it on another or in a mail app's browser
+- **Unused islands still ship.** A page that isn't generated still gets its island bundled if the file sits in `src/pages/`. The calendar lives in `src/routes/` and is injected from `astro.config.ts` so that switching it off really removes it
 - **The project archive never arrived.** The first build lived only in a claude.ai sandbox. Everything now lives in this repository; push after every working session
 
 ## 7. The work, in order
@@ -214,7 +219,8 @@ Owner tasks are marked **Aron**. Everything else is Claude Code's.
 
 Ask Aron for anything missing. Don't guess any of it.
 
-- [ ] **Aron:** full name, NIF, postal address and a contact email, for `legal` in `site.ts`
+- [x] **Aron:** full name (Aron O'Neill)
+- [ ] **Aron:** his own NIF/NIE (the café's CIF is not his), postal address and a public contact email, for `legal` in `site.ts`
 - [ ] **Aron:** confirm `arononeillwork@gmail.com` is the owner address for the calendar (already seeded)
 - [ ] **Aron:** which of the twelve products he owns and uses
 - [ ] **Aron:** his real TENS experience: how long, how often, what changed. Two or three lines is enough. Plus the brand/model he has
@@ -224,7 +230,9 @@ Ask Aron for anything missing. Don't guess any of it.
 
 Acceptance: `legal` has no placeholders, and the owner row exists in the live database.
 
-### Phase 2: Supabase dashboard and live auth
+### Phase 2: Supabase dashboard and live auth (deferred: calendar is off for launch)
+
+Only needed when `features.apartment` is switched back on. The dashboard steps can't be done from Claude Code: no connector exposes Supabase's auth settings.
 
 - [ ] **Aron:** Authentication → Hooks → *Before User Created* → Postgres → schema `public` → `hook_allowlist_signup`. It must be on before launch; without it anyone can create an account (they see nothing, but Supabase emails them)
 - [ ] **Aron:** Authentication → URL Configuration. Site URL `https://arononeillspicks.vercel.app`. Redirect URLs `http://localhost:4321/apartment/` and `https://arononeillspicks.vercel.app/apartment/`
@@ -249,7 +257,7 @@ For **owned** entries, build the body from Aron's own words only, then have him 
 
 The laptop entry needs three picks with real ASINs, framed as use cases, and a review date at most three months old.
 
-Acceptance: `npm run preflight` shows every entry passing.
+Acceptance: `npm run preflight` passes: every published entry passes every check and at least ten are published. Drafts are listed as warnings.
 
 ### Phase 4: quality assurance
 
@@ -266,11 +274,11 @@ Only after Aron explicitly says to host it.
 
 - [ ] **Aron:** upgrade to Vercel Pro. Pro belongs to a team, so Vercel will ask him to create one. (Claude can start the purchase through the Vercel connector, but only with Aron's explicit go-ahead)
 - [ ] Link or create project `arononeillspicks` in the Pro team. Framework: Astro. Node 22.x
-- [ ] Add production env vars: `SITE_PROFILE`, `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_PUBLISHABLE_KEY`, with the values from `.env.example`
+- [ ] Add production env var `SITE_PROFILE=aron` (plus `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_PUBLISHABLE_KEY` from `.env.example` once the calendar is on)
 - [ ] `npm run preflight`, then `vercel pull --yes --environment=production`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Building locally and deploying prebuilt means what ships is exactly what passed the gate
 - [ ] Confirm the production URL loads while logged out of Vercel. Deployment Protection may cover previews; it must not cover production
 - [ ] If Vercel assigns a different address because the name is taken, update `identity.url` in `site.ts` and the Supabase URL configuration, then redeploy before anything is registered with Amazon
-- [ ] Smoke test live: every route, the filter, the 404, `robots.txt`, `sitemap-index.xml`, and the apartment round trip from Phase 2
+- [ ] Smoke test live: every route, the filter, the 404, `robots.txt`, `sitemap-index.xml` (and the apartment round trip from Phase 2 once the calendar is on)
 
 The first deploy goes out with `affiliate.enabled: false`. Links are untagged and link-level disclosures are replaced by a neutral "Opens Amazon.es" note, which is correct until Amazon issues a tag.
 

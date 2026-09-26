@@ -1,16 +1,16 @@
 ---
 import Base from "../layouts/Base.astro";
 import EntryRow from "../components/EntryRow.astro";
-import { catalogue, copy, site } from "../config/active";
-import { getKit } from "../lib/kit";
+import { copy, site } from "../config/active";
+import { getShelves } from "../lib/kit";
 
-const kit = await getKit();
+const { kit, categories } = await getShelves();
 // One entry from each category, to give a first-time visitor a way in.
-const featured = catalogue.categories
+const featured = categories
   .map((category) => kit.find((entry) => entry.data.category === category.slug))
   .filter((entry) => entry !== undefined);
 const counts = Object.fromEntries(
-  catalogue.categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]),
+  categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]),
 );
 ---
 
@@ -25,7 +25,7 @@ const counts = Object.fromEntries(
   <h2>{copy.home.categoriesHeading}</h2>
   <ul class="cards">
     {
-      catalogue.categories.map((category) => (
+      categories.map((category) => (
         <li>
           <a class="card" href={`/kit/${category.slug}/`}>
             <h3>{category.name}</h3>

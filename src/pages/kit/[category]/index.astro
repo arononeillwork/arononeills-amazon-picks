@@ -1,11 +1,11 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import EntryRow from "../../../components/EntryRow.astro";
-import { catalogue } from "../../../config/active";
-import { getKit } from "../../../lib/kit";
+import { getKit, getShelves } from "../../../lib/kit";
 
-export function getStaticPaths() {
-  return catalogue.categories.map((category) => ({ params: { category: category.slug }, props: { category } }));
+export async function getStaticPaths() {
+  const { categories } = await getShelves();
+  return categories.map((category) => ({ params: { category: category.slug }, props: { category } }));
 }
 
 const { category } = Astro.props;

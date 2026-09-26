@@ -9,7 +9,7 @@ import { gzipSync } from "node:zlib";
 import { parse as parseHtml, type HTMLElement } from "node-html-parser";
 import { parse as parseYaml } from "yaml";
 import { profileName, profiles } from "../src/config/active";
-import { AMAZON_VARIANT, catalogueSchema, siteSchema } from "../src/config/schema";
+import { AMAZON_VARIANT, siteSchema } from "../src/config/schema";
 import { PLACEHOLDER_ASIN } from "../src/lib/amazon";
 
 try {
@@ -33,23 +33,22 @@ const pass = (check: string, detail = "") => passes.push(detail ? `${check}: ${d
 
 const name = profileName(process.env.SITE_PROFILE);
 const site = siteSchema.parse(profiles[name].site);
-const catalogue = catalogueSchema.parse(profiles[name].catalogue);
 
 // ---------------------------------------------------------------- environment
 
 {
-  const missing = ["SITE_PROFILE", "PUBLIC_SUPABASE_URL", "PUBLIC_SUPABASE_PUBLISHABLE_KEY"].filter(
-    (key) => !process.env[key],
-  );
+  // The Supabase variables only matter while the apartment calendar is on.
+  // Without them Vite tree-shakes the Supabase client away and the bundle
+  // measures far smaller than what ships, so never measure without them.
+  const required = ["SITE_PROFILE", ...(site.features.apartment ? ["PUBLIC_SUPABASE_URL", "PUBLIC_SUPABASE_PUBLISHABLE_KEY"] : [])];
+  const missing = required.filter((key) => !process.env[key]);
   const key = process.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
   if (missing.length) {
-    // Without these, Vite tree-shakes the Supabase client away and the bundle
-    // measures far smaller than what ships. Never measure without them.
     fail("env", `missing ${missing.join(", ")} (copy .env.example to .env)`);
-  } else if (!key.startsWith("sb_publishable_")) {
+  } else if (key && !key.startsWith("sb_publishable_")) {
     fail("env", "PUBLIC_SUPABASE_PUBLISHABLE_KEY must be the publishable key (sb_publishable_...), never a secret or service_role key");
   } else {
-    pass("env", `profile ${name}`);
+    pass("env", `profile ${name}, calendar ${site.features.apartment ? "on" : "off"}`);
   }
 }
 
@@ -87,6 +86,7 @@ function validNif(raw: string): boolean {
 
 interface EntryData {
   title: string;
+  category: string;
   product: string;
   summary: string;
   experience: "owned" | "researched";
@@ -120,7 +120,9 @@ const monthsSince = (date: Date) =>
 
 const kitDir = join(ROOT, "src/profiles", name, "kit");
 const entryFiles = readdirSync(kitDir).filter((file) => file.endsWith(".md")).sort();
-let entriesPassing = 0;
+// Drafts never ship (production builds leave them out), so they're reported, not failed.
+// Every published entry must pass every check, and at least ten must be published.
+const published: { slug: string; category: string }[] = [];
 
 for (const file of entryFiles) {
   const slug = file.replace(/\.md$/, "");
@@ -135,7 +137,7 @@ for (const file of entryFiles) {
   const strings = [data.title, data.product, data.summary, data.drawback, data.healthNote ?? "", ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why])];
   const problems: string[] = [];
 
-  if (data.draft !== false) problems.push("draft");
+  const draft = data.draft !== false;
   const words = wordCount(body);
   if (words < 200 || words > 400) problems.push(`${words} words (needs 200–400)`);
   const brackets = (source.match(/\[(?!\s*\]\()/g) ?? []).length;
@@ -162,11 +164,19 @@ for (const file of entryFiles) {
     warn(`entry ${slug}`, `last checked ${reviewed.toISOString().slice(0, 10)}; re-check at least every ${limit} months`);
   }
 
-  if (problems.length) fail(`entry ${slug}`, problems.join("; "));
-  else entriesPassing++;
+  if (draft) {
+    warn(`draft ${slug}`, `not published${problems.length ? `; still to do: ${problems.join("; ")}` : "; ready once confirmed (set draft: false)"}`);
+  } else if (problems.length) {
+    fail(`entry ${slug}`, problems.join("; "));
+  } else {
+    published.push({ slug, category: data.category });
+  }
 }
-if (entryFiles.length < 10) fail("catalogue", `${entryFiles.length} entries; Amazon's review expects at least ten substantial ones`);
-pass("entries", `${entriesPassing} of ${entryFiles.length} ready`);
+if (published.length < 10) {
+  fail("catalogue", `${published.length} published entries; Amazon's review expects at least ten substantial ones`);
+} else {
+  pass("catalogue", `${published.length} published entries`);
+}
 
 // ---------------------------------------------------------------- built HTML
 
@@ -297,8 +307,13 @@ if (!existsSync(DIST)) {
     if (problems.length) fail(`page ${path}`, [...new Set(problems)].join("; "));
   }
 
-  // home, /kit/, disclosure, privacy, apartment, 404, one per category, one per entry
-  const expected = 6 + catalogue.categories.length + entryFiles.length;
+  // home, /kit/, disclosure, privacy, 404, the calendar if on, one per category in use, one per published entry
+  const categoriesInUse = new Set(published.map((p) => p.category)).size;
+  const expected = 5 + (site.features.apartment ? 1 : 0) + categoriesInUse + published.length;
+  const hasApartment = htmlFiles.some((file) => route(file) === "/apartment/");
+  if (hasApartment !== site.features.apartment) {
+    fail("apartment", `calendar is switched ${site.features.apartment ? "on" : "off"} but /apartment/ was ${hasApartment ? "" : "not "}built`);
+  }
   const pages = htmlFiles.length;
   if (pages !== expected) warn("pages", `${pages} HTML pages built, expected ${expected}`);
   pass("pages", `${pages} HTML pages, ${amazonLinks} Amazon links`);
@@ -307,7 +322,9 @@ if (!existsSync(DIST)) {
   const zeroJs = Object.entries(jsByRoute).filter(([path]) => path !== "/kit/" && path !== "/apartment/");
   pass(
     "javascript",
-    `catalogue pages max ${kb(Math.max(0, ...zeroJs.map(([, n]) => n)))}, /kit/ ${kb(jsByRoute["/kit/"] ?? 0)}, /apartment/ ${kb(jsByRoute["/apartment/"] ?? 0)} (gzip)`,
+    `catalogue pages max ${kb(Math.max(0, ...zeroJs.map(([, n]) => n)))}, /kit/ ${kb(jsByRoute["/kit/"] ?? 0)}` +
+      (site.features.apartment ? `, /apartment/ ${kb(jsByRoute["/apartment/"] ?? 0)}` : "") +
+      " (gzip)",
   );
 
   const fonts = files.filter((f) => f.endsWith(".woff2"));

@@ -1,10 +1,10 @@
 ---
 import Base from "../../layouts/Base.astro";
 import EntryRow from "../../components/EntryRow.astro";
-import { catalogue, copy } from "../../config/active";
-import { getKit } from "../../lib/kit";
+import { copy } from "../../config/active";
+import { getShelves } from "../../lib/kit";
 
-const kit = await getKit();
+const { kit, categories, tags } = await getShelves();
 ---
 
 <Base title={copy.kit.title} description={copy.kit.lead}>
@@ -18,7 +18,7 @@ const kit = await getKit();
       <div class="options">
         <button type="button" data-kind="category" data-value="" aria-pressed="true">{copy.kit.allCategories}</button>
         {
-          catalogue.categories.map((c) => (
+          categories.map((c) => (
             <button type="button" data-kind="category" data-value={c.slug} aria-pressed="false">
               {c.name}
             </button>
@@ -31,7 +31,7 @@ const kit = await getKit();
       <div class="options">
         <button type="button" data-kind="tag" data-value="" aria-pressed="true">{copy.kit.allTags}</button>
         {
-          catalogue.tags.map((t) => (
+          tags.map((t) => (
             <button type="button" data-kind="tag" data-value={t.slug} aria-pressed="false">
               {t.name}
             </button>

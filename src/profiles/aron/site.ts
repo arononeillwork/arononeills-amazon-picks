@@ -22,7 +22,7 @@ export const site = {
       "I run a specialty café in San Pedro de Alcántara and spend around ten hours a day on my feet. This site collects kit for days like that. Every entry says plainly whether I own and use it, or have only researched it.",
   },
   legal: {
-    fullName: "PLACEHOLDER full legal name",
+    fullName: "Aron O'Neill",
     nif: "PLACEHOLDER",
     address: "PLACEHOLDER postal address",
     email: "placeholder@example.com",
@@ -51,7 +51,9 @@ export const site = {
     },
   },
   features: {
-    apartment: true,
+    // The friends' calendar. Off for launch; switch on once the Supabase hook,
+    // URL configuration and SMTP are set up (docs/BRIEF.md, Phase 2).
+    apartment: false,
   },
   affiliate: {
     enabled: false,

@@ -19,7 +19,19 @@ export default defineConfig({
   // Prefetch comes from a Speculation Rules block in Base.astro, which costs no JavaScript.
   prefetch: false,
   integrations: [
-    preact(),
+    // Preact only powers the calendar island; without it no client runtime is bundled.
+    ...(site.features.apartment ? [preact()] : []),
+    {
+      // The friends' calendar is optional per profile (features.apartment).
+      name: "apartment-calendar",
+      hooks: {
+        "astro:config:setup": ({ injectRoute }) => {
+          if (site.features.apartment) {
+            injectRoute({ pattern: "/apartment", entrypoint: "./src/routes/apartment.astro" });
+          }
+        },
+      },
+    },
     sitemap({
       filter: (page) => !new URL(page).pathname.startsWith("/apartment/"),
     }),
