@@ -1,8 +1,8 @@
 ---
-// A product as a store card: picture on its category's tone, then the name and
-// the need it meets. Links to the entry page, never straight to Amazon, so
-// every affiliate link sits beside its disclosure. The data-* attributes drive
-// the filter on /kit/.
+// A product as a raised card: its picture, then the name and the need it
+// meets. Links to the entry page, never straight to Amazon, so every affiliate
+// link sits beside its disclosure. The data-* attributes drive the filter on /kit/.
+import Icon from "./Icon.astro";
 import ProductArt from "./ProductArt.astro";
 import { categoryBySlug, copy } from "../config/active";
 import { entryHref, type Entry } from "../lib/kit";
@@ -12,19 +12,21 @@ interface Props {
   showCategory?: boolean;
   /** h2 on pages where the cards sit directly under the page's h1 (the lists), h3 under a section heading. */
   heading?: "h2" | "h3";
+  morph?: boolean;
 }
 
-const { entry, showCategory = true, heading: Heading = "h3" } = Astro.props;
+const { entry, showCategory = true, heading: Heading = "h3", morph = true } = Astro.props;
 const { data } = entry;
 const category = categoryBySlug(data.category);
 ---
 
-<li class="card" data-category={data.category} data-tags={data.tags.join(" ")}>
-  <ProductArt entry={entry} />
+<li class={`card tone-${category.tone}`} data-category={data.category} data-tags={data.tags.join(" ")}>
+  <ProductArt entry={entry} morph={morph} />
   {data.experience === "owned" && <span class="pill">{copy.entry.ownedShort}</span>}
   <div class="card-body">
-    {showCategory && <p class={`card-eyebrow tone-${category.tone}`}>{category.name}</p>}
+    {showCategory && <p class="card-eyebrow">{category.name}</p>}
     <Heading class="card-title"><a class="tile-link" href={entryHref(entry)}>{data.product}</a></Heading>
     <p class="card-sub">{data.title}</p>
   </div>
+  <span class="card-go" aria-hidden="true"><Icon name="chevron" /></span>
 </li>

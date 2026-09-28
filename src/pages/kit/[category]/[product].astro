@@ -48,7 +48,10 @@ const sections = (entry.rendered?.html ?? "")
           <ProductArt entry={entry} hero />
         </div>
         <div class="pdp-info">
-          <p class={`pdp-eyebrow tone-${category.tone}`}>{category.name}</p>
+          <p class={`label-pill tone-${category.tone}`}>
+            <Icon name={category.slug} />
+            {category.name}
+          </p>
           <h1 class="pdp-title">{data.product}</h1>
           <p class="pdp-sub">{data.title}</p>
           {
@@ -63,23 +66,25 @@ const sections = (entry.rendered?.html ?? "")
               </ul>
             )
           }
-          {data.asin && <BuyBlock asin={data.asin} product={data.product} class="pdp-buy" />}
-          {
-            data.picks && (
-              <a class="button button-block pdp-buy" href="#picks">
-                {copy.entry.seePicks}
-              </a>
-            )
-          }
-          <p class="pdp-meta">
-            <span class:list={["badge", data.experience]}>
-              {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
-            </span>
-            <span>
-              {copy.entry.reviewed} <time datetime={reviewed}>{formatDate(data.reviewed)}</time>
-            </span>
-          </p>
-          {data.experience === "researched" && <p class="pdp-note">{copy.entry.researchedNote}</p>}
+          <div class="buy-card">
+            {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
+            {
+              data.picks && (
+                <a class="button button-block" href="#picks">
+                  {copy.entry.seePicks}
+                </a>
+              )
+            }
+            <p class="pdp-meta">
+              <span class:list={["badge", data.experience]}>
+                {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
+              </span>
+              <span>
+                {copy.entry.reviewed} <time datetime={reviewed}>{formatDate(data.reviewed)}</time>
+              </span>
+            </p>
+            {data.experience === "researched" && <p class="pdp-note">{copy.entry.researchedNote}</p>}
+          </div>
           {
             data.health && (
               <p class="pdp-health">
@@ -99,10 +104,10 @@ const sections = (entry.rendered?.html ?? "")
       )
     }
 
-    <section class="section section-alt pdp-more">
+    <section class="section pdp-more">
       <div class="container narrow">
         <div class="drawback-card">
-          <Icon name="balance" />
+          <span class="why-icon"><Icon name="balance" /></span>
           <div>
             <h2>{copy.entry.drawbackHeading}</h2>
             <p>{data.drawback}</p>

@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import inter from "../assets/fonts/inter-latin-wght-normal.woff2?url";
 import { site } from "../config/active";
+import { TONES } from "../config/schema";
 import { themeCss } from "../config/theme";
 import { getShelves } from "../lib/kit";
 
@@ -42,6 +43,9 @@ const speculationRules = {
   ],
 };
 
+// Shading for the product drawings (components/art.ts): one set of gradients
+// per category tone, referenced from global.css, plus a blur for their shadows.
+const shades = ["a", "ad", "s"] as const;
 const year = new Date().getFullYear();
 ---
 
@@ -60,7 +64,7 @@ const year = new Date().getFullYear();
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={site.identity.masthead} />
     <meta property="og:locale" content={site.identity.locale} />
-    <meta name="theme-color" content={site.palette.light.bg} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content={site.palette.dark.bg} media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -69,10 +73,27 @@ const year = new Date().getFullYear();
     <script type="speculationrules" is:inline set:html={JSON.stringify(speculationRules)}></script>
   </head>
   <body>
+    <svg class="art-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="g-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="st-b1"></stop><stop offset="1" class="st-b2"></stop></linearGradient>
+        <linearGradient id="g-k" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="st-k1"></stop><stop offset="1" class="st-k2"></stop></linearGradient>
+        {
+          TONES.map((tone) =>
+            shades.map((shade) => (
+              <linearGradient id={`g-${shade}-${tone}`} class={`tone-${tone}`} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" class={`st-${shade}1`} />
+                <stop offset="1" class={`st-${shade}2`} />
+              </linearGradient>
+            )),
+          )
+        }
+        <filter id="f-soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"></feGaussianBlur></filter>
+      </defs>
+    </svg>
     <a class="skip" href="#main">Skip to content</a>
     <header class="nav">
       <div class="container nav-inner">
-        <a class="brand" href="/">{site.identity.masthead}</a>
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span>{site.identity.masthead}</a>
         <nav class="nav-links" aria-label="Main">
           <ul>
             {
@@ -93,6 +114,10 @@ const year = new Date().getFullYear();
     </main>
     <footer class="footer">
       <div class="container footer-inner">
+        <div class="footer-top">
+          <a class="brand brand-footer" href="/"><span class="brand-mark" aria-hidden="true"></span>{site.identity.masthead}</a>
+          <p>{site.identity.tagline}.</p>
+        </div>
         {
           site.affiliate.enabled && (
             <div class="footer-disclosure" data-sitewide-disclosure>
@@ -103,8 +128,9 @@ const year = new Date().getFullYear();
           )
         }
         <div class="footer-bottom">
-          <p>Copyright © {year} {site.owner.name}. {site.identity.tagline}.</p>
+          <p>Copyright © {year} {site.owner.name}.</p>
           <ul>
+            <li><a href="/kit/">All kit</a></li>
             <li><a href="/disclosure/">How this site is paid for</a></li>
             <li><a href="/privacy/">Privacy and legal notice</a></li>
           </ul>

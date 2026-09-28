@@ -66,11 +66,11 @@ Performance, measured by the preflight from the build with env vars set:
 | `/apartment/` | 39.0 KB | 60 KB |
 | Fonts, all pages, downloaded once (not at all on Apple devices) | 47.1 KB | 55 KB |
 
-Design (28 September 2026, at Aron's request, modelled on the Apple Store and Chamberlain Coffee's shop pages): the system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). Short two-tone headlines, a row of category buttons, a "latest" shelf that swipes sideways on phones, and product cards that lead with a big picture on the category's soft colour. Product pages open with the picture, two to four "at a glance" facts (`highlights`), the buy button and the honest drawback; the write-up folds into tap-to-open panels (native `<details>`, no JavaScript) and the health note is open by default.
+Design (28 September 2026, second revamp at Aron's request: "modern, not blocky"): the system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). Light grey page with raised white cards (grey cards on black in dark mode). The home page opens with a dark hero (a slow CSS aurora, a gradient headline, stats and three product cards floating in glass), then a scrolling strip of promises, a bento grid of categories in their colour tones, the latest picks, a spotlight on one product (`featured: true`, ticked in the admin) and the trust cards. Category pages open with a tone banner and a collage of their products; `/kit/` has a sticky glass filter bar. Product pages lead with the picture, "at a glance" facts and a raised buy card; the write-up folds into tap-to-open panels (native `<details>`) and the health note is open by default. Sections fade up on scroll with CSS scroll-driven animations; all motion stops for people who prefer reduced motion. Catalogue pages still ship no JavaScript.
 
-Pictures: Aron's own photo when an entry has one (`image`, uploaded in the admin, stored in `kit/images/`, served as AVIF/WebP in three sizes by `<Picture>`), otherwise a flat drawing of that kind of product (`src/components/art.ts`, inline SVG, labelled "Illustration" on the product page), otherwise the category icon. Amazon's product photos are never used; the preflight rejects remote or Amazon images.
+Pictures: Aron's own photo when an entry has one (`image`, uploaded in the admin, stored in `kit/images/`, served as AVIF/WebP in three sizes by `<Picture>`), otherwise a drawing of that kind of product (`src/components/art.ts`, inline SVG shaded with per-tone gradients defined once in `Base.astro`, labelled "Illustration" on the product page), otherwise the category icon. Amazon's product photos are never used; the preflight rejects remote or Amazon images.
 
-Lighthouse (mobile, production build, 28 September 2026, after the store redesign): 100 performance, accessibility, best practices and SEO on home, `/kit/`, a category page and two product pages, CLS 0.
+Lighthouse (mobile, production build, 28 September 2026, after the second revamp): 100 performance, accessibility, best practices and SEO on home, `/kit/`, a category page, a product page and `/privacy/`, CLS 0.
 
 Palette contrast (WCAG AA): every text/background pair is at least 4.66:1 in light mode and 4.70:1 in dark mode (the lowest is white on the Apple-blue button).
 
@@ -162,6 +162,7 @@ tags: [long-shifts, after-work]      # 1-3 catalogue.ts tag slugs
 summary: "<= 160 chars"
 highlights: ["<= 44 chars", ...]     # optional, 2-4 short facts beside the buy button
 image: ./images/photo.webp           # optional, Aron's own photo (the admin uploads it)
+featured: true                       # optional, the home page spotlight (one entry)
 experience: owned | researched
 asin: B0XXXXXXXX                     # or `picks:` (exactly three: label, product, asin, why)
 drawback: "honest, specific"

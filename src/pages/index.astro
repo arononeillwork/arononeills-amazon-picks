@@ -1,29 +1,88 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
+import ProductArt from "../components/ProductArt.astro";
 import ProductCard from "../components/ProductCard.astro";
-import { copy, site } from "../config/active";
-import { getShelves } from "../lib/kit";
+import { categoryBySlug, copy, site } from "../config/active";
+import { entryHref, getShelves } from "../lib/kit";
 
 const { kit, categories } = await getShelves();
-const counts = Object.fromEntries(categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]));
+const inCategory = (slug: string) => kit.filter((e) => e.data.category === slug);
 // Most recently checked first; ties keep catalogue order.
 const latest = kit
   .map((entry, index) => ({ entry, index }))
   .sort((a, b) => b.entry.data.reviewed.getTime() - a.entry.data.reviewed.getTime() || a.index - b.index)
-  .slice(0, 8)
   .map(({ entry }) => entry);
+const spotlight = kit.find((e) => e.data.featured) ?? latest[0];
+// Three products float in the hero, one per category where possible.
+const floating = [...new Map(latest.map((e) => [e.data.category, e])).values(), ...latest]
+  .filter((e, i, all) => all.indexOf(e) === i)
+  .slice(0, 3);
 ---
 
 <Base>
-  <section class="store-hero container">
-    <h1 class="store-title">{copy.home.title} <span>{copy.home.lead}</span></h1>
-    <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
+  <section class="hero">
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="chip-glass">{copy.home.eyebrow}</p>
+        <h1 class="hero-title">{copy.home.title}</h1>
+        <p class="hero-lead">{copy.home.lead}</p>
+        <div class="hero-ctas">
+          {kit.length > 0 && <a class="button button-lg" href="/kit/">{copy.home.cta}</a>}
+          <a class="button-ghost" href="/disclosure/">{copy.home.secondary}</a>
+        </div>
+        {
+          kit.length > 0 && (
+            <ul class="hero-stats">
+              <li>
+                <strong>{kit.length}</strong> {copy.home.stats.picks}
+              </li>
+              <li>
+                <strong>{categories.length}</strong> {copy.home.stats.categories}
+              </li>
+              <li>
+                <strong>0</strong> {copy.home.stats.sponsored}
+              </li>
+            </ul>
+          )
+        }
+      </div>
+      {
+        floating.length > 0 && (
+          <ul class="hero-stack">
+            {floating.map((entry) => (
+              <li class="float-card">
+                <ProductArt entry={entry} morph={false} />
+                <a class="tile-link float-name" href={entryHref(entry)}>
+                  {entry.data.product}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
   </section>
+
+  <div class="marquee" role="region" aria-label="What to expect">
+    <ul class="marquee-track">
+      {
+        [0, 1].map((copyIndex) =>
+          copy.home.promises.map((promise) => (
+            <li aria-hidden={copyIndex === 1 ? "true" : undefined}>
+              <Icon name="check" />
+              {promise}
+            </li>
+          )),
+        )
+      }
+    </ul>
+  </div>
 
   {
     kit.length === 0 ? (
-      <section class="section section-alt">
+      <section class="section">
         <div class="container">
           <div class="empty-state">
             <h2>{copy.home.emptyHeading}</h2>
@@ -33,36 +92,66 @@ const latest = kit
       </section>
     ) : (
       <>
-        <nav class="container cat-strip" aria-label={copy.home.categoriesLabel}>
-          <ul>
-            {categories.map((category) => (
-              <li>
-                <a class="cat-link" href={`/kit/${category.slug}/`}>
-                  <span class={`cat-badge tone-${category.tone}`}>
-                    <Icon name={category.slug} />
+        <section class="section">
+          <div class="container">
+            <h2 class="h2 reveal">
+              {copy.home.categoriesHeading} <span>{copy.home.categoriesSub}</span>
+            </h2>
+            <ul class="bento">
+              {categories.map((category, index) => {
+                const entries = inCategory(category.slug);
+                return (
+                  <li class={`bento-tile reveal tone-${category.tone}`}>
+                    <div class="bento-text">
+                      <span class="bento-icon">
+                        <Icon name={category.slug} />
+                      </span>
+                      <h3>
+                        <a class="tile-link" href={`/kit/${category.slug}/`}>
+                          {category.name}
+                        </a>
+                      </h3>
+                      {index === 0 && <p>{category.intro}</p>}
+                      <span class="bento-count">
+                        {entries.length} {entries.length === 1 ? "pick" : "picks"}
+                      </span>
+                    </div>
+                    <div class="bento-art">
+                      {entries.slice(0, index === 0 ? 2 : 1).map((entry) => (
+                        <ProductArt entry={entry} bare morph={false} />
+                      ))}
+                    </div>
+                    <span class="card-go" aria-hidden="true">
+                      <Icon name="chevron" />
+                    </span>
+                  </li>
+                );
+              })}
+              <li class="bento-tile bento-all reveal">
+                <div class="bento-text">
+                  <span class="bento-icon">
+                    <Icon name="grid" />
                   </span>
-                  <span class="cat-name">{category.name}</span>
-                  <span class="cat-count">
-                    {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
+                  <h3>
+                    <a class="tile-link" href="/kit/">
+                      {copy.home.allKit}
+                    </a>
+                  </h3>
+                  <span class="bento-count">
+                    {kit.length} picks · {copy.home.allKitSub}
                   </span>
-                </a>
-              </li>
-            ))}
-            <li>
-              <a class="cat-link" href="/kit/">
-                <span class="cat-badge tone-grey">
-                  <Icon name="grid" />
+                </div>
+                <span class="card-go" aria-hidden="true">
+                  <Icon name="chevron" />
                 </span>
-                <span class="cat-name">{copy.home.allKit}</span>
-                <span class="cat-count">{kit.length} picks</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+              </li>
+            </ul>
+          </div>
+        </section>
 
-        <section class="shelf">
-          <div class="container shelf-head">
-            <h2 class="shelf-title">
+        <section class="section section-tight">
+          <div class="container section-head">
+            <h2 class="h2">
               {copy.home.latestHeading} <span>{copy.home.latestSub}</span>
             </h2>
             <a class="link-chevron" href="/kit/">
@@ -70,24 +159,59 @@ const latest = kit
             </a>
           </div>
           <ul class="shelf-row">
-            {latest.map((entry) => (
+            {latest.slice(0, 8).map((entry) => (
               <ProductCard entry={entry} />
             ))}
           </ul>
         </section>
+
+        {spotlight && (
+          <section class="section section-tight">
+            <div class="container">
+              <div class={`spotlight reveal tone-${categoryBySlug(spotlight.data.category).tone}`}>
+                <div class="spotlight-art">
+                  <ProductArt entry={spotlight} bare morph={false} />
+                </div>
+                <div class="spotlight-copy">
+                  <p class="label-pill">
+                    <Icon name="sparkle" />
+                    {copy.home.spotlight} · {categoryBySlug(spotlight.data.category).name}
+                  </p>
+                  <h2>{spotlight.data.product}</h2>
+                  <p class="spotlight-sub">{spotlight.data.title}</p>
+                  {spotlight.data.highlights && (
+                    <ul class="highlights">
+                      {spotlight.data.highlights.map((highlight) => (
+                        <li>
+                          <Icon name="check" />
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <a class="button" href={entryHref(spotlight)}>
+                    {copy.home.spotlightCta}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
       </>
     )
   }
 
-  <section class="section section-alt">
+  <section class="section">
     <div class="container">
-      <h2 class="shelf-title">{copy.home.whyHeading} <span>{copy.home.whySub}</span></h2>
-      <p class="why-about">{site.owner.about}</p>
+      <h2 class="h2 reveal">{copy.home.whyHeading} <span>{copy.home.whySub}</span></h2>
+      <p class="why-about reveal">{site.owner.about}</p>
       <ul class="why-grid">
         {
           copy.home.why.map((point) => (
-            <li class="why-card">
-              <Icon name={point.icon} />
+            <li class="why-card reveal">
+              <span class="why-icon">
+                <Icon name={point.icon} />
+              </span>
               <h3>{point.title}</h3>
               <p>{point.text}</p>
             </li>

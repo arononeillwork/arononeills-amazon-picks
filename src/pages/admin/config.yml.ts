@@ -183,6 +183,14 @@ const products = {
       hint: "Health products only: the manufacturer's contraindications (who shouldn't use it). Never say it treats, cures or prevents anything.",
     },
     {
+      name: "featured",
+      label: "Spotlight on the home page",
+      widget: "boolean",
+      default: false,
+      required: false,
+      hint: "Tick one product to feature it in the big spotlight on the home page.",
+    },
+    {
       name: "reviewed",
       label: "Last checked",
       widget: "datetime",

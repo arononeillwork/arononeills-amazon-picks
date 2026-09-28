@@ -1,6 +1,6 @@
 ---
 // A product's picture, on its category's soft tone: Aron's own photo when the
-// entry has one, otherwise a flat drawing of that kind of product (art.ts),
+// entry has one, otherwise a shaded drawing of that kind of product (art.ts),
 // otherwise the category icon. Never an Amazon or brand image.
 import { Picture } from "astro:assets";
 import Icon from "./Icon.astro";
@@ -12,15 +12,23 @@ interface Props {
   entry: Entry;
   /** The big picture on the product page: loads first, and labels a drawing as an illustration. */
   hero?: boolean;
+  /** No panel behind the picture, for drawings placed on an already coloured tile. */
+  bare?: boolean;
+  /** Morph between pages with a view transition. Off where the same product appears twice on one page. */
+  morph?: boolean;
+  class?: string;
 }
 
-const { entry, hero = false } = Astro.props;
+const { entry, hero = false, bare = false, morph = true, class: className } = Astro.props;
 const { image, product, category } = entry.data;
 const tone = categoryBySlug(category).tone;
 const drawing = art[entry.id];
 ---
 
-<div class:list={["art", `tone-${tone}`, { "art-hero": hero }]} style={`view-transition-name: art-${entry.id}`}>
+<div
+  class:list={["art", `tone-${tone}`, { "art-hero": hero, "art-bare": bare }, className]}
+  style={morph ? `view-transition-name: art-${entry.id}` : undefined}
+>
   {
     image ? (
       <Picture
@@ -28,7 +36,7 @@ const drawing = art[entry.id];
         formats={["avif", "webp"]}
         fallbackFormat="jpg"
         widths={hero ? [640, 960, 1280] : [360, 540, 720]}
-        sizes={hero ? "(min-width: 960px) 540px, 100vw" : "(min-width: 1080px) 250px, (min-width: 640px) 30vw, 45vw"}
+        sizes={hero ? "(min-width: 960px) 600px, 100vw" : "(min-width: 1080px) 280px, (min-width: 640px) 30vw, 45vw"}
         alt={hero ? product : ""}
         loading={hero ? "eager" : "lazy"}
         fetchpriority={hero ? "high" : "auto"}

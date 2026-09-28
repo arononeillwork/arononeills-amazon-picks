@@ -1,6 +1,7 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import Icon from "../../../components/Icon.astro";
+import ProductArt from "../../../components/ProductArt.astro";
 import ProductCard from "../../../components/ProductCard.astro";
 import { getKit, getShelves } from "../../../lib/kit";
 
@@ -14,15 +15,17 @@ const entries = (await getKit()).filter((entry) => entry.data.category === categ
 ---
 
 <Base title={category.name} description={category.intro}>
-  <header class={`cat-banner tone-${category.tone}`}>
-    <div class="container">
-      <p class="crumbs"><a href="/kit/">All kit</a></p>
-      <div class="cat-banner-inner">
-        <span class={`cat-badge cat-badge-large tone-${category.tone}`}><Icon name={category.slug} /></span>
-        <div>
-          <h1 class="page-title">{category.name}</h1>
-          <p class="page-sub">{category.intro}</p>
-        </div>
+  <header class={`cat-hero tone-${category.tone}`}>
+    <div class="container cat-hero-grid">
+      <div class="cat-hero-copy">
+        <p class="crumbs"><a href="/kit/">All kit</a></p>
+        <span class="bento-icon"><Icon name={category.slug} /></span>
+        <h1 class="page-hero-title">{category.name}</h1>
+        <p class="page-hero-sub">{category.intro}</p>
+        <p class="cat-hero-count">{entries.length} {entries.length === 1 ? "pick" : "picks"}</p>
+      </div>
+      <div class="cat-hero-art" aria-hidden="true">
+        {entries.slice(0, 3).map((entry) => <ProductArt entry={entry} bare morph={false} />)}
       </div>
     </div>
   </header>

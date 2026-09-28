@@ -73,6 +73,10 @@ Only your own photos. Never an image saved from Amazon or a brand's website; Ama
 
 Two to four very short facts shown next to the buy button, for example "Five speeds, stated 55 dB". Keep them to specs from the maker, never prices.
 
+## The home page spotlight
+
+Tick **Spotlight on the home page** on one product to feature it in the big panel on the home page. If none is ticked, the most recently checked product is shown.
+
 ## Ordering
 
 In **Products**, choose **Reorder** and drag products into the order you want within each category.

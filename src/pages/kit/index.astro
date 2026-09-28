@@ -8,8 +8,11 @@ const { kit, categories, tags } = await getShelves();
 ---
 
 <Base title={copy.kit.title} description={copy.kit.lead}>
-  <header class="container store-hero">
-    <h1 class="store-title">{copy.kit.title}. <span>{copy.kit.lead}</span></h1>
+  <header class="page-hero">
+    <div class="container">
+      <h1 class="page-hero-title">{copy.kit.title}</h1>
+      <p class="page-hero-sub">{copy.kit.lead}</p>
+    </div>
   </header>
 
   <div class="container">

@@ -47,6 +47,8 @@ const kit = defineCollection({
         healthNote: z.preprocess(blank, z.string().min(1).optional()),
         /** Position within its category. The admin sets it when products are dragged into order; new ones sort last. */
         order: z.number().int().min(1).default(999),
+        /** Shown in the spotlight on the home page. If none is set, the most recently checked entry is used. */
+        featured: z.boolean().default(false),
         reviewed: z.coerce.date(),
         draft: z.boolean().default(true),
       })
