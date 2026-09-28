@@ -297,7 +297,8 @@ if (!existsSync(DIST)) {
       }
     }
 
-    if (site.affiliate.enabled && path !== "/404") {
+    // Every public page carries the statement; the 404 and the private admin editor have no site footer.
+    if (site.affiliate.enabled && path !== "/404" && path !== "/admin/") {
       const footer = doc.querySelector("footer [data-sitewide-disclosure]");
       const text = footer?.text.replace(/\s+/g, " ") ?? "";
       const missing = site.affiliate.sitewideStatement.filter((s) => !text.includes(s));

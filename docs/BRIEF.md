@@ -74,7 +74,7 @@ Lighthouse (mobile, production build, 28 September 2026, after the store redesig
 
 Palette contrast (WCAG AA): every text/background pair is at least 4.66:1 in light mode and 4.70:1 in dark mode (the lowest is white on the Apple-blue button).
 
-Amazon links: two buy blocks on each single-product entry (under the facts, and after the details), three on the laptop. Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
+Amazon links: two buy blocks on each single-product entry (under the facts, and after the details), three on the laptop. Each carries `rel="sponsored nofollow noopener"` and the tag `arononeillspi-21` (affiliate switched on 28 September 2026).
 
 ### Live infrastructure
 
@@ -313,8 +313,8 @@ The first deploy goes out with `affiliate.enabled: false`. Links are untagged an
 The 180-day clock starts at signup, not at launch. Sign up only once the site is live and complete.
 
 - [x] **Aron:** applied on 28 September 2026. **The 180-day window for three qualifying sales ends on 27 March 2027.** Signed up at afiliados.amazon.es as the company (business account) with its registered name and NIF `B27576347`, and the company's bank account for payments. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview as an entity
-- [ ] **Aron:** send the tracking ID (ends `-21`) and the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
-- [ ] Set the tracking ID, the statements and "Affiliate links switched on" in the admin (**Amazon Associates**), or in `src/profiles/aron/affiliate.json`; the save deploys itself if the gate passes
+- [x] **Aron:** sent the tracking ID from Amazon's welcome email, 28 September 2026: **`arononeillspi-21`** (Amazon shortened the requested name). Still to confirm: the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
+- [x] Tracking ID set and affiliate links switched on in `src/profiles/aron/affiliate.json` (28 September 2026); the preflight checks every Amazon link carries the tag
 - [ ] Verify on the live site that buy buttons carry `?tag=`, and that both disclosures show
 
 Acceptance: tagged links live within a day of signup.
