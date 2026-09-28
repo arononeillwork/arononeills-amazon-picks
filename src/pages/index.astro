@@ -18,6 +18,8 @@ const spotlight = kit.find((e) => e.data.featured) ?? latest[0];
 const floating = [...new Map(latest.map((e) => [e.data.category, e])).values(), ...latest]
   .filter((e, i, all) => all.indexOf(e) === i)
   .slice(0, 3);
+// The spotlight sits between the category shelves, after the second one.
+const spotlightAfter = Math.min(1, categories.length - 1);
 ---
 
 <Base>
@@ -29,7 +31,7 @@ const floating = [...new Map(latest.map((e) => [e.data.category, e])).values(), 
         <h1 class="hero-title">{copy.home.title}</h1>
         <p class="hero-lead">{copy.home.lead}</p>
         <div class="hero-ctas">
-          {kit.length > 0 && <a class="button button-lg" href="/kit/">{copy.home.cta}</a>}
+          {kit.length > 0 && <a class="button button-lg" href="#shop">{copy.home.cta}</a>}
           <a class="button-ghost" href="/disclosure/">{copy.home.secondary}</a>
         </div>
         {
@@ -91,113 +93,91 @@ const floating = [...new Map(latest.map((e) => [e.data.category, e])).values(), 
         </div>
       </section>
     ) : (
-      <>
-        <section class="section">
-          <div class="container">
-            <h2 class="h2 reveal">
-              {copy.home.categoriesHeading} <span>{copy.home.categoriesSub}</span>
-            </h2>
-            <ul class="bento">
-              {categories.map((category, index) => {
-                const entries = inCategory(category.slug);
-                return (
-                  <li class={`bento-tile reveal tone-${category.tone}`}>
-                    <div class="bento-text">
-                      <span class="bento-icon">
-                        <Icon name={category.slug} />
-                      </span>
-                      <h3>
-                        <a class="tile-link" href={`/kit/${category.slug}/`}>
-                          {category.name}
-                        </a>
-                      </h3>
-                      {index === 0 && <p>{category.intro}</p>}
-                      <span class="bento-count">
-                        {entries.length} {entries.length === 1 ? "pick" : "picks"}
-                      </span>
-                    </div>
-                    <div class="bento-art">
-                      {entries.slice(0, index === 0 ? 2 : 1).map((entry) => (
-                        <ProductArt entry={entry} bare morph={false} />
-                      ))}
-                    </div>
-                    <span class="card-go" aria-hidden="true">
-                      <Icon name="chevron" />
-                    </span>
-                  </li>
-                );
-              })}
-              <li class="bento-tile bento-all reveal">
-                <div class="bento-text">
-                  <span class="bento-icon">
-                    <Icon name="grid" />
-                  </span>
-                  <h3>
-                    <a class="tile-link" href="/kit/">
-                      {copy.home.allKit}
-                    </a>
-                  </h3>
-                  <span class="bento-count">
-                    {kit.length} picks · {copy.home.allKitSub}
-                  </span>
-                </div>
-                <span class="card-go" aria-hidden="true">
-                  <Icon name="chevron" />
-                </span>
+      <div id="shop">
+        {/* Sticky row of categories, like a store's local nav. Plain anchor links: no JavaScript. */}
+        <nav class="jump-nav" aria-label={copy.home.jumpLabel}>
+          <ul class="container">
+            {categories.map((category) => (
+              <li>
+                <a class={`jump-link tone-${category.tone}`} href={`#${category.slug}`}>
+                  <Icon name={category.slug} />
+                  {category.name}
+                </a>
               </li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="section section-tight">
-          <div class="container section-head">
-            <h2 class="h2">
-              {copy.home.latestHeading} <span>{copy.home.latestSub}</span>
-            </h2>
-            <a class="link-chevron" href="/kit/">
-              {copy.home.allLink}
-            </a>
-          </div>
-          <ul class="shelf-row">
-            {latest.slice(0, 8).map((entry) => (
-              <ProductCard entry={entry} />
             ))}
+            <li>
+              <a class="jump-link jump-all" href="/kit/">
+                <Icon name="grid" />
+                {copy.home.allKit}
+              </a>
+            </li>
           </ul>
-        </section>
+        </nav>
 
-        {spotlight && (
-          <section class="section section-tight">
-            <div class="container">
-              <div class={`spotlight reveal tone-${categoryBySlug(spotlight.data.category).tone}`}>
-                <div class="spotlight-art">
-                  <ProductArt entry={spotlight} bare morph={false} />
-                </div>
-                <div class="spotlight-copy">
-                  <p class="label-pill">
-                    <Icon name="sparkle" />
-                    {copy.home.spotlight} · {categoryBySlug(spotlight.data.category).name}
-                  </p>
-                  <h2>{spotlight.data.product}</h2>
-                  <p class="spotlight-sub">{spotlight.data.title}</p>
-                  {spotlight.data.highlights && (
-                    <ul class="highlights">
-                      {spotlight.data.highlights.map((highlight) => (
-                        <li>
-                          <Icon name="check" />
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <a class="button" href={entryHref(spotlight)}>
-                    {copy.home.spotlightCta}
+        {categories.map((category, index) => {
+          const entries = inCategory(category.slug);
+          return (
+            <>
+              <section class="shelf" id={category.slug} aria-labelledby={`${category.slug}-title`}>
+                <div class="container section-head">
+                  <div class="shelf-title-wrap">
+                    <span class={`bento-icon tone-${category.tone}`}>
+                      <Icon name={category.slug} />
+                    </span>
+                    <div>
+                      <h2 class="h2" id={`${category.slug}-title`}>
+                        {category.name}.
+                      </h2>
+                      <p class="shelf-sub">{category.intro}</p>
+                    </div>
+                  </div>
+                  <a class="link-chevron" href={`/kit/${category.slug}/`}>
+                    {copy.home.seeAll} ({entries.length})
                   </a>
                 </div>
-              </div>
-            </div>
-          </section>
-        )}
-      </>
+                <ul class="shelf-row">
+                  {entries.map((entry) => (
+                    <ProductCard entry={entry} showCategory={false} />
+                  ))}
+                </ul>
+              </section>
+
+              {index === spotlightAfter && spotlight && (
+                <section class="section section-tight">
+                  <div class="container">
+                    <div class={`spotlight reveal tone-${categoryBySlug(spotlight.data.category).tone}`}>
+                      <div class="spotlight-art">
+                        <ProductArt entry={spotlight} bare morph={false} />
+                      </div>
+                      <div class="spotlight-copy">
+                        <p class="label-pill">
+                          <Icon name="sparkle" />
+                          {copy.home.spotlight} · {categoryBySlug(spotlight.data.category).name}
+                        </p>
+                        <h2>{spotlight.data.product}</h2>
+                        <p class="spotlight-sub">{spotlight.data.title}</p>
+                        {spotlight.data.highlights && (
+                          <ul class="highlights">
+                            {spotlight.data.highlights.map((highlight) => (
+                              <li>
+                                <Icon name="check" />
+                                {highlight}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <a class="button" href={entryHref(spotlight)}>
+                          {copy.home.spotlightCta}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+            </>
+          );
+        })}
+      </div>
     )
   }
 

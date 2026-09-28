@@ -10,7 +10,9 @@ export const site = {
   identity: {
     name: "arononeillspicks",
     // Aron to confirm: "Aron" or "Aron O'Neill".
-    masthead: "Aron O'Neill",
+    // Aron asked for "Aron's Amazon Picks" (28 September 2026); Amazon's trademark rules forbid
+    // "Amazon" in an Associate's site name, so the masthead drops that word.
+    masthead: "Aron's Picks",
     url: "https://arononeillspicks.vercel.app",
     tagline: "Kit for long days on your feet",
     description:

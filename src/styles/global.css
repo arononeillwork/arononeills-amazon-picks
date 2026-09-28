@@ -91,7 +91,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--nav-height) + 16px);
+  /* Room for the sticky nav and, on the home page, the sticky category row. */
+  scroll-padding-top: calc(var(--nav-height) + 76px);
 }
 
 body {
@@ -347,9 +348,8 @@ a:hover {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -359,22 +359,6 @@ a:hover {
 
 .brand:hover {
   text-decoration: none;
-}
-
-.brand-mark {
-  position: relative;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: conic-gradient(from 210deg, #ff9f43, #ff5e7e, #8b5cf6, #3b82f6, #22c55e, #ff9f43);
-}
-
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border-radius: 4px;
-  background: rgb(255 255 255 / 0.9);
 }
 
 .nav-links {
@@ -997,6 +981,111 @@ a:hover {
 
 .tile-link:hover {
   text-decoration: none;
+}
+
+/* ------------------------------------------------------- category jump row */
+
+.jump-nav {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 15;
+  background: var(--page);
+  background: color-mix(in srgb, var(--page) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.jump-nav ul {
+  display: flex;
+  gap: 8px;
+  margin: 0 auto;
+  padding-block: 12px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.jump-nav ul::-webkit-scrollbar {
+  display: none;
+}
+
+.jump-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 12px;
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    transform 0.25s var(--spring),
+    box-shadow 0.25s var(--spring);
+}
+
+.jump-link:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+
+.jump-link .icon {
+  width: 18px;
+  height: 18px;
+  color: var(--tone-text, var(--accent));
+}
+
+.jump-all {
+  background: var(--text);
+  color: var(--card);
+}
+
+.jump-all .icon {
+  color: var(--card);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* One shelf per category on the home page, with every product in it. */
+.shelf {
+  padding-top: clamp(40px, 6vw, 72px);
+}
+
+.shelf-title-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+}
+
+.shelf-title-wrap .bento-icon {
+  flex: none;
+}
+
+.shelf .h2 {
+  font-size: clamp(28px, 3.4vw, 40px);
+}
+
+.shelf-sub {
+  max-width: 620px;
+  margin-top: 4px;
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .shelf-title-wrap .bento-icon {
+    display: none;
+  }
 }
 
 /* ----------------------------------------------------------------- shelves */

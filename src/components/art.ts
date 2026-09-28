@@ -268,3 +268,7 @@ export const art: Record<string, string> = {
     <circle class="a" cx="58" cy="97" r="26"/>
     <circle class="hl" cx="50" cy="88" r="7"/>`,
 };
+
+// The MacBooks share the laptop drawing until they have photos.
+art["macbook-neo"] = art.laptop;
+art["macbook-pro-14"] = art.laptop;
