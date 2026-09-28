@@ -17,7 +17,7 @@ If it's right, tell Claude (or set `draft: false` in the entry file yourself). I
 | `massage-gun.md` | Hyperice Hypervolt Go 3 | https://www.amazon.es/dp/B0G82W9ZZK | Listing says 3 speeds; Hyperice says 5 (entry uses 5) |
 | `foam-roller.md` | BLACKROLL Standard 45, medium | https://www.amazon.es/dp/B01CEIGD06 | Medium ("Standard") hardness is selectable |
 | `foot-massage-ball.md` | BLACKROLL Blackbox Mini set | https://www.amazon.es/dp/B01M7XPBJM | |
-| `power-bank.md` | Anker 20,000 mAh 87 W, A1383 | https://www.amazon.es/dp/B0CXDXP8VR | Sold by Anker, not a reseller |
+| `power-bank.md` | UGREEN Nexode 25,000 mAh 145 W | https://www.amazon.es/dp/B0BJQ7F16T | **Done**: chosen and opened by Aron, 28 September 2026 (replaces the Anker A1383, B0CXDXP8VR, now a backup) |
 | `laptop.md` (pick 1) | Lenovo IdeaPad Slim 3 Gen 10, i5-13420H, 16 GB, 512 GB | https://www.amazon.es/dp/B0GZHZ7HM7 | Spanish keyboard |
 | `laptop.md` (pick 2) | ASUS Zenbook A14 OLED UX3407QA | https://www.amazon.es/dp/B0DVCGC5MW | Spanish keyboard (title is cut off at "QWERTY") |
 | `laptop.md` (pick 3) | MacBook Air 13-inch M5, 16 GB, 512 GB | https://www.amazon.es/dp/B0GR1MZP3L | Spanish, not Portuguese, keyboard |

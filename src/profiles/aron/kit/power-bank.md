@@ -1,16 +1,16 @@
 ---
 title: "A power bank that charges a laptop and flies in cabin bags"
-product: "Anker Power Bank 20,000 mAh 87 W with built-in USB-C cable, A1383"
+product: "UGREEN Nexode Power Bank 25,000 mAh 145 W"
 category: carry
 tags: [travel, commute]
-summary: "A 20,000 mAh, 72 Wh power bank with 65 W USB-C Power Delivery and a built-in cable, well under the 100 Wh cabin limit for flights."
+summary: "A 25,000 mAh, 90 Wh power bank with 140 W USB-C Power Delivery, enough for most laptops and still under the 100 Wh cabin limit."
 experience: researched
-asin: B0CXDXP8VR
-drawback: "At around 430 g it is a noticeable weight in a bag, and the flat built-in cable is short and a little awkward to angle. The 65 W ceiling also means larger laptops that expect 100 W or more will charge more slowly."
+asin: B0BJQ7F16T
+drawback: "At around 510 g it is heavy for a power bank and belongs in a bag, not a pocket. There is no built-in cable, the 145 W is shared between its three ports, and refilling it takes about two hours from a 65 W charger and much longer from a phone charger."
 health: false
 order: 1
-reviewed: 2026-09-26
-draft: true
+reviewed: 2026-09-28
+draft: false
 ---
 
 ## What to look for
@@ -23,16 +23,14 @@ The second is energy in watt-hours, because that is what airlines check. Most al
 
 ## Why this one
 
-This Anker holds 20,000 mAh. At 3.6 V that is 20,000 x 3.6 / 1,000 = 72 Wh, comfortably under the 100 Wh limit.
+This UGREEN holds 25,000 mAh. At 3.6 V that is 25,000 x 3.6 / 1,000 = 90 Wh, which matches UGREEN's own rating and sits under the 100 Wh limit.
 
-It delivers up to 65 W to a single device over USB-C, enough for a 13 or 14-inch laptop; Anker quotes a 14-inch MacBook Pro reaching 50 per cent in under 40 minutes. Total output across its ports is 87 W, so it can top up a laptop and a phone together, although the laptop's share drops while both are plugged in.
-
-There is a built-in USB-C cable plus one more USB-C port and a USB-A port, so you are less likely to be caught without the right lead, and Anker says it refills in about an hour and a half from a 65 W charger.
+Its main USB-C port delivers up to 140 W using USB Power Delivery 3.1, so it can run most laptops at full speed, including larger ones that ask for more than 65 W. UGREEN quotes a 16-inch MacBook Pro reaching 54 per cent in half an hour. A second USB-C port gives up to 65 W and a USB-A port up to 22.5 W, for a phone or earbuds alongside, and a small display shows how much charge is left.
 
 ## Who it suits
 
-Anyone who works from a laptop away from a desk: on the train, in an airport, at a supplier meeting or between shifts. It also keeps a phone going for several days during a power cut.
+Anyone who works from a laptop away from a desk: on the train, in an airport, at a supplier meeting or between shifts. It is a particularly good match if your laptop needs more than 65 W, which rules out many smaller banks.
 
 ## Who should skip it
 
-If you only charge a phone and earbuds, a 10,000 mAh bank is half the weight and plenty. If your laptop is a large workstation that draws 100 W or more, look for a bank with a 100 W port. And check your airline's own rules before you fly, as some limit how many power banks you can carry or ban using them on board.
+If you only charge a phone and earbuds, a 10,000 mAh bank is well under half the weight and plenty. If you want something that slips into a pocket, or a cable built into the bank, look at smaller models. And check your airline's own rules before you fly, as some limit how many power banks you can carry or ban using them on board.
