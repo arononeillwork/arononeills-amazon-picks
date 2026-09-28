@@ -80,7 +80,7 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 
 `.env.example` holds the project URL and publishable key. Both are public by design.
 
-**Vercel:** nothing created yet. The account is a personal Hobby account with no team.
+**Vercel:** project `arononeillspicks` (`prj_RG44QB2E9D7wF5WjkCpfiUpZ3hPo`) in the account's default team (`team_WjsRqvOQ7M59VPC8TZyiyIuF`), connected to `arononeillwork/arononeills-amazon-picks`. Framework Astro, build command `npm run preflight`, Node 24.x, env `SITE_PROFILE=aron`. Vercel Authentication covers previews only; production is public. First production deployment (`dpl_6TojmXHyAUBZnbwUvRbzeZQsgYVs`, commit `fbbb6bd`) went READY on 28 September 2026 at **https://arononeillspicks.vercel.app**. Aron reports the account is on Pro; the Vercel connector couldn't confirm it (it isn't authorised for the team scope, which also blocks build logs and fetching the live site).
 
 **Network note:** the Claude Code cloud container that did the rebuild could not reach amazon.es, vercel.app or supabase.co directly (egress policy), so live checks happen from Aron's browser or after deploy.
 
@@ -283,10 +283,11 @@ Acceptance: `npm run preflight` passes: every published entry passes every check
 
 Only after Aron explicitly says to host it.
 
-- [ ] **Aron:** upgrade the Vercel account to Pro: the free 14-day trial in the dashboard, or approve the purchase through the Vercel connector
-- [ ] Create project `arononeillspicks` connected to `arononeillwork/arononeills-amazon-picks`. Framework: Astro. Build command: `npm run preflight`. Node 22.x. Env var `SITE_PROFILE=aron` (plus the Supabase pair once the calendar is on). If Vercel's GitHub app can't see the repo, **Aron** grants it access in GitHub → Settings → Applications → Vercel
+- [x] **Aron:** upgrade the Vercel account to Pro (done by Aron, 28 September 2026)
+- [x] Create project `arononeillspicks` connected to `arononeillwork/arononeills-amazon-picks`. Framework: Astro. Build command: `npm run preflight`. Node 22.x. Env var `SITE_PROFILE=aron` (plus the Supabase pair once the calendar is on). If Vercel's GitHub app can't see the repo, **Aron** grants it access in GitHub → Settings → Applications → Vercel
 - [ ] The production branch is the repo's default branch (currently `claude/sharp-heisenberg-mtevsr`); the admin commits there
-- [ ] Confirm the production URL loads while logged out of Vercel. Deployment Protection may cover previews; it must not cover production
+- [x] Vercel Authentication set to previews only, so production is public
+- [ ] **Aron:** confirm https://arononeillspicks.vercel.app loads in a private browser window (the build container can't reach vercel.app)
 - [ ] If Vercel assigns a different address because the name is taken, update `identity.url` in `site.ts`, the admin OAuth callback URL, and the Supabase URL configuration, then redeploy before anything is registered with Amazon
 - [ ] **Aron:** set up admin sign-in (`docs/ADMIN.md`): a GitHub OAuth app plus `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET` in Vercel, or a fine-grained token
 - [ ] **Aron:** in the admin, check each product's Amazon.es link and publish it (at least ten before Phase 6)
@@ -340,7 +341,7 @@ npm run preflight    # build, then the deploy gate; exits non-zero on any failur
 | Supabase project ref | `zmxkwaedfiqepyfywtbe` |
 | Supabase region | `eu-west-3` (Paris) |
 | Supabase org | `arononeill's org` (`mrnpwcpadkzwxxvghrsw`), free plan |
-| Vercel project | `arononeillspicks` (to be created in a Pro team) |
+| Vercel project | `arononeillspicks`, `prj_RG44QB2E9D7wF5WjkCpfiUpZ3hPo`, team `team_WjsRqvOQ7M59VPC8TZyiyIuF` |
 | Placeholder ASIN | `B0PLACEHLD`; the preflight rejects it |
 
 ### Sources
