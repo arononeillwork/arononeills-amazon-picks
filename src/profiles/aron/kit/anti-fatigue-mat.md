@@ -4,6 +4,10 @@ product: "Sky Solutions Anti-Fatigue Mat, 19 mm, 50 x 99 cm"
 category: on-your-feet
 tags: [long-shifts]
 summary: "A 19 mm high-density foam mat with bevelled edges and a wipe-clean diamond top, sized for the stretch in front of a coffee machine or sink."
+highlights:
+  - "19 mm high-density foam"
+  - "Bevelled edges, non-slip base"
+  - "Wipe-clean top, 50 x 99 cm"
 experience: researched
 asin: B00M8O122G
 drawback: "It is polyurethane foam, not the nitrile rubber used in fry kitchens, so hot oil and heavy grease will wear it out faster. Some buyers also report the surface denting or the edges starting to lift after long use."

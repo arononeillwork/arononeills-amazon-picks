@@ -4,6 +4,10 @@ product: "BLACKROLL Standard 45 Fascia Roller, medium hardness, 45 x 15 cm"
 category: recovery
 tags: [after-work]
 summary: "A 45 cm roller of medium hardness in tough, German-made EPP foam, long enough to lie across for the upper back and wide enough for both legs."
+highlights:
+  - "45 x 15 cm, medium hardness"
+  - "EPP foam, about 240 g"
+  - "Long enough for the upper back"
 experience: researched
 asin: B01CEIGD06
 drawback: "Even the medium version feels firm on a first go, and its smooth surface lacks the ridges some people prefer. The same listing sells several hardness levels, so it is easy to order the wrong one by mistake."

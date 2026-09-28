@@ -23,6 +23,12 @@ If it's right, tell Claude (or set `draft: false` in the entry file yourself). I
 | `laptop.md` (pick 3) | MacBook Air 13-inch M5, 16 GB, 512 GB | https://www.amazon.es/dp/B0GR1MZP3L | Spanish, not Portuguese, keyboard |
 | `water-bottle.md` | Hydro Flask Standard Mouth 709 ml, Flex Cap | https://www.amazon.es/dp/B01KXHGWQU | |
 | `work-backpack.md` | Thule Paramount Backpack 27L | https://www.amazon.es/dp/B09FPYMTQ9 | Paramount Backpack, not the Paramount Commuter |
-| `tens-unit.md` | Your own TENS unit | | Optional for launch: send the link to the one you own, plus a few lines on how you use it |
+| `tens-unit.md` | iWarmbase 3-in-1 TENS/EMS/Massage | https://www.amazon.es/dp/B0FJRXMVK9 | **Done**: chosen by Aron, 28 September 2026. Published as researched; if it's the one you use, send a few lines and it becomes "I own this" |
+| `espresso-machine.md` | Sage The Oracle Jet | https://www.amazon.es/dp/B0DFGRJMBC | **Done**: chosen by Aron, 28 September 2026 |
+| `coffee-canister.md` | Fellow Atmos Vacuum Canister 1.2 L, glass | https://www.amazon.es/dp/B07NPMNW84 | **Done**: chosen by Aron, 28 September 2026 |
+| `multi-cooker.md` | Ninja Combi 12-in-1 SFP700EU | https://www.amazon.es/dp/B0CZPKSGFV | **Done**: chosen by Aron, 28 September 2026 |
+| `usb-power-strip.md` | VOOMY 100 W USB power strip | https://www.amazon.es/dp/B0D44VR3TY | **Done**: chosen by Aron, 28 September 2026 |
+| `sunscreen.md` | Altruist Sunscreen SPF 50, unscented | https://www.amazon.es/dp/B0CWPH59MQ | **Done**: chosen by Aron, 28 September 2026 |
+| `face-sunscreen.md` | Altruist Face Fluid SPF 50 | https://www.amazon.es/dp/B0B5273DN1 | **Done**: chosen by Aron, 28 September 2026 |
 
 Opening these links yourself is fine. Buying through them doesn't count toward the three qualifying sales, and the links aren't tagged yet anyway.

@@ -4,6 +4,10 @@ product: "Hydro Flask Standard Mouth 709 ml with Flex Cap"
 category: carry
 tags: [long-shifts, commute]
 summary: "A 709 ml double-wall steel bottle rated to keep drinks cold for up to 24 hours, with a leakproof Flex Cap and a slim body that fits cup holders."
+highlights:
+  - "Up to 24 hours cold (maker's rating)"
+  - "Leakproof Flex Cap"
+  - "Fits most cup holders"
 experience: researched
 asin: B01KXHGWQU
 drawback: "The powder-coated finish dents and chips if the bottle is dropped on a hard floor, and the narrow standard mouth is too tight for most ice cubes and harder to scrub. You also have to unscrew the cap to drink, which is slower than a flip-top."

@@ -1,7 +1,7 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import Icon from "../../../components/Icon.astro";
-import ProductTile from "../../../components/ProductTile.astro";
+import ProductCard from "../../../components/ProductCard.astro";
 import { getKit, getShelves } from "../../../lib/kit";
 
 export async function getStaticPaths() {
@@ -14,15 +14,21 @@ const entries = (await getKit()).filter((entry) => entry.data.category === categ
 ---
 
 <Base title={category.name} description={category.intro}>
-  <header class="container page-head">
-    <p class="crumbs"><a href="/kit/">All kit</a></p>
-    <Icon name={category.slug} />
-    <h1 class="page-title">{category.name}</h1>
-    <p class="page-sub">{category.intro}</p>
+  <header class={`cat-banner tone-${category.tone}`}>
+    <div class="container">
+      <p class="crumbs"><a href="/kit/">All kit</a></p>
+      <div class="cat-banner-inner">
+        <span class={`cat-badge cat-badge-large tone-${category.tone}`}><Icon name={category.slug} /></span>
+        <div>
+          <h1 class="page-title">{category.name}</h1>
+          <p class="page-sub">{category.intro}</p>
+        </div>
+      </div>
+    </div>
   </header>
   <div class="container">
     <ul class="product-grid">
-      {entries.map((entry) => <ProductTile entry={entry} showCategory={false} />)}
+      {entries.map((entry) => <ProductCard entry={entry} showCategory={false} heading="h2" />)}
     </ul>
   </div>
   <div class="section-spacer" aria-hidden="true"></div>

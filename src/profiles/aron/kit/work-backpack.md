@@ -4,6 +4,10 @@ product: "Thule Paramount Backpack 27L"
 category: carry
 tags: [commute, travel]
 summary: "A 27-litre fold-top backpack in water-resistant nylon, with a padded 16-inch laptop sleeve, back-panel access and room for a change of clothes."
+highlights:
+  - "27 litres, fold-top closure"
+  - "Padded 16-inch laptop sleeve"
+  - "Water-resistant nylon"
 experience: researched
 asin: B09FPYMTQ9
 drawback: "The shoulder straps are wide, and some people with broader shoulders find they pull, while there is no hip belt for heavier loads. The fold-top also takes a few seconds longer to open than a simple zip."

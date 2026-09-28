@@ -4,6 +4,10 @@ product: "Relaxsan 830 Graduated Compression Socks, 18-22 mmHg, X-Static silver 
 category: on-your-feet
 tags: [long-shifts, travel]
 summary: "Unisex knee-high socks with 18-22 mmHg graduated compression and silver-fibre yarn, sized by ankle measurement, for long standing shifts and flights."
+highlights:
+  - "18–22 mmHg graduated compression"
+  - "Sized by ankle measurement"
+  - "Silver-fibre yarn, knee-high"
 experience: researched
 asin: B01FZQZYNQ
 drawback: "Like most firm compression hosiery they take real effort to pull on, and the knit feels warm on a hot Spanish summer day. Buyers who pick a size from shoe size alone, without measuring the ankle, often end up with the wrong fit."

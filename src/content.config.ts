@@ -25,35 +25,40 @@ const blank = (value: unknown) =>
 const kit = defineCollection({
   // The filename is the URL slug: kit/power-bank.md -> /kit/carry/power-bank/
   loader: glob({ pattern: "*.md", base: `./src/profiles/${activeProfile}/kit` }),
-  schema: z
-    .strictObject({
-      title: z.string().min(1).max(70).refine(noAmazon, NO_AMAZON),
-      product: z.string().min(1).refine(noAmazon, NO_AMAZON),
-      category: z.enum(categories),
-      tags: z.array(z.enum(tags)).min(1).max(3),
-      summary: z.string().min(1).max(160),
-      /** owned: only what Aron has actually said. researched: never implies personal use. */
-      experience: z.enum(["owned", "researched"]),
-      asin: z.preprocess(blank, asin.optional()),
-      /** Multi-option entries (the laptop): exactly three use-case picks instead of one ASIN. */
-      picks: z.preprocess(blank, z.array(pick).length(3).optional()),
-      drawback: z.string().min(1),
-      health: z.boolean().default(false),
-      healthNote: z.preprocess(blank, z.string().min(1).optional()),
-      /** Position within its category. The admin sets it when products are dragged into order; new ones sort last. */
-      order: z.number().int().min(1).default(999),
-      reviewed: z.coerce.date(),
-      draft: z.boolean().default(true),
-    })
-    // Cross-field rules bind published entries only, so a half-finished draft saved
-    // from the admin can't fail the build and hold up every other change.
-    .refine((e) => e.draft || (e.asin === undefined) !== (e.picks === undefined), {
-      message: "Give either `asin` or `picks`, not both and not neither",
-    })
-    .refine((e) => e.draft || !e.health || e.healthNote !== undefined, {
-      message: "Health products need a specific healthNote with the manufacturer's contraindications",
-      path: ["healthNote"],
-    }),
+  schema: ({ image }) =>
+    z
+      .strictObject({
+        title: z.string().min(1).max(70).refine(noAmazon, NO_AMAZON),
+        product: z.string().min(1).refine(noAmazon, NO_AMAZON),
+        category: z.enum(categories),
+        tags: z.array(z.enum(tags)).min(1).max(3),
+        summary: z.string().min(1).max(160),
+        /** Two to four short facts shown beside the buy button, e.g. "Five speeds, stated 55 dB". */
+        highlights: z.preprocess(blank, z.array(z.string().min(1).max(44).refine(noAmazon, NO_AMAZON)).min(2).max(4).optional()),
+        /** Aron's own photo, saved beside the entry in ./images/ by the admin. Never an Amazon or brand image. */
+        image: z.preprocess(blank, image().optional()),
+        /** owned: only what Aron has actually said. researched: never implies personal use. */
+        experience: z.enum(["owned", "researched"]),
+        asin: z.preprocess(blank, asin.optional()),
+        /** Multi-option entries (the laptop): exactly three use-case picks instead of one ASIN. */
+        picks: z.preprocess(blank, z.array(pick).length(3).optional()),
+        drawback: z.string().min(1),
+        health: z.boolean().default(false),
+        healthNote: z.preprocess(blank, z.string().min(1).optional()),
+        /** Position within its category. The admin sets it when products are dragged into order; new ones sort last. */
+        order: z.number().int().min(1).default(999),
+        reviewed: z.coerce.date(),
+        draft: z.boolean().default(true),
+      })
+      // Cross-field rules bind published entries only, so a half-finished draft saved
+      // from the admin can't fail the build and hold up every other change.
+      .refine((e) => e.draft || (e.asin === undefined) !== (e.picks === undefined), {
+        message: "Give either `asin` or `picks`, not both and not neither",
+      })
+      .refine((e) => e.draft || !e.health || e.healthNote !== undefined, {
+        message: "Health products need a specific healthNote with the manufacturer's contraindications",
+        path: ["healthNote"],
+      }),
 });
 
 export const collections = { kit };

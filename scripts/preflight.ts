@@ -113,6 +113,8 @@ interface EntryData {
   category: string;
   product: string;
   summary: string;
+  highlights?: string[];
+  image?: string;
   experience: "owned" | "researched";
   asin?: string;
   picks?: { label: string; product: string; asin: string; why: string }[];
@@ -159,9 +161,15 @@ for (const file of entryFiles) {
   const data = parseYaml(match[1]) as EntryData;
   const body = match[2];
   // Drafts saved from the admin can be half-finished, so every field may be missing.
-  const strings = [data.title, data.product, data.summary, data.drawback, data.healthNote, ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why])].map(
-    (s) => s ?? "",
-  );
+  const strings = [
+    data.title,
+    data.product,
+    data.summary,
+    data.drawback,
+    data.healthNote,
+    ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why]),
+    ...(data.highlights ?? []),
+  ].map((s) => s ?? "");
   const problems: string[] = [];
 
   const draft = data.draft !== false;
@@ -174,6 +182,9 @@ for (const file of entryFiles) {
   if (PRICE.test(body) || strings.some((s) => PRICE.test(s))) problems.push("mentions a price or currency (Amazon forbids static prices)");
   if (AMAZON_URL.test(body)) problems.push("links to Amazon from the body (only amazon.ts builds Amazon links)");
   if (/!\[/.test(body)) problems.push("has an image in the body (own photos only, via <Picture>)");
+  if (data.image && !/^\.\/images\/[^/]+\.(webp|jpe?g|png|avif)$/i.test(data.image)) {
+    problems.push(`image must be an uploaded photo in ./images/, not ${data.image} (own photos only)`);
+  }
   if (data.experience === "researched" && (FIRST_PERSON_USE.test(body) || strings.some((s) => FIRST_PERSON_USE.test(s)))) {
     problems.push("researched entry implies personal use");
   }
@@ -293,9 +304,11 @@ if (!existsSync(DIST)) {
       if (!footer || missing.length) problems.push("sitewide disclosure missing from the footer");
     }
 
-    for (const img of doc.querySelectorAll("img")) {
-      const src = img.getAttribute("src") ?? "";
-      if (/media-amazon|images-amazon|ssl-images-amazon/i.test(src)) problems.push(`Amazon product image: ${src}`);
+    for (const img of doc.querySelectorAll("img, source")) {
+      for (const src of [img.getAttribute("src") ?? "", ...(img.getAttribute("srcset") ?? "").split(/,\s*/).map((s) => s.split(/\s+/)[0])]) {
+        if (/media-amazon|images-amazon|ssl-images-amazon/i.test(src)) problems.push(`Amazon product image: ${src}`);
+        else if (/^(https?:)?\/\//.test(src) && !src.startsWith(site.identity.url)) problems.push(`image from another site: ${src}`);
+      }
     }
     for (const el of doc.querySelectorAll("script[src], link[href]")) {
       const url = el.getAttribute("src") ?? el.getAttribute("href") ?? "";

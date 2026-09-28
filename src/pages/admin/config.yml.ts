@@ -97,6 +97,29 @@ const products = {
       hint: "Shown in lists and in search results.",
     },
     {
+      name: "highlights",
+      label: "At a glance",
+      label_singular: "fact",
+      widget: "list",
+      required: false,
+      min: 2,
+      max: 4,
+      field: { name: "fact", label: "Fact", widget: "string", maxlength: 44, pattern: plainText("A fact") },
+      hint: "Two to four short facts shown beside the buy button, e.g. “Five speeds, stated 55 dB”. Specs from the maker, never prices.",
+    },
+    {
+      name: "image",
+      label: "Photo",
+      widget: "image",
+      required: false,
+      // Saved beside the product file (kit/images/), converted to WebP in the browser, so phone photos work too.
+      media_folder: "images",
+      public_folder: "./images",
+      choose_url: false,
+      accept: "image/jpeg,image/png,image/webp,image/heic,image/avif",
+      hint: "Your own photo only, ideally the product on a plain, light background. Never an image copied from Amazon or a brand's website. Without a photo the site shows a drawing.",
+    },
+    {
       name: "experience",
       label: "Do you own it?",
       widget: "select",
@@ -238,9 +261,21 @@ const config = {
       delete: "Admin: remove {{collection}} “{{slug}}”",
     },
   },
-  // Own photos only, if any are ever added. Nothing on the site uses this yet.
+  // Product photos go beside each product (the Photo field sets its own folder); this is the fallback.
   media_folder: "public/images/kit",
   public_folder: "/images/kit",
+  media_libraries: {
+    default: {
+      config: {
+        max_file_size: 15 * 1024 * 1024,
+        slugify_filename: true,
+        // Phone photos are large; the site makes its own sizes from this at build time.
+        transformations: { raster_image: { format: "webp", quality: 85, width: 2400, height: 2400 } },
+      },
+    },
+    // Stock photos would show a product that isn't the one recommended.
+    stock_assets: false,
+  },
   output: { omit_empty_optional_fields: true },
   slug: { encoding: "ascii", clean_accents: true, maxlength: 60 },
   collections: [products],

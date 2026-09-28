@@ -4,6 +4,10 @@ product: "Lenovo IdeaPad Slim 3, ASUS Zenbook A14 or Apple MacBook Air M5"
 category: carry
 tags: [commute, travel]
 summary: "Three current laptops for invoices, bookings and spreadsheets: a no-frills 15-inch Lenovo, a sub-1 kg ASUS and a silent, fanless MacBook Air."
+highlights:
+  - "Three picks, by use"
+  - "16 GB memory on all three"
+  - "From under 1 kg to 1.6 kg"
 experience: researched
 picks:
   - label: "On a tight budget"

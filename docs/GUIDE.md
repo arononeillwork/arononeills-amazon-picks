@@ -5,7 +5,7 @@ Everything you need to do, in order. Each step says roughly how long it takes. M
 ## Step 1. Look at the live site (2 minutes)
 
 1. Open **https://arononeillspicks.vercel.app** in a private or incognito window.
-2. You'll see the site with a "Coming soon" note, because no products are published yet. That's expected.
+2. Eight products are live, each with a drawing until you add your own photo (see Step 3b).
 
 ## Step 2. Sign in to the admin (5 minutes, once)
 
@@ -22,7 +22,7 @@ The browser remembers you. If you'd rather have a "Sign in with GitHub" button, 
 
 ## Step 3. Publish the products (about 2 minutes each)
 
-The eleven researched products are written and waiting as drafts. For each one:
+Ten researched products are written and waiting as drafts (eight are already live). For each draft:
 
 1. In the admin, open **Products** and click a product. Drafts show "Draft ·" before their name.
 2. Copy the **Amazon.es product code (ASIN)**, for example `B0CXDXP8VR`.
@@ -31,7 +31,11 @@ The eleven researched products are written and waiting as drafts. For each one:
 5. Back in the admin, set **Last checked** to today and untick **Draft (hidden from the live site)**.
 6. Press **Save** (top right). After about a minute, refresh the live site and the product appears.
 
-Publish at least **ten**. Leave the **TENS unit** as a draft until you've written your own experience into it. If a product is wrong on Amazon, tell Claude which one and it will swap in a backup.
+Two more takes you to the **ten** Amazon's review expects. If a product is wrong on Amazon, tell Claude which one and it will swap in a backup.
+
+## Step 3b. Add your own photos (optional, 2 minutes each)
+
+Photos make the site feel like a real shop. Put the product on a plain, light background, take a landscape photo in daylight, then in the admin open the product, press **Photo**, upload it and **Save**. Only your own photos: never one saved from Amazon or a brand's site. `docs/ADMIN.md` has the details.
 
 **If a save doesn't appear on the site:** Vercel emails you that the deployment failed. The live site stays as it was. Open the email's link, scroll to the end of the log, and read the lines starting with `FAIL`, or forward the email to Claude.
 

@@ -4,6 +4,10 @@ product: "BLACKROLL Blackbox Mini set: Mini roller, Ball 08 and Duoball 08"
 category: recovery
 tags: [after-work, travel]
 summary: "Three firm, smooth EPP tools in one box: an 8 cm ball, a peanut-shaped duo ball and a 15 cm mini roller, all sized for feet and calves."
+highlights:
+  - "Ball, duo ball and mini roller"
+  - "Medium-firm EPP foam"
+  - "Small enough for a work bag"
 experience: researched
 asin: B01M7XPBJM
 drawback: "All three pieces share the same medium-firm grade, so there is no softer option to start on if your feet are very tender. The smooth foam also grips less on a hard floor than a spiky rubber ball, so it can skid away under your foot."

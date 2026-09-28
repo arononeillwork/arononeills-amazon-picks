@@ -13,13 +13,13 @@ const { picks } = Astro.props;
 ---
 
 <section class="picks" id="picks" aria-labelledby="picks-heading">
-  <h2 id="picks-heading">{copy.entry.picksHeading}</h2>
+  <h2 id="picks-heading" class="shelf-title">{copy.entry.picksHeading}</h2>
   <div class="picks-grid">
     {
       picks.map((pick) => (
         <BuyBlock asin={pick.asin} product={pick.product} class="pick-card">
-          <h3 class="pick-label">{pick.label}</h3>
-          <p class="pick-product">{pick.product}</p>
+          <p class="pick-label">{pick.label}</p>
+          <h3 class="pick-product">{pick.product}</h3>
           <p class="pick-why">{pick.why}</p>
         </BuyBlock>
       ))

@@ -4,6 +4,10 @@ product: "Scholl GelActiv Work Insoles"
 category: on-your-feet
 tags: [long-shifts]
 summary: "Gel-cushioned insoles made for work shoes and hard floors, with a supportive arch shape, a trim-to-fit outline and separate men's and women's sizes."
+highlights:
+  - "Gel under the heel and arch"
+  - "Trim-to-fit outline"
+  - "Men's and women's sizes"
 experience: researched
 asin: B07FCCDN45
 drawback: "The arch is soft rather than firmly structured, so people with flat feet, or anyone who wants strong arch control, often find it too yielding. The insole is also fairly thick and can crowd a snug shoe."

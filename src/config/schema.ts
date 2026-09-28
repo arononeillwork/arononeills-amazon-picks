@@ -96,6 +96,8 @@ export const catalogueSchema = z.object({
         slug: z.string().regex(/^[a-z0-9-]+$/).refine(clean, NO_AMAZON),
         name: z.string().min(1),
         intro: z.string().min(1),
+        /** The soft colour behind this category's pictures and cards (global.css, .tone-*). */
+        tone: z.enum(["blue", "green", "orange", "purple", "yellow", "grey"]).default("grey"),
       }),
     )
     .min(1),

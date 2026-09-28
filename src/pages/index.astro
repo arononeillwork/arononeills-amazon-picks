@@ -1,30 +1,24 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
-import ProductTile from "../components/ProductTile.astro";
+import ProductCard from "../components/ProductCard.astro";
 import { copy, site } from "../config/active";
 import { getShelves } from "../lib/kit";
 
 const { kit, categories } = await getShelves();
-// One entry from each category, to give a first-time visitor a way in.
-const featured = categories
-  .map((category) => kit.find((entry) => entry.data.category === category.slug))
-  .filter((entry) => entry !== undefined);
-const counts = Object.fromEntries(
-  categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]),
-);
+const counts = Object.fromEntries(categories.map((c) => [c.slug, kit.filter((e) => e.data.category === c.slug).length]));
+// Most recently checked first; ties keep catalogue order.
+const latest = kit
+  .map((entry, index) => ({ entry, index }))
+  .sort((a, b) => b.entry.data.reviewed.getTime() - a.entry.data.reviewed.getTime() || a.index - b.index)
+  .slice(0, 8)
+  .map(({ entry }) => entry);
 ---
 
 <Base>
-  <section class="hero">
-    <div class="container narrow">
-      <h1 class="display">{copy.home.title}</h1>
-      <p class="hero-sub">{copy.home.lead}</p>
-      <div class="cta-row">
-        {kit.length > 0 && <a class="button" href="/kit/">{copy.home.cta}</a>}
-        <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
-      </div>
-    </div>
+  <section class="store-hero container">
+    <h1 class="store-title">{copy.home.title} <span>{copy.home.lead}</span></h1>
+    <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
   </section>
 
   {
@@ -39,47 +33,47 @@ const counts = Object.fromEntries(
       </section>
     ) : (
       <>
-        <section class="section section-alt">
-          <div class="container">
-            <h2 class="section-title center">{copy.home.categoriesHeading}</h2>
-            <ul class="category-grid">
-              {categories.map((category) => (
-                <li class="tile category-tile">
-                  <Icon name={category.slug} />
-                  <h3>
-                    <a class="tile-link" href={`/kit/${category.slug}/`}>
-                      {category.name}
-                    </a>
-                  </h3>
-                  <p>{category.intro}</p>
-                  <div class="tile-foot">
-                    <span class="count-label">
-                      {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
-                    </span>
-                    <span class="link-chevron" aria-hidden="true">
-                      {copy.home.explore}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="container">
-            <div class="section-head">
-              <h2 class="section-title">{copy.home.featuredHeading}</h2>
-              <a class="link-chevron" href="/kit/">
-                {copy.home.allLink}
+        <nav class="container cat-strip" aria-label={copy.home.categoriesLabel}>
+          <ul>
+            {categories.map((category) => (
+              <li>
+                <a class="cat-link" href={`/kit/${category.slug}/`}>
+                  <span class={`cat-badge tone-${category.tone}`}>
+                    <Icon name={category.slug} />
+                  </span>
+                  <span class="cat-name">{category.name}</span>
+                  <span class="cat-count">
+                    {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
+                  </span>
+                </a>
+              </li>
+            ))}
+            <li>
+              <a class="cat-link" href="/kit/">
+                <span class="cat-badge tone-grey">
+                  <Icon name="grid" />
+                </span>
+                <span class="cat-name">{copy.home.allKit}</span>
+                <span class="cat-count">{kit.length} picks</span>
               </a>
-            </div>
-            <ul class="product-grid">
-              {featured.map((entry) => (
-                <ProductTile entry={entry} />
-              ))}
-            </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <section class="shelf">
+          <div class="container shelf-head">
+            <h2 class="shelf-title">
+              {copy.home.latestHeading} <span>{copy.home.latestSub}</span>
+            </h2>
+            <a class="link-chevron" href="/kit/">
+              {copy.home.allLink}
+            </a>
           </div>
+          <ul class="shelf-row">
+            {latest.map((entry) => (
+              <ProductCard entry={entry} />
+            ))}
+          </ul>
         </section>
       </>
     )
@@ -87,12 +81,12 @@ const counts = Object.fromEntries(
 
   <section class="section section-alt">
     <div class="container">
-      <h2 class="section-title center">{copy.home.whyHeading}</h2>
-      <p class="section-sub center">{site.owner.about}</p>
-      <ul class="points">
+      <h2 class="shelf-title">{copy.home.whyHeading} <span>{copy.home.whySub}</span></h2>
+      <p class="why-about">{site.owner.about}</p>
+      <ul class="why-grid">
         {
           copy.home.why.map((point) => (
-            <li>
+            <li class="why-card">
               <Icon name={point.icon} />
               <h3>{point.title}</h3>
               <p>{point.text}</p>

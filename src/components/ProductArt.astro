@@ -1,0 +1,44 @@
+---
+// A product's picture, on its category's soft tone: Aron's own photo when the
+// entry has one, otherwise a flat drawing of that kind of product (art.ts),
+// otherwise the category icon. Never an Amazon or brand image.
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import { art } from "./art";
+import { categoryBySlug, copy } from "../config/active";
+import type { Entry } from "../lib/kit";
+
+interface Props {
+  entry: Entry;
+  /** The big picture on the product page: loads first, and labels a drawing as an illustration. */
+  hero?: boolean;
+}
+
+const { entry, hero = false } = Astro.props;
+const { image, product, category } = entry.data;
+const tone = categoryBySlug(category).tone;
+const drawing = art[entry.id];
+---
+
+<div class:list={["art", `tone-${tone}`, { "art-hero": hero }]} style={`view-transition-name: art-${entry.id}`}>
+  {
+    image ? (
+      <Picture
+        src={image}
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        widths={hero ? [640, 960, 1280] : [360, 540, 720]}
+        sizes={hero ? "(min-width: 960px) 540px, 100vw" : "(min-width: 1080px) 250px, (min-width: 640px) 30vw, 45vw"}
+        alt={hero ? product : ""}
+        loading={hero ? "eager" : "lazy"}
+        fetchpriority={hero ? "high" : "auto"}
+        class="art-photo"
+      />
+    ) : drawing ? (
+      <svg class="art-drawing" viewBox="0 0 400 300" aria-hidden="true" set:html={drawing} />
+    ) : (
+      <Icon name={category} class="art-icon" />
+    )
+  }
+  {hero && !image && <span class="art-label">{copy.entry.illustration}</span>}
+</div>

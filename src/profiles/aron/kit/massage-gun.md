@@ -4,6 +4,10 @@ product: "Hyperice Hypervolt Go 3"
 category: recovery
 tags: [after-work, travel]
 summary: "A compact percussion massager with five speeds, a stated 55 dB running noise and about four hours of battery, light enough to use one-handed."
+highlights:
+  - "Five speeds, stated 55 dB"
+  - "About four hours per charge"
+  - "About 0.73 kg, USB-C"
 experience: researched
 asin: B0G82W9ZZK
 drawback: "At about 0.73 kg it is heavier than the smallest mini guns, and it comes with only two heads. It also has less stall force than full-size models, so people who like very deep pressure on big thigh muscles may find it stops when they lean in."

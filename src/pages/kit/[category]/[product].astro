@@ -1,90 +1,170 @@
 ---
-import { render } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import BuyBlock from "../../../components/BuyBlock.astro";
+import Icon from "../../../components/Icon.astro";
 import PicksBlock from "../../../components/PicksBlock.astro";
+import ProductArt from "../../../components/ProductArt.astro";
+import ProductCard from "../../../components/ProductCard.astro";
 import { categoryBySlug, copy } from "../../../config/active";
 import { formatDate, getKit, type Entry } from "../../../lib/kit";
 
 export async function getStaticPaths() {
   const kit = await getKit();
-  return kit.map((entry) => ({ params: { category: entry.data.category, product: entry.id }, props: { entry } }));
+  return kit.map((entry) => ({
+    params: { category: entry.data.category, product: entry.id },
+    props: { entry, related: kit.filter((e) => e.data.category === entry.data.category && e.id !== entry.id).slice(0, 4) },
+  }));
 }
 
 interface Props {
   entry: Entry;
+  related: Entry[];
 }
 
-const { entry } = Astro.props;
+const { entry, related } = Astro.props;
 const { data } = entry;
-const { Content } = await render(entry);
 const category = categoryBySlug(data.category);
 const reviewed = data.reviewed.toISOString().slice(0, 10);
+
+// The write-up folds into one panel per "## Heading" section, so the page leads
+// with the picture, the facts and the buy button, and the detail is a tap away.
+const sections = (entry.rendered?.html ?? "")
+  .split(/(?=<h2[\s>])/)
+  .filter((part) => part.trim())
+  .map((part) => {
+    const match = /^<h2[^>]*>([\s\S]*?)<\/h2>([\s\S]*)$/.exec(part.trim());
+    return match ? { heading: match[1], body: match[2] } : { heading: copy.entry.detailsHeading, body: part };
+  });
 ---
 
 <Base title={data.title} description={data.summary} ogType="article">
-  <article class="container product">
-    <header class="product-head">
+  <article class="pdp">
+    <div class="container">
       <p class="crumbs">
         <a href="/kit/">All kit</a><span aria-hidden="true">›</span><a href={`/kit/${category.slug}/`}>{category.name}</a>
       </p>
-      <h1 class="product-title">{data.title}</h1>
-      <p class="product-sub">{data.summary}</p>
-    </header>
+      <div class="pdp-top">
+        <div class="pdp-media">
+          <ProductArt entry={entry} hero />
+        </div>
+        <div class="pdp-info">
+          <p class={`pdp-eyebrow tone-${category.tone}`}>{category.name}</p>
+          <h1 class="pdp-title">{data.product}</h1>
+          <p class="pdp-sub">{data.title}</p>
+          {
+            data.highlights && (
+              <ul class="highlights" aria-label={copy.entry.highlightsLabel}>
+                {data.highlights.map((highlight) => (
+                  <li>
+                    <Icon name="check" />
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+          {data.asin && <BuyBlock asin={data.asin} product={data.product} class="pdp-buy" />}
+          {
+            data.picks && (
+              <a class="button button-block pdp-buy" href="#picks">
+                {copy.entry.seePicks}
+              </a>
+            )
+          }
+          <p class="pdp-meta">
+            <span class:list={["badge", data.experience]}>
+              {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
+            </span>
+            <span>
+              {copy.entry.reviewed} <time datetime={reviewed}>{formatDate(data.reviewed)}</time>
+            </span>
+          </p>
+          {data.experience === "researched" && <p class="pdp-note">{copy.entry.researchedNote}</p>}
+          {
+            data.health && (
+              <p class="pdp-health">
+                <a href="#health">{copy.entry.healthShort}</a>
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </div>
 
-    <div class="product-layout">
-      <!-- First in the source so it sits under the headline on phones; the sticky right-hand column on desktop. -->
-      <aside class="buy-panel" aria-label="Where to buy">
-        <span class:list={["badge", data.experience]}>
-          {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
-        </span>
-        <p class="panel-product">{data.product}</p>
-        {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
-        {data.picks && <a class="link-chevron" href="#picks">{copy.entry.seePicks}</a>}
-        <p class="panel-meta">
-          {copy.entry.reviewed} <time datetime={reviewed}>{formatDate(data.reviewed)}</time>
-        </p>
-      </aside>
+    {
+      data.picks && (
+        <div class="container">
+          <PicksBlock picks={data.picks} />
+        </div>
+      )
+    }
 
-      <div class="product-body">
-        {
-          data.experience === "researched" && (
-            <div class="callout">
-              <p>{copy.entry.researchedNote}</p>
-            </div>
-          )
-        }
-
-        {
-          data.health && (
-            <section class="callout health" aria-labelledby="health-heading">
-              <h2 id="health-heading">{copy.entry.healthHeading}</h2>
-              <p>{copy.entry.healthLead}</p>
-              <p>{data.healthNote}</p>
-            </section>
-          )
-        }
-
-        <div class="prose">
-          <Content />
+    <section class="section section-alt pdp-more">
+      <div class="container narrow">
+        <div class="drawback-card">
+          <Icon name="balance" />
+          <div>
+            <h2>{copy.entry.drawbackHeading}</h2>
+            <p>{data.drawback}</p>
+          </div>
         </div>
 
-        {data.picks && <PicksBlock picks={data.picks} />}
-
-        <section class="callout drawback" aria-labelledby="drawback-heading">
-          <h2 id="drawback-heading">{copy.entry.drawbackHeading}</h2>
-          <p>{data.drawback}</p>
-        </section>
+        <h2 class="shelf-title details-title">{copy.entry.detailsHeading} <span>{copy.entry.detailsSub}</span></h2>
+        <div class="accordion">
+          {
+            data.health && (
+              <details class="acc" id="health" open>
+                <summary>
+                  <h3>{copy.entry.healthHeading}</h3>
+                </summary>
+                <div class="acc-body">
+                  <p>{copy.entry.healthLead}</p>
+                  <p>{data.healthNote}</p>
+                </div>
+              </details>
+            )
+          }
+          {
+            sections.map((section) => (
+              <details class="acc">
+                <summary>
+                  <h3 set:html={section.heading} />
+                </summary>
+                <div class="acc-body prose" set:html={section.body} />
+              </details>
+            ))
+          }
+        </div>
 
         {
           data.asin && (
             <div class="buy-end">
-              <p class="panel-product">{data.product}</p>
+              <div>
+                <p class="buy-end-name">{data.product}</p>
+                <p class="buy-end-sub">{data.title}</p>
+              </div>
               <BuyBlock asin={data.asin} product={data.product} />
             </div>
           )
         }
       </div>
-    </div>
+    </section>
+
+    {
+      related.length > 0 && (
+        <section class="section">
+          <div class="container">
+            <h2 class="shelf-title">
+              {copy.entry.relatedHeading} {category.name}.
+            </h2>
+            <ul class="product-grid related">
+              {related.map((other) => (
+                <ProductCard entry={other} showCategory={false} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
   </article>
 </Base>

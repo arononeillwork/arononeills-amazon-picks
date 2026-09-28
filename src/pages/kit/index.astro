@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import ProductTile from "../../components/ProductTile.astro";
+import ProductCard from "../../components/ProductCard.astro";
 import { copy } from "../../config/active";
 import { getShelves } from "../../lib/kit";
 
@@ -8,9 +8,8 @@ const { kit, categories, tags } = await getShelves();
 ---
 
 <Base title={copy.kit.title} description={copy.kit.lead}>
-  <header class="container page-head">
-    <h1 class="page-title">{copy.kit.title}</h1>
-    <p class="page-sub">{copy.kit.lead}</p>
+  <header class="container store-hero">
+    <h1 class="store-title">{copy.kit.title}. <span>{copy.kit.lead}</span></h1>
   </header>
 
   <div class="container">
@@ -54,7 +53,7 @@ const { kit, categories, tags } = await getShelves();
     }
     <p class="count" data-count aria-live="polite" hidden></p>
     <ul class="product-grid entries">
-      {kit.map((entry) => <ProductTile entry={entry} />)}
+      {kit.map((entry) => <ProductCard entry={entry} heading="h2" />)}
     </ul>
     <div class="list-empty" data-empty hidden>
       <p>{copy.kit.empty}</p>

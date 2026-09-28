@@ -29,7 +29,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
 | Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
-| Launch catalogue | 12 products, 3 categories of 4 |
+| Catalogue | 18 products in 5 categories (Aron added six and replaced the TENS pick, 28 September 2026) |
 | Catalogue shape | Category landing pages plus one filterable list of everything |
 | Language | English (for the expat audience) unless the owner decides otherwise |
 | Deployment rule | Nothing deploys until the owner explicitly says so and the preflight passes |
@@ -39,7 +39,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 
 ### Built and verified
 
-A production build contains home, `/kit/` (filterable list), one page per category that has a published entry, one page per published entry, `/disclosure/`, `/privacy/` and `/404`, plus `robots.txt` and a sitemap. `/apartment/` is only built while the calendar is switched on. With the eleven researched entries confirmed and the calendar off, that is 19 pages and 23 Amazon links. `astro check` reports 0 errors, 0 warnings, 0 hints.
+A production build contains home, `/kit/` (filterable list), one page per category that has a published entry, one page per published entry, `/disclosure/`, `/privacy/` and `/404`, plus `robots.txt` and a sitemap. `/apartment/` is only built while the calendar is switched on. With the calendar off and the eight entries published so far, that is 18 pages and 16 Amazon links; with all eighteen published it will be 29 pages and 37 links. `astro check` reports 0 errors, 0 warnings, 0 hints.
 
 With the calendar off, the build ships no JavaScript except the 0.6 KB `/kit/` filter: `astro.config.ts` only loads Preact and injects `src/routes/apartment.astro` when `features.apartment` is true, and the privacy page only describes Supabase processing while the calendar exists.
 
@@ -48,10 +48,14 @@ Catalogue (category → entries):
 | Category | Slug | Entries |
 | --- | --- | --- |
 | On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes |
-| Recovery | `recovery` | tens-unit (owned), massage-gun, foam-roller, foot-massage-ball |
-| Carry and charge | `carry` | power-bank, laptop (three picks), water-bottle, work-backpack |
+| Recovery | `recovery` | **tens-unit**, massage-gun, foam-roller, foot-massage-ball |
+| Carry and charge | `carry` | **power-bank**, laptop (three picks), water-bottle, work-backpack |
+| At home | `at-home` | **espresso-machine**, **coffee-canister**, **multi-cooker**, **usb-power-strip** |
+| Out in the sun | `sun` | **sunscreen**, **face-sunscreen** |
 
-Situation tags: `long-shifts`, `after-work`, `commute`, `travel`.
+Bold entries are published (8 of 18, 28 September 2026). Aron chose the six new products and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`).
+
+Situation tags: `long-shifts`, `after-work`, `commute`, `travel`, `at-home`.
 
 Performance, measured by the preflight from the build with env vars set:
 
@@ -62,13 +66,15 @@ Performance, measured by the preflight from the build with env vars set:
 | `/apartment/` | 39.0 KB | 60 KB |
 | Fonts, all pages, downloaded once (not at all on Apple devices) | 47.1 KB | 55 KB |
 
-Design (28 September 2026, at Aron's request): Apple-inspired. The system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). Big tight headlines, white and #f5f5f7 grey sections, rounded tiles, a translucent sticky nav, pill buttons in Apple blue, a sticky buy panel on product pages at desktop widths, and line icons drawn inline (`src/components/Icon.astro`).
+Design (28 September 2026, at Aron's request, modelled on the Apple Store and Chamberlain Coffee's shop pages): the system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). Short two-tone headlines, a row of category buttons, a "latest" shelf that swipes sideways on phones, and product cards that lead with a big picture on the category's soft colour. Product pages open with the picture, two to four "at a glance" facts (`highlights`), the buy button and the honest drawback; the write-up folds into tap-to-open panels (native `<details>`, no JavaScript) and the health note is open by default.
 
-Lighthouse (mobile, production build, 28 September 2026, after the redesign): 100 performance, accessibility, best practices and SEO on home, `/kit/` and `/privacy/`, CLS 0.
+Pictures: Aron's own photo when an entry has one (`image`, uploaded in the admin, stored in `kit/images/`, served as AVIF/WebP in three sizes by `<Picture>`), otherwise a flat drawing of that kind of product (`src/components/art.ts`, inline SVG, labelled "Illustration" on the product page), otherwise the category icon. Amazon's product photos are never used; the preflight rejects remote or Amazon images.
+
+Lighthouse (mobile, production build, 28 September 2026, after the store redesign): 100 performance, accessibility, best practices and SEO on home, `/kit/`, a category page and two product pages, CLS 0.
 
 Palette contrast (WCAG AA): every text/background pair is at least 4.66:1 in light mode and 4.70:1 in dark mode (the lowest is white on the Apple-blue button).
 
-Amazon links: two buy blocks on each single-product entry, three on the laptop (25 with all twelve entries published). Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
+Amazon links: two buy blocks on each single-product entry (under the facts, and after the details), three on the laptop. Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
 
 ### Live infrastructure
 
@@ -87,8 +93,9 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 ### Not done
 
 - Legal details: Easy Beans Coffee, S.L., NIF `B27576347`, C. Pizarro, 8, 29670 San Pedro de Alcántara, easybeanscafe@gmail.com (all confirmed by Aron, 28 September 2026). Still missing: the Registro Mercantil entry (tomo, folio, hoja) from the escritura, which LSSI-CE art. 10.1.b expects on a company's legal notice. The preflight warns until `legal.registry` is set; the privacy page shows it once it is
-- The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN. It's a draft, so it doesn't block launch
-- All eleven researched entries are written (200–400 words, pass every content check) but stay `draft: true` because nobody has yet seen their ASINs resolve on amazon.es. Aron confirms them with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
+- If the iWarmbase is the TENS unit Aron uses, two or three lines from him turn that entry into an owned one
+- Ten researched entries (the original picks other than the power bank) are written and pass every content check but stay `draft: true` until Aron opens their amazon.es links with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
+- No product has Aron's own photo yet; every entry shows its drawing
 - Calendar (deferred): the Supabase sign-up hook, URL configuration and SMTP are not yet set in the dashboard, and the live magic-link round trip has never been tested. None of this blocks launch while `features.apartment` is false
 
 ## 4. Repository map
@@ -118,9 +125,10 @@ src/
   profiles/aron/
     site.ts                  identity, legal, palette, features, admin repo
     affiliate.json           Associates switch, tracking ID and disclosures (edited from the admin)
-    catalogue.ts             3 categories, 4 situation tags
+    catalogue.ts             5 categories (each with a colour tone), 5 situation tags
     copy.ts                  all non-entry copy
     kit/*.md                 one file per product; filename is the URL slug
+    kit/images/              Aron's own product photos, uploaded from the admin
   lib/
     amazon.ts                the only place an Amazon URL is built
     kit.ts                   loads and orders entries (drafts left out of production); entry URLs
@@ -128,7 +136,9 @@ src/
     github-oauth.ts          shared pieces of the admin's "Sign in with GitHub" popup flow
   layouts/Base.astro         head, theme injection, speculation rules, nav, footer
   components/
-    ProductTile.astro        product tile; links to the entry, never to Amazon
+    ProductCard.astro        product card; links to the entry, never to Amazon
+    ProductArt.astro         the picture: own photo, else drawing, else category icon
+    art.ts                   the product drawings (inline SVG, coloured by category tone)
     Icon.astro               inline line icons (categories and the home page)
     BuyBlock.astro           disclosure line + Amazon button
     PicksBlock.astro         multi-option entries (the laptop)
@@ -150,6 +160,8 @@ product: "Brand Model"               # no "Amazon"
 category: on-your-feet               # a catalogue.ts slug
 tags: [long-shifts, after-work]      # 1-3 catalogue.ts tag slugs
 summary: "<= 160 chars"
+highlights: ["<= 44 chars", ...]     # optional, 2-4 short facts beside the buy button
+image: ./images/photo.webp           # optional, Aron's own photo (the admin uploads it)
 experience: owned | researched
 asin: B0XXXXXXXX                     # or `picks:` (exactly three: label, product, asin, why)
 drawback: "honest, specific"
