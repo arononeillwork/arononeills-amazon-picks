@@ -25,13 +25,18 @@ const nav = [
   ...categories.map((c) => ({ href: `/kit/${c.slug}/`, label: c.name })),
 ];
 
-// Prefetch without shipping JavaScript. The apartment page is excluded because
-// prerendering it would start a sign-in session check in the background.
+// Prefetch without shipping JavaScript. The apartment and admin are excluded
+// because prerendering them would start sign-in checks in the background.
 const speculationRules = {
   prerender: [
     {
       where: {
-        and: [{ href_matches: "/*" }, { not: { href_matches: "/apartment/*" } }],
+        and: [
+          { href_matches: "/*" },
+          { not: { href_matches: "/apartment/*" } },
+          { not: { href_matches: "/admin/*" } },
+          { not: { href_matches: "/api/*" } },
+        ],
       },
       eagerness: "moderate",
     },

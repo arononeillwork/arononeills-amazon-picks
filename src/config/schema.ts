@@ -41,12 +41,20 @@ export const siteSchema = z.object({
     /** One short paragraph about who is recommending these things and why. */
     about: z.string().min(1),
   }),
-  /** Published on /privacy/ as the data controller and LSSI-CE identification. */
+  /**
+   * Published on /privacy/ as the data controller and LSSI-CE identification
+   * (Ley 34/2002, art. 10) of whoever runs the site: a person or a company.
+   */
   legal: z.object({
-    fullName: z.string().min(1),
+    /** Full name of a person, or a company's registered name (razón social). */
+    legalName: z.string().min(1),
+    /** DNI/NIE for a person, or the company's NIF (the old CIF, e.g. B12345678). */
     nif: z.string().min(1),
+    /** Registered address (domicilio social for a company). */
     address: z.string().min(1),
     email: z.email(),
+    /** Companies only: Registro Mercantil entry (registry, tomo, folio, hoja), required by LSSI-CE art. 10.1.b. */
+    registry: z.string().min(1).optional(),
   }),
   social: z
     .array(z.object({ label: z.string().min(1).refine(clean, NO_AMAZON), url: z.url().refine(clean, NO_AMAZON) }))
@@ -55,12 +63,19 @@ export const siteSchema = z.object({
   features: z.object({
     apartment: z.boolean(),
   }),
+  admin: z.object({
+    /** GitHub repository the admin (/admin/) commits to, as owner/name. */
+    repo: z.string().regex(/^[\w.-]+\/[\w.-]+$/, "Use owner/name"),
+  }),
   affiliate: z.object({
     /** Off until Associates Central issues a tracking ID. Off means untagged links and no earnings claims. */
     enabled: z.boolean(),
     marketplace: z.literal("www.amazon.es"),
-    /** Tracking ID from Associates Central; Amazon.es IDs end in -21. */
-    tag: z.string().regex(/^$|^[a-z0-9-]+-21$/, "Amazon.es tracking IDs end in -21"),
+    /** Tracking ID from Associates Central; Amazon.es IDs end in -21. Empty (or left out by the admin) until then. */
+    tag: z
+      .string()
+      .regex(/^$|^[a-z0-9-]+-21$/, "Amazon.es tracking IDs end in -21")
+      .default(""),
     /** Link-level disclosure shown directly above every buy button. */
     linkDisclosure: z.string().min(1),
     /** Sitewide statements in the footer of every page, exactly as Associates Central words them. */

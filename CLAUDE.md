@@ -15,7 +15,7 @@ Static Astro site recommending kit for long, physical working days, monetised th
 - RLS is the security boundary. No client-callable allowlist check. Every DB change is a migration on the live project **and** mirrored in `supabase/schema.sql`, followed by both advisors and `supabase/tests/access.sql`.
 - Catalogue pages ship zero JavaScript. No `ClientRouter`. Fonts stay self-hosted. No analytics without updating `/privacy/` first.
 - TypeScript stays on 6 (`astro check` refuses 7). Zod comes from `astro/zod`. `@supabase/auth-js` and `@supabase/postgrest-js` versions move together.
-- Associates account is Aron as persona física with his own NIF, never the Easy Beans café entity. Purchases by Aron, friends or family don't count.
+- The café company (NIF B27576347) runs the site and holds the Associates account, but the site stays under Aron's name at arononeillspicks.vercel.app and never links to the café; only `/privacy/` names the company. Purchases by the company, its owners, staff, friends or family don't count.
 
 ## Commands
 

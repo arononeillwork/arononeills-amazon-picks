@@ -16,6 +16,7 @@ export const copy = {
     categoriesHeading: "Browse by what you need",
     allLink: "See everything in one list",
     featuredHeading: "Start here",
+    empty: "The first recommendations are being checked and will appear here shortly.",
   },
   kit: {
     title: "Everything, in one list",
@@ -47,7 +48,7 @@ export const copy = {
       {
         heading: "Affiliate links",
         paragraphs: [
-          "Buy buttons on this site are Amazon.es affiliate links. If you buy through one, Amazon pays me a commission. You pay the same price either way.",
+          "Buy buttons on this site are Amazon.es affiliate links. If you buy through one, Amazon pays a commission to the company that runs this site, named in the legal notice. You pay the same price either way.",
           "Every affiliate link has a note directly above it saying so, and the statement required by the Amazon Associates programme is in the footer of every page.",
         ],
       },
@@ -56,7 +57,7 @@ export const copy = {
       {
         heading: "Affiliate links",
         paragraphs: [
-          "At the moment the buttons on this site are ordinary links to Amazon.es, and I earn nothing from them. I intend to join the Amazon Associates programme; when I do, this page and every buy button will say so.",
+          "At the moment the buttons on this site are ordinary links to Amazon.es, and the site earns nothing from them. The company that runs it, named in the legal notice, intends to join the Amazon Associates programme; when it does, this page and every buy button will say so.",
         ],
       },
     ] satisfies Section[],
@@ -93,23 +94,27 @@ export const copy = {
         heading: "Browsing the site",
         paragraphs: [
           "The catalogue pages are static files. They set no cookies and run no analytics. Fonts are served from this site, not from Google or any other third party.",
-          "The site is hosted by Vercel Inc., which processes standard request data (IP address, browser, the page requested) in server logs to deliver pages and protect against abuse. Vercel acts as my processor under its data processing agreement, which covers transfers outside the EU.",
+          "The site is hosted by Vercel Inc., which processes standard request data (IP address, browser, the page requested) in server logs to deliver pages and protect against abuse. Vercel acts as a processor for the company named above, under its data processing agreement, which covers transfers outside the EU.",
         ],
       },
       {
         heading: "Links to Amazon.es",
         paragraphs: [
-          "When you follow a link to Amazon.es, Amazon receives this site's address as the referrer and handles everything from then on under its own privacy notice and cookie settings. Amazon's reports tell me which products were bought through links on this site, but never who bought them.",
+          "When you follow a link to Amazon.es, Amazon receives this site's address as the referrer and handles everything from then on under its own privacy notice and cookie settings. Amazon's reports show which products were bought through links on this site, but never who bought them.",
         ],
       },
       {
         heading: "Your rights",
         paragraphs: [
-          "You can ask to see, correct or delete your data, to restrict or object to its use, or to receive a copy, by emailing the address above. If you're unhappy with my reply you can complain to the Agencia Española de Protección de Datos (aepd.es).",
+          "You can ask to see, correct or delete your data, to restrict or object to its use, or to receive a copy, by emailing the address above. If you're unhappy with the reply you can complain to the Agencia Española de Protección de Datos (aepd.es).",
         ],
       },
     ] satisfies Section[],
-    /** Only shown while the apartment calendar is switched on. Keep it true to what the site does. */
+    /**
+     * Only shown while the apartment calendar is switched on. Keep it true to what the site does.
+     * Before switching it back on: the apartment is Aron's, not the company's, so the calendar
+     * needs its own controller line (Aron personally) rather than the company named above.
+     */
     calendar: {
       heading: "The friends' calendar",
       paragraphs: [

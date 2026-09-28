@@ -1,0 +1,24 @@
+---
+// The admin: Sveltia CMS, a Git-based editor. It reads /admin/config.yml
+// (generated from the catalogue by config.yml.ts next to this file), signs in
+// with GitHub, and saves each change as a commit to the repository. Vercel then
+// rebuilds the site, and only publishes it if `npm run preflight` passes.
+// Self-hosted: astro.config.ts copies the editor into public/admin/cms/.
+import { site } from "../../config/active";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin · {site.identity.masthead}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link href="/admin/config.yml" type="application/yaml" rel="cms-config-url" />
+  </head>
+  <body>
+    <noscript>The admin needs JavaScript switched on.</noscript>
+    <script is:inline src="/admin/cms/sveltia-cms.js"></script>
+  </body>
+</html>

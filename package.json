@@ -8,24 +8,32 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && tsx scripts/vercel-headers.ts",
     "preview": "astro preview",
     "check": "astro check",
-    "preflight": "astro build && tsx scripts/preflight.ts"
+    "preflight": "npm run build && tsx scripts/preflight.ts"
   },
   "dependencies": {
     "@astrojs/preact": "6.0.5",
     "@astrojs/sitemap": "3.7.4",
+    "@astrojs/vercel": "11.0.11",
     "@supabase/auth-js": "2.117.2",
     "@supabase/postgrest-js": "2.117.2",
+    "@sveltia/cms": "0.222.0",
     "astro": "7.3.5",
     "preact": "10.29.8"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@vercel/routing-utils": "6.6.0",
     "node-html-parser": "6.1.13",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "yaml": "2.9.1"
+  },
+  "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "6.3.0"
+    }
   }
 }

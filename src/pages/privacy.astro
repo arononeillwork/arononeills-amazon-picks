@@ -18,11 +18,19 @@ if (site.features.apartment) sections.splice(sections.length - 1, 0, copy.privac
     <address class="controller" data-controller>
       <dl>
         <dt>Name</dt>
-        <dd>{legal.fullName}</dd>
+        <dd>{legal.legalName}</dd>
         <dt>NIF</dt>
         <dd>{legal.nif}</dd>
-        <dt>Address</dt>
+        <dt>{legal.registry ? "Registered address" : "Address"}</dt>
         <dd>{legal.address}</dd>
+        {
+          legal.registry && (
+            <>
+              <dt>Registration</dt>
+              <dd>{legal.registry}</dd>
+            </>
+          )
+        }
         <dt>Email</dt>
         <dd><a href={`mailto:${legal.email}`}>{legal.email}</a></dd>
         <dt>Website</dt>

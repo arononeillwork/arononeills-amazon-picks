@@ -1,6 +1,6 @@
 # Build brief: arononeillspicks
 
-Status as of 26 September 2026. Owner: Aron O'Neill.
+Status as of 28 September 2026. Owner: Aron O'Neill. Operator and Associates account holder: the café company (NIF `B27576347`).
 
 This brief records what exists, what has been verified, the rules the site must never break, and the remaining work in order. Read all of it before changing anything; several sections exist because something went wrong once already.
 
@@ -23,7 +23,8 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Hosting | Vercel Pro ($20/month, from launch). Claude deploys every update |
 | Address | `https://arononeillspicks.vercel.app`. No custom domain |
 | Marketplace | Amazon.es |
-| Associates account | Aron as persona física with his own NIF. **Never** the Easy Beans café entity |
+| Associates account | **The café company** (Easy Beans, NIF `B27576347`) runs the site and holds the Associates account. Aron's decision, 28 September 2026, replacing the earlier persona física plan |
+| Café separation | The site stays under Aron's name at `arononeillspicks.vercel.app` and doesn't link to the café or its domain. Only the legal notice on `/privacy/` names the company, because LSSI-CE requires it |
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
 | Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
@@ -84,7 +85,7 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 
 ### Not done
 
-- Legal details: `fullName` is set (Aron O'Neill). NIF, postal address and contact email are still placeholders. The only NIF in Aron's "Cafe" sheet is `B27576347`, the café company's CIF, so it was not used: the site's operator is Aron personally (§2). Aron to give his own NIF/NIE, or decide explicitly that the café company runs the site (then the legal name, NIF and the Associates account all become the company's)
+- Legal details: the company runs the site. NIF `B27576347` (control digit checks out), address C. Pizarro, 8, 29670 San Pedro de Alcántara and email easybeanscafe@gmail.com are set. Still placeholders: the company's registered name (razón social) and its Registro Mercantil entry (tomo, folio, hoja), both required on a company's legal notice. Aron to confirm the address is the domicilio social on the company's NIF card
 - The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN. It's a draft, so it doesn't block launch
 - All eleven researched entries are written (200–400 words, pass every content check) but stay `draft: true` because nobody has yet seen their ASINs resolve on amazon.es. Aron confirms them with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
 - Calendar (deferred): the Supabase sign-up hook, URL configuration and SMTP are not yet set in the dashboard, and the live magic-link round trip has never been tested. None of this blocks launch while `features.apartment` is false
@@ -162,7 +163,7 @@ draft: true | false
 - No Amazon product images, and no copied Amazon customer reviews. Own photos only
 - Links keep `noopener` but must not gain `noreferrer`; Amazon may check that clicks come from the registered site. `vercel.json` sets `Referrer-Policy: strict-origin-when-cross-origin`, which sends the site's origin
 - Home, category and list pages link to entries, never straight to Amazon, so every affiliate link has its disclosure beside it
-- Purchases by Aron, friends or family are not eligible. Never suggest otherwise, and never put affiliate links in email, PDF, WhatsApp or DMs
+- Purchases by the account holder are not eligible: that means the company, both owners, staff, and their friends and family. Never suggest otherwise, never buy café supplies through the site's links, and never put affiliate links in email, PDF, WhatsApp or DMs
 
 ### Honesty and health
 
@@ -220,7 +221,8 @@ Owner tasks are marked **Aron**. Everything else is Claude Code's.
 Ask Aron for anything missing. Don't guess any of it.
 
 - [x] **Aron:** full name (Aron O'Neill)
-- [ ] **Aron:** his own NIF/NIE (the café's CIF is not his), postal address and a public contact email, for `legal` in `site.ts`
+- [x] **Aron:** who runs the site: the café company, NIF `B27576347`
+- [ ] **Aron:** the company's registered name (razón social) and Registro Mercantil entry (tomo, folio, hoja), from the escritura or the company's NIF card; confirm C. Pizarro, 8 is the domicilio social and that easybeanscafe@gmail.com is the contact address to publish
 - [ ] **Aron:** confirm `arononeillwork@gmail.com` is the owner address for the calendar (already seeded)
 - [ ] **Aron:** which of the twelve products he owns and uses
 - [ ] **Aron:** his real TENS experience: how long, how often, what changed. Two or three lines is enough. Plus the brand/model he has
@@ -286,7 +288,7 @@ The first deploy goes out with `affiliate.enabled: false`. Links are untagged an
 
 The 180-day clock starts at signup, not at launch. Sign up only once the site is live and complete.
 
-- [ ] **Aron:** sign up at afiliados.amazon.es as persona física with his own name and NIF. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview. Never use Easy Beans' details
+- [ ] **Aron:** sign up at afiliados.amazon.es as the company (business account) with its registered name and NIF `B27576347`, and the company's bank account for payments. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview as an entity
 - [ ] **Aron:** send the tracking ID (ends `-21`) and the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
 - [ ] Set `affiliate.tag`, `affiliate.sitewideStatement` and `affiliate.enabled: true`, then preflight and deploy
 - [ ] Verify on the live site that buy buttons carry `?tag=`, and that both disclosures show
@@ -295,7 +297,7 @@ Acceptance: tagged links live within a day of signup.
 
 ### Phase 7: after launch
 
-- **First three sales** must come from outside Aron's circle. Channels: a personal Instagram or TikTok registered in Associates Central as an additional site, and genuinely useful answers in hospitality and Marbella expat communities that link to the site's pages, never to Amazon directly. Keep Easy Beans' accounts out of it
+- **First three sales** must come from outside the account holder's circle (the company, its owners and staff, their friends and family). Channels: a personal Instagram or TikTok registered in Associates Central as an additional site, and genuinely useful answers in hospitality and Marbella expat communities that link to the site's pages, never to Amazon directly. The site is kept separate from the café by choice, so the café's own accounts stay out of it unless Aron decides otherwise
 - **Supabase free projects pause** after inactivity. Either Aron restores it from the dashboard when needed, or add a weekly keep-alive (for example a scheduled GitHub Action calling the REST endpoint). Decide in Phase 1
 - **Review cadence:** the preflight warns on entries not checked in six months; the laptop entry every three
 - **Adding a friend:** `insert into public.allowed_emails (email, name) values ('friend@example.com', 'Name');`. Delete the row to remove access
@@ -305,7 +307,7 @@ Acceptance: tagged links live within a day of signup.
 
 Not legal or tax advice; confirm with a gestor.
 
-Affiliate income belongs to Aron personally, not to Easy Beans, which has a co-owner. Once commissions arrive regularly, Hacienda treats the activity as habitual regardless of amount, and Aron needs to be registered as autónomo with an advertising epígrafe (IAE 844 is the usual one). Amazon pays EU affiliates through Amazon Europe Core Sàrl in Luxembourg, so invoices are intra-community at 0% IVA, which requires ROI/VIES registration and modelo 349.
+Since 28 September 2026 the café company holds the Associates account, so commissions are company income, taxed through the company's accounts (Impuesto sobre Sociedades), not Aron's personal IRPF. The company has two owners, so both should be happy with that. The gestor will probably need to add an advertising activity to the company's census registration (modelo 036; IAE epígrafe 844 is the usual one). Amazon pays EU affiliates through Amazon Europe Core Sàrl in Luxembourg, so the company's commission invoices are intra-community at 0% IVA (reverse charge). That requires the company to be on the ROI/VIES register and to file modelo 349.
 
 Stripe is not needed for any of this: Amazon takes the payment from the buyer and pays the commission to Aron's bank account.
 

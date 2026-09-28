@@ -7,3 +7,6 @@ dist/
 !.env.example
 *.log
 .DS_Store
+
+# Admin editor, copied from node_modules by astro.config.ts
+public/admin/cms/

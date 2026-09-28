@@ -19,9 +19,12 @@ try {
 }
 
 const ROOT = resolve(import.meta.dirname, "..");
-const DIST = join(ROOT, "dist");
+// @astrojs/vercel writes what Vercel serves to .vercel/output/static.
+const OUTPUT = join(ROOT, ".vercel/output");
+const DIST = join(OUTPUT, "static");
 const KB = 1024;
-const BUDGETS = { default: 0, "/kit/": 3 * KB, "/apartment/": 60 * KB, fonts: 55 * KB };
+// /admin/ is the editor, used only by Aron; public pages keep their budgets.
+const BUDGETS = { default: 0, "/kit/": 3 * KB, "/apartment/": 60 * KB, "/admin/": Infinity, fonts: 55 * KB };
 const TODAY = new Date();
 
 const failures: string[] = [];
@@ -56,25 +59,46 @@ const site = siteSchema.parse(profiles[name].site);
 
 const PLACEHOLDER = /placeholder|\[|\]|todo|tbc|xxx/i;
 
-/** Spanish NIF (DNI) or NIE, including the check letter. */
-function validNif(raw: string): boolean {
-  const value = raw.toUpperCase().replace(/[\s-]/g, "");
+/** A person's NIF (DNI) or NIE, including the check letter. */
+function validPersonalNif(value: string): boolean {
   const match = /^([XYZ]|\d)(\d{7})([A-Z])$/.exec(value);
   if (!match) return false;
   const first = { X: "0", Y: "1", Z: "2" }[match[1]] ?? match[1];
-  const number = Number(first + match[2]);
-  return "TRWAGMYFPDXBNJZSQVHLCKE"[number % 23] === match[3];
+  return "TRWAGMYFPDXBNJZSQVHLCKE"[Number(first + match[2]) % 23] === match[3];
+}
+
+/** A company's NIF (the old CIF, e.g. B12345678), including the control character. */
+function validCompanyNif(value: string): boolean {
+  const match = /^([ABCDEFGHJNPQRSUVW])(\d{7})([0-9A-J])$/.exec(value);
+  if (!match) return false;
+  const sum = [...match[2]].map(Number).reduce((total, digit, i) => {
+    if (i % 2 === 1) return total + digit;
+    const doubled = digit * 2;
+    return total + Math.floor(doubled / 10) + (doubled % 10);
+  }, 0);
+  const control = (10 - (sum % 10)) % 10;
+  const letter = "JABCDEFGHI"[control];
+  if ("ABEH".includes(match[1])) return match[3] === String(control);
+  if ("NPQRSW".includes(match[1])) return match[3] === letter;
+  return match[3] === String(control) || match[3] === letter;
 }
 
 {
-  const { fullName, nif, address } = site.legal;
+  const { legalName, address, registry } = site.legal;
+  const nif = site.legal.nif.toUpperCase().replace(/[\s-]/g, "");
+  const company = validCompanyNif(nif);
   const problems = [
-    PLACEHOLDER.test(fullName) && "fullName",
-    !validNif(nif) && "nif (not a valid NIF/NIE)",
+    PLACEHOLDER.test(legalName) && (company ? "legalName (the company's registered name)" : "legalName"),
+    !company && !validPersonalNif(nif) && "nif (not a valid NIF, NIE or company NIF)",
     PLACEHOLDER.test(address) && "address",
+    registry !== undefined && PLACEHOLDER.test(registry) && "registry",
   ].filter(Boolean);
+  // LSSI-CE art. 10.1.b: a company's legal notice should show its Registro Mercantil entry.
+  if (company && !registry) {
+    warn("legal", "no Registro Mercantil entry (tomo, folio, hoja) yet; add legal.registry from the escritura");
+  }
   if (problems.length) fail("legal", `placeholder or invalid ${problems.join(", ")} in legal (src/profiles/${name}/site.ts)`);
-  else pass("legal");
+  else pass("legal", `${company ? "company" : "person"}, NIF ${nif}`);
 
   const email = site.legal.email;
   if (PLACEHOLDER.test(email) || /@example\.(com|org|net)$/i.test(email)) {
@@ -134,7 +158,10 @@ for (const file of entryFiles) {
   }
   const data = parseYaml(match[1]) as EntryData;
   const body = match[2];
-  const strings = [data.title, data.product, data.summary, data.drawback, data.healthNote ?? "", ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why])];
+  // Drafts saved from the admin can be half-finished, so every field may be missing.
+  const strings = [data.title, data.product, data.summary, data.drawback, data.healthNote, ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why])].map(
+    (s) => s ?? "",
+  );
   const problems: string[] = [];
 
   const draft = data.draft !== false;
@@ -152,15 +179,17 @@ for (const file of entryFiles) {
   }
   if (data.health) {
     if (!data.healthNote || data.healthNote.length < 60) problems.push("health entry needs a specific healthNote");
-    const claim = [body, data.title, data.summary, data.drawback].find((s) => TREATMENT.test(s));
+    const claim = [body, ...strings.slice(0, 4)].find((s) => TREATMENT.test(s));
     if (claim) problems.push(`health entry uses treatment language ("${TREATMENT.exec(claim)![0]}")`);
   }
-  if (data.drawback.trim().length < 30) problems.push("drawback is too thin to be honest");
+  if (strings[3].trim().length < 30) problems.push("drawback is too thin to be honest");
   if (strings.slice(0, 2).some((s) => AMAZON_VARIANT.test(s))) problems.push('title or product contains "Amazon"');
 
   const reviewed = new Date(data.reviewed);
   const limit = data.picks ? 3 : 6;
-  if (monthsSince(reviewed) >= limit) {
+  if (Number.isNaN(reviewed.getTime())) {
+    problems.push("no valid last-checked date");
+  } else if (monthsSince(reviewed) >= limit) {
     warn(`entry ${slug}`, `last checked ${reviewed.toISOString().slice(0, 10)}; re-check at least every ${limit} months`);
   }
 
@@ -172,8 +201,10 @@ for (const file of entryFiles) {
     published.push({ slug, category: data.category });
   }
 }
+// Fewer than ten can go live (products are published from the admin after launch),
+// but Amazon's review expects at least ten substantial ones before signing up.
 if (published.length < 10) {
-  fail("catalogue", `${published.length} published entries; Amazon's review expects at least ten substantial ones`);
+  warn("catalogue", `${published.length} published entries; publish at least ten before applying to Amazon Associates`);
 } else {
   pass("catalogue", `${published.length} published entries`);
 }
@@ -188,7 +219,7 @@ function walk(dir: string): string[] {
 }
 
 if (!existsSync(DIST)) {
-  fail("build", "dist/ not found; run `npm run preflight`, which builds first");
+  fail("build", ".vercel/output/static not found; run `npm run preflight`, which builds first");
 } else {
   const files = walk(DIST);
   const htmlFiles = files.filter((f) => f.endsWith(".html"));
@@ -274,7 +305,9 @@ if (!existsSync(DIST)) {
     }
     const visible = doc.querySelector("main")?.text ?? "";
     if (/[€£$]\s?\d|\d\s?€/.test(visible)) problems.push("a price appears on the page");
-    if (path === "/apartment/" && !doc.querySelector('meta[name="robots"][content*="noindex"]')) problems.push("apartment page is missing noindex");
+    if ((path === "/apartment/" || path === "/admin/") && !doc.querySelector('meta[name="robots"][content*="noindex"]')) {
+      problems.push("private page is missing noindex");
+    }
 
     // JavaScript shipped by this page, gzipped.
     const modules = new Set<string>();
@@ -307,9 +340,9 @@ if (!existsSync(DIST)) {
     if (problems.length) fail(`page ${path}`, [...new Set(problems)].join("; "));
   }
 
-  // home, /kit/, disclosure, privacy, 404, the calendar if on, one per category in use, one per published entry
+  // home, /kit/, disclosure, privacy, 404, admin, the calendar if on, one per category in use, one per published entry
   const categoriesInUse = new Set(published.map((p) => p.category)).size;
-  const expected = 5 + (site.features.apartment ? 1 : 0) + categoriesInUse + published.length;
+  const expected = 6 + (site.features.apartment ? 1 : 0) + categoriesInUse + published.length;
   const hasApartment = htmlFiles.some((file) => route(file) === "/apartment/");
   if (hasApartment !== site.features.apartment) {
     fail("apartment", `calendar is switched ${site.features.apartment ? "on" : "off"} but /apartment/ was ${hasApartment ? "" : "not "}built`);
@@ -319,7 +352,7 @@ if (!existsSync(DIST)) {
   pass("pages", `${pages} HTML pages, ${amazonLinks} Amazon links`);
 
   const kb = (bytes: number) => `${(bytes / KB).toFixed(1)} KB`;
-  const zeroJs = Object.entries(jsByRoute).filter(([path]) => path !== "/kit/" && path !== "/apartment/");
+  const zeroJs = Object.entries(jsByRoute).filter(([path]) => !["/kit/", "/apartment/", "/admin/"].includes(path));
   pass(
     "javascript",
     `catalogue pages max ${kb(Math.max(0, ...zeroJs.map(([, n]) => n)))}, /kit/ ${kb(jsByRoute["/kit/"] ?? 0)}` +
@@ -338,8 +371,32 @@ if (!existsSync(DIST)) {
   if (!existsSync(robots) || !/Sitemap:/.test(readText(robots))) fail("robots", "robots.txt missing or has no Sitemap line");
   const sitemaps = files.filter((f) => /sitemap-\d+\.xml$/.test(f)).map(readText).join("\n");
   if (!existsSync(join(DIST, "sitemap-index.xml"))) fail("sitemap", "sitemap-index.xml missing");
-  else if (/\/apartment\//.test(sitemaps)) fail("sitemap", "sitemap lists /apartment/");
+  else if (/\/(apartment|admin|api)\//.test(sitemaps)) fail("sitemap", "sitemap lists a private page");
   else pass("sitemap");
+
+  // The admin: its editor, its generated config, and the sign-in endpoints.
+  const adminProblems = [
+    !existsSync(join(DIST, "admin/cms/sveltia-cms.js")) && "editor bundle missing from /admin/cms/",
+    !existsSync(join(DIST, "admin/config.yml")) && "/admin/config.yml missing",
+  ].filter(Boolean);
+  if (existsSync(join(DIST, "admin/config.yml"))) {
+    const config = parseYaml(readText(join(DIST, "admin/config.yml"))) as { backend?: { repo?: string } };
+    if (config.backend?.repo !== site.admin.repo) adminProblems.push("admin config points at the wrong repository");
+  }
+  if (adminProblems.length) fail("admin", adminProblems.join("; "));
+  else pass("admin", `/admin/ edits ${site.admin.repo}`);
+
+  // vercel.json's headers, copied into the Build Output by scripts/vercel-headers.ts.
+  const routing = JSON.parse(readText(join(OUTPUT, "config.json"))) as { routes: { src?: string; headers?: Record<string, string> }[] };
+  const header = (path: string, key: string) =>
+    routing.routes.find((r) => r.src && new RegExp(r.src).test(path) && r.headers && key in r.headers)?.headers?.[key];
+  const headerProblems = [
+    !/noindex/.test(header("/admin/", "X-Robots-Tag") ?? "") && "no noindex header on /admin/",
+    header("/", "X-Content-Type-Options") !== "nosniff" && "no nosniff header",
+    header("/", "Referrer-Policy") !== "strict-origin-when-cross-origin" && "Referrer-Policy isn't strict-origin-when-cross-origin",
+  ].filter(Boolean);
+  if (headerProblems.length) fail("headers", `${headerProblems.join("; ")} (run scripts/vercel-headers.ts after astro build)`);
+  else pass("headers");
 }
 
 // --------------------------------------------------------------------- report

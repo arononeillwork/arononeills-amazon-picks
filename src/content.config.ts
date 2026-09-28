@@ -18,6 +18,10 @@ const pick = z.strictObject({
   why: z.string().min(1),
 });
 
+/** The admin leaves empty optional fields out, but hand edits may leave them blank. Treat both the same. */
+const blank = (value: unknown) =>
+  value === "" || value === null || (Array.isArray(value) && value.length === 0) ? undefined : value;
+
 const kit = defineCollection({
   // The filename is the URL slug: kit/power-bank.md -> /kit/carry/power-bank/
   loader: glob({ pattern: "*.md", base: `./src/profiles/${activeProfile}/kit` }),
@@ -30,20 +34,23 @@ const kit = defineCollection({
       summary: z.string().min(1).max(160),
       /** owned: only what Aron has actually said. researched: never implies personal use. */
       experience: z.enum(["owned", "researched"]),
-      asin: asin.optional(),
+      asin: z.preprocess(blank, asin.optional()),
       /** Multi-option entries (the laptop): exactly three use-case picks instead of one ASIN. */
-      picks: z.array(pick).length(3).optional(),
+      picks: z.preprocess(blank, z.array(pick).length(3).optional()),
       drawback: z.string().min(1),
       health: z.boolean().default(false),
-      healthNote: z.string().min(1).optional(),
-      order: z.number().int().min(1),
+      healthNote: z.preprocess(blank, z.string().min(1).optional()),
+      /** Position within its category. The admin sets it when products are dragged into order; new ones sort last. */
+      order: z.number().int().min(1).default(999),
       reviewed: z.coerce.date(),
       draft: z.boolean().default(true),
     })
-    .refine((e) => (e.asin === undefined) !== (e.picks === undefined), {
+    // Cross-field rules bind published entries only, so a half-finished draft saved
+    // from the admin can't fail the build and hold up every other change.
+    .refine((e) => e.draft || (e.asin === undefined) !== (e.picks === undefined), {
       message: "Give either `asin` or `picks`, not both and not neither",
     })
-    .refine((e) => !e.health || e.healthNote !== undefined, {
+    .refine((e) => e.draft || !e.health || e.healthNote !== undefined, {
       message: "Health products need a specific healthNote with the manufacturer's contraindications",
       path: ["healthNote"],
     }),
