@@ -8,12 +8,13 @@ interface Props {
   asin: string;
   /** Screen-reader context for the button, e.g. the product name. */
   product: string;
+  class?: string;
 }
 
-const { asin, product } = Astro.props;
+const { asin, product, class: className } = Astro.props;
 ---
 
-<div class="buy" data-affiliate-block>
+<div class:list={["buy", className]} data-affiliate-block>
   <slot />
   {
     site.affiliate.enabled ? (
@@ -22,7 +23,7 @@ const { asin, product } = Astro.props;
       <p>{copy.entry.untaggedNote}</p>
     )
   }
-  <a class="button" href={amazonUrl(asin)} rel={AFFILIATE_REL} target="_blank" data-affiliate-link>
+  <a class="button button-block" href={amazonUrl(asin)} rel={AFFILIATE_REL} target="_blank" data-affiliate-link>
     {copy.entry.buyLabel}<span class="sr-only">: {product}</span>
   </a>
 </div>

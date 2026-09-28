@@ -60,13 +60,13 @@ Performance, measured by the preflight from the build with env vars set:
 | Home, category, product entry | 0 KB | 0 KB |
 | `/kit/` | 0.6 KB | 3 KB |
 | `/apartment/` | 39.0 KB | 60 KB |
-| Fonts, all pages, downloaded once | 46.8 KB | 55 KB |
+| Fonts, all pages, downloaded once (not at all on Apple devices) | 47.1 KB | 55 KB |
 
-Fonts: Public Sans (variable, body) and Instrument Serif (headings), Latin subset, self-hosted from `src/assets/fonts/`.
+Design (28 September 2026, at Aron's request): Apple-inspired. The system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). Big tight headlines, white and #f5f5f7 grey sections, rounded tiles, a translucent sticky nav, pill buttons in Apple blue, a sticky buy panel on product pages at desktop widths, and line icons drawn inline (`src/components/Icon.astro`).
 
-Lighthouse (mobile, local build, 26 September 2026): 100 performance, accessibility, best practices and SEO on home, `/kit/` and an entry; 100 performance on `/apartment/` (SEO 66 there is the intended `noindex`).
+Lighthouse (mobile, production build, 28 September 2026, after the redesign): 100 performance, accessibility, best practices and SEO on home, `/kit/` and `/privacy/`, CLS 0.
 
-Palette contrast (WCAG): every text/background pair is at least 5.4:1 in light mode and 7.0:1 in dark mode.
+Palette contrast (WCAG AA): every text/background pair is at least 4.66:1 in light mode and 4.70:1 in dark mode (the lowest is white on the Apple-blue button).
 
 Amazon links: two buy blocks on each single-product entry, three on the laptop (25 with all twelve entries published). Each carries `rel="sponsored nofollow noopener"` and is untagged while affiliate is switched off.
 
@@ -128,7 +128,8 @@ src/
     github-oauth.ts          shared pieces of the admin's "Sign in with GitHub" popup flow
   layouts/Base.astro         head, theme injection, speculation rules, nav, footer
   components/
-    EntryRow.astro           list row; links to the entry, never to Amazon
+    ProductTile.astro        product tile; links to the entry, never to Amazon
+    Icon.astro               inline line icons (categories and the home page)
     BuyBlock.astro           disclosure line + Amazon button
     PicksBlock.astro         multi-option entries (the laptop)
     Apartment.tsx            Preact island: sign-in, calendar, requests, owner actions

@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import EntryRow from "../../components/EntryRow.astro";
+import ProductTile from "../../components/ProductTile.astro";
 import { copy } from "../../config/active";
 import { getShelves } from "../../lib/kit";
 
@@ -8,48 +8,60 @@ const { kit, categories, tags } = await getShelves();
 ---
 
 <Base title={copy.kit.title} description={copy.kit.lead}>
-  <h1>{copy.kit.title}</h1>
-  <p class="lead">{copy.kit.lead}</p>
+  <header class="container page-head">
+    <h1 class="page-title">{copy.kit.title}</h1>
+    <p class="page-sub">{copy.kit.lead}</p>
+  </header>
 
-  <!-- Hidden until the script runs: with JavaScript off the full list shows and there are no dead buttons. -->
-  <div class="filter" data-filter hidden>
-    <fieldset>
-      <legend>{copy.kit.filterCategory}</legend>
-      <div class="options">
-        <button type="button" data-kind="category" data-value="" aria-pressed="true">{copy.kit.allCategories}</button>
-        {
-          categories.map((c) => (
-            <button type="button" data-kind="category" data-value={c.slug} aria-pressed="false">
-              {c.name}
-            </button>
-          ))
-        }
-      </div>
-    </fieldset>
-    <fieldset>
-      <legend>{copy.kit.filterTag}</legend>
-      <div class="options">
-        <button type="button" data-kind="tag" data-value="" aria-pressed="true">{copy.kit.allTags}</button>
-        {
-          tags.map((t) => (
-            <button type="button" data-kind="tag" data-value={t.slug} aria-pressed="false">
-              {t.name}
-            </button>
-          ))
-        }
-      </div>
-    </fieldset>
-  </div>
+  <div class="container">
+    <!-- Hidden until the script runs: with JavaScript off the full list shows and there are no dead buttons. -->
+    <div class="filter" data-filter hidden>
+      <fieldset>
+        <legend>{copy.kit.filterCategory}</legend>
+        <div class="pills">
+          <button type="button" data-kind="category" data-value="" aria-pressed="true">{copy.kit.allCategories}</button>
+          {
+            categories.map((c) => (
+              <button type="button" data-kind="category" data-value={c.slug} aria-pressed="false">
+                {c.name}
+              </button>
+            ))
+          }
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{copy.kit.filterTag}</legend>
+        <div class="pills">
+          <button type="button" data-kind="tag" data-value="" aria-pressed="true">{copy.kit.allTags}</button>
+          {
+            tags.map((t) => (
+              <button type="button" data-kind="tag" data-value={t.slug} aria-pressed="false">
+                {t.name}
+              </button>
+            ))
+          }
+        </div>
+      </fieldset>
+    </div>
 
-  {kit.length === 0 && <p class="note">{copy.home.empty}</p>}
-  <p class="count" data-count aria-live="polite" hidden></p>
-  <ul class="entries">
-    {kit.map((entry) => <EntryRow entry={entry} />)}
-  </ul>
-  <div class="empty" data-empty hidden>
-    <p>{copy.kit.empty}</p>
-    <button type="button" class="button" data-clear>{copy.kit.clear}</button>
+    {
+      kit.length === 0 && (
+        <div class="empty-state">
+          <h2>{copy.home.emptyHeading}</h2>
+          <p>{copy.home.empty}</p>
+        </div>
+      )
+    }
+    <p class="count" data-count aria-live="polite" hidden></p>
+    <ul class="product-grid entries">
+      {kit.map((entry) => <ProductTile entry={entry} />)}
+    </ul>
+    <div class="list-empty" data-empty hidden>
+      <p>{copy.kit.empty}</p>
+      <button type="button" class="button" data-clear>{copy.kit.clear}</button>
+    </div>
   </div>
+  <div class="section-spacer" aria-hidden="true"></div>
 </Base>
 
 <script>

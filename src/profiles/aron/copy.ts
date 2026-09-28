@@ -13,10 +13,32 @@ export const copy = {
   home: {
     title: "Kit for long days on your feet",
     lead: "Recommendations for people who stand, lift and carry for a living: café and kitchen staff, shop floors, anyone whose day ends with sore feet.",
+    cta: "Browse the kit",
+    secondary: "How this site works",
     categoriesHeading: "Browse by what you need",
-    allLink: "See everything in one list",
+    explore: "Explore",
+    allLink: "See everything",
     featuredHeading: "Start here",
+    emptyHeading: "Coming soon",
     empty: "The first recommendations are being checked and will appear here shortly.",
+    whyHeading: "Picked for ten-hour shifts",
+    why: [
+      {
+        icon: "check",
+        title: "Owned or researched, always labelled",
+        text: "Every pick says plainly whether I use it or have only researched it.",
+      },
+      {
+        icon: "balance",
+        title: "An honest drawback on every pick",
+        text: "Nothing is perfect. Every page says what the product gets wrong.",
+      },
+      {
+        icon: "arrow",
+        title: "Straight to Amazon.es",
+        text: "Buttons open the product on Amazon.es. There are no prices here, because they change every day.",
+      },
+    ],
   },
   kit: {
     title: "Everything, in one list",
@@ -38,6 +60,8 @@ export const copy = {
     healthLead:
       "This describes experience and research, not medical advice. Nothing here treats, cures or prevents any condition.",
     reviewed: "Last checked",
+    learnMore: "Learn more",
+    seePicks: "See the three picks",
     buyLabel: "View on Amazon.es",
     untaggedNote: "Opens Amazon.es in a new tab.",
     picksHeading: "Three picks, by use",

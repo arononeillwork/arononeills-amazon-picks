@@ -1,0 +1,30 @@
+---
+// A product as a grey rounded tile. Links to the entry page, never straight to
+// Amazon, so every affiliate link sits beside its disclosure. The data-*
+// attributes drive the filter on /kit/.
+import { categoryBySlug, copy, tagBySlug } from "../config/active";
+import { entryHref, type Entry } from "../lib/kit";
+
+interface Props {
+  entry: Entry;
+  showCategory?: boolean;
+}
+
+const { entry, showCategory = true } = Astro.props;
+const { data } = entry;
+---
+
+<li class="tile product-tile" data-category={data.category} data-tags={data.tags.join(" ")}>
+  <p class="eyebrow">
+    {showCategory ? categoryBySlug(data.category).name : data.tags.map((t) => tagBySlug(t).name).join(" · ")}
+  </p>
+  <h3><a class="tile-link" href={entryHref(entry)}>{data.title}</a></h3>
+  <p class="product-name">{data.product}</p>
+  <p class="summary">{data.summary}</p>
+  <div class="tile-foot">
+    <span class:list={["badge", data.experience]}>
+      {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
+    </span>
+    <span class="link-chevron" aria-hidden="true">{copy.entry.learnMore}</span>
+  </div>
+</li>

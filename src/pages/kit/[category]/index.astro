@@ -1,6 +1,7 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import EntryRow from "../../../components/EntryRow.astro";
+import Icon from "../../../components/Icon.astro";
+import ProductTile from "../../../components/ProductTile.astro";
 import { getKit, getShelves } from "../../../lib/kit";
 
 export async function getStaticPaths() {
@@ -13,10 +14,16 @@ const entries = (await getKit()).filter((entry) => entry.data.category === categ
 ---
 
 <Base title={category.name} description={category.intro}>
-  <p class="crumbs"><a href="/kit/">All kit</a></p>
-  <h1>{category.name}</h1>
-  <p class="lead">{category.intro}</p>
-  <ul class="entries">
-    {entries.map((entry) => <EntryRow entry={entry} showCategory={false} />)}
-  </ul>
+  <header class="container page-head">
+    <p class="crumbs"><a href="/kit/">All kit</a></p>
+    <Icon name={category.slug} />
+    <h1 class="page-title">{category.name}</h1>
+    <p class="page-sub">{category.intro}</p>
+  </header>
+  <div class="container">
+    <ul class="product-grid">
+      {entries.map((entry) => <ProductTile entry={entry} showCategory={false} />)}
+    </ul>
+  </div>
+  <div class="section-spacer" aria-hidden="true"></div>
 </Base>

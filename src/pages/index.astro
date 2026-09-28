@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
-import EntryRow from "../components/EntryRow.astro";
+import Icon from "../components/Icon.astro";
+import ProductTile from "../components/ProductTile.astro";
 import { copy, site } from "../config/active";
 import { getShelves } from "../lib/kit";
 
@@ -16,40 +17,89 @@ const counts = Object.fromEntries(
 
 <Base>
   <section class="hero">
-    <p class="eyebrow">{site.identity.tagline}</p>
-    <h1>{copy.home.title}</h1>
-    <p class="lead">{copy.home.lead}</p>
-    <p class="prose">{site.owner.about}</p>
+    <div class="container narrow">
+      <h1 class="display">{copy.home.title}</h1>
+      <p class="hero-sub">{copy.home.lead}</p>
+      <div class="cta-row">
+        {kit.length > 0 && <a class="button" href="/kit/">{copy.home.cta}</a>}
+        <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
+      </div>
+    </div>
   </section>
 
   {
     kit.length === 0 ? (
-      <p class="note">{copy.home.empty}</p>
+      <section class="section section-alt">
+        <div class="container">
+          <div class="empty-state">
+            <h2>{copy.home.emptyHeading}</h2>
+            <p>{copy.home.empty}</p>
+          </div>
+        </div>
+      </section>
     ) : (
       <>
-        <h2>{copy.home.categoriesHeading}</h2>
-        <ul class="cards">
-          {
-            categories.map((category) => (
-              <li>
-                <a class="card" href={`/kit/${category.slug}/`}>
-                  <h3>{category.name}</h3>
+        <section class="section section-alt">
+          <div class="container">
+            <h2 class="section-title center">{copy.home.categoriesHeading}</h2>
+            <ul class="category-grid">
+              {categories.map((category) => (
+                <li class="tile category-tile">
+                  <Icon name={category.slug} />
+                  <h3>
+                    <a class="tile-link" href={`/kit/${category.slug}/`}>
+                      {category.name}
+                    </a>
+                  </h3>
                   <p>{category.intro}</p>
-                  <p>
-                    {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
-                  </p>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <p><a href="/kit/">{copy.home.allLink}</a></p>
+                  <div class="tile-foot">
+                    <span class="count-label">
+                      {counts[category.slug]} {counts[category.slug] === 1 ? "pick" : "picks"}
+                    </span>
+                    <span class="link-chevron" aria-hidden="true">
+                      {copy.home.explore}
+                    </span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
-        <h2>{copy.home.featuredHeading}</h2>
-        <ul class="entries">
-          {featured.map((entry) => <EntryRow entry={entry} />)}
-        </ul>
+        <section class="section">
+          <div class="container">
+            <div class="section-head">
+              <h2 class="section-title">{copy.home.featuredHeading}</h2>
+              <a class="link-chevron" href="/kit/">
+                {copy.home.allLink}
+              </a>
+            </div>
+            <ul class="product-grid">
+              {featured.map((entry) => (
+                <ProductTile entry={entry} />
+              ))}
+            </ul>
+          </div>
+        </section>
       </>
     )
   }
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2 class="section-title center">{copy.home.whyHeading}</h2>
+      <p class="section-sub center">{site.owner.about}</p>
+      <ul class="points">
+        {
+          copy.home.why.map((point) => (
+            <li>
+              <Icon name={point.icon} />
+              <h3>{point.title}</h3>
+              <p>{point.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </Base>

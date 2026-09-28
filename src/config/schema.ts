@@ -19,7 +19,11 @@ const palette = z.object({
   text: colour,
   muted: colour,
   line: colour,
+  /** Links and small accents. */
   accent: colour,
+  /** Filled buttons (the buy button). Separate from `accent` so both pass contrast in dark mode. */
+  button: colour,
+  /** Text on filled buttons. */
   accentText: colour,
   focus: colour,
 });

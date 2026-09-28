@@ -12,15 +12,17 @@ interface Props {
 const { picks } = Astro.props;
 ---
 
-<section class="picks" aria-labelledby="picks-heading">
+<section class="picks" id="picks" aria-labelledby="picks-heading">
   <h2 id="picks-heading">{copy.entry.picksHeading}</h2>
-  {
-    picks.map((pick) => (
-      <BuyBlock asin={pick.asin} product={pick.product}>
-        <h3 class="pick-label">{pick.label}</h3>
-        <p class="pick-product">{pick.product}</p>
-        <p class="pick-why">{pick.why}</p>
-      </BuyBlock>
-    ))
-  }
+  <div class="picks-grid">
+    {
+      picks.map((pick) => (
+        <BuyBlock asin={pick.asin} product={pick.product} class="pick-card">
+          <h3 class="pick-label">{pick.label}</h3>
+          <p class="pick-product">{pick.product}</p>
+          <p class="pick-why">{pick.why}</p>
+        </BuyBlock>
+      ))
+    }
+  </div>
 </section>

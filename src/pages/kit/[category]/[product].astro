@@ -3,7 +3,7 @@ import { render } from "astro:content";
 import Base from "../../../layouts/Base.astro";
 import BuyBlock from "../../../components/BuyBlock.astro";
 import PicksBlock from "../../../components/PicksBlock.astro";
-import { categoryBySlug, copy, tagBySlug } from "../../../config/active";
+import { categoryBySlug, copy } from "../../../config/active";
 import { formatDate, getKit, type Entry } from "../../../lib/kit";
 
 export async function getStaticPaths() {
@@ -19,58 +19,72 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 const category = categoryBySlug(data.category);
+const reviewed = data.reviewed.toISOString().slice(0, 10);
 ---
 
 <Base title={data.title} description={data.summary} ogType="article">
-  <article>
-    <p class="crumbs"><a href="/kit/">All kit</a> / <a href={`/kit/${category.slug}/`}>{category.name}</a></p>
-    <header class="entry-header">
-      <h1>{data.title}</h1>
-      <p class="product-name">{data.product}</p>
-      <p class="meta">
-        <span class:list={["chip", data.experience]}>
-          {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
-        </span>
-        {data.tags.map((tag) => <span class="chip">{tagBySlug(tag).name}</span>)}
+  <article class="container product">
+    <header class="product-head">
+      <p class="crumbs">
+        <a href="/kit/">All kit</a><span aria-hidden="true">›</span><a href={`/kit/${category.slug}/`}>{category.name}</a>
       </p>
-      <p class="lead">{data.summary}</p>
+      <h1 class="product-title">{data.title}</h1>
+      <p class="product-sub">{data.summary}</p>
     </header>
 
-    {
-      data.experience === "researched" && (
-        <div class="note">
-          <p>{copy.entry.researchedNote}</p>
+    <div class="product-layout">
+      <!-- First in the source so it sits under the headline on phones; the sticky right-hand column on desktop. -->
+      <aside class="buy-panel" aria-label="Where to buy">
+        <span class:list={["badge", data.experience]}>
+          {data.experience === "owned" ? copy.entry.owned : copy.entry.researched}
+        </span>
+        <p class="panel-product">{data.product}</p>
+        {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
+        {data.picks && <a class="link-chevron" href="#picks">{copy.entry.seePicks}</a>}
+        <p class="panel-meta">
+          {copy.entry.reviewed} <time datetime={reviewed}>{formatDate(data.reviewed)}</time>
+        </p>
+      </aside>
+
+      <div class="product-body">
+        {
+          data.experience === "researched" && (
+            <div class="callout">
+              <p>{copy.entry.researchedNote}</p>
+            </div>
+          )
+        }
+
+        {
+          data.health && (
+            <section class="callout health" aria-labelledby="health-heading">
+              <h2 id="health-heading">{copy.entry.healthHeading}</h2>
+              <p>{copy.entry.healthLead}</p>
+              <p>{data.healthNote}</p>
+            </section>
+          )
+        }
+
+        <div class="prose">
+          <Content />
         </div>
-      )
-    }
 
-    {
-      data.health && (
-        <section class="note health" aria-labelledby="health-heading">
-          <h2 id="health-heading" class="eyebrow">{copy.entry.healthHeading}</h2>
-          <p>{copy.entry.healthLead}</p>
-          <p>{data.healthNote}</p>
+        {data.picks && <PicksBlock picks={data.picks} />}
+
+        <section class="callout drawback" aria-labelledby="drawback-heading">
+          <h2 id="drawback-heading">{copy.entry.drawbackHeading}</h2>
+          <p>{data.drawback}</p>
         </section>
-      )
-    }
 
-    {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
-
-    <div class="prose">
-      <Content />
+        {
+          data.asin && (
+            <div class="buy-end">
+              <p class="panel-product">{data.product}</p>
+              <BuyBlock asin={data.asin} product={data.product} />
+            </div>
+          )
+        }
+      </div>
     </div>
-
-    {data.picks && <PicksBlock picks={data.picks} />}
-
-    <section class="drawback" aria-labelledby="drawback-heading">
-      <h2 id="drawback-heading">{copy.entry.drawbackHeading}</h2>
-      <p>{data.drawback}</p>
-    </section>
-
-    {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
-
-    <p class="reviewed">
-      {copy.entry.reviewed}: <time datetime={data.reviewed.toISOString().slice(0, 10)}>{formatDate(data.reviewed)}</time>
-    </p>
   </article>
 </Base>
