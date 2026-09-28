@@ -300,7 +300,7 @@ The first deploy goes out with `affiliate.enabled: false`. Links are untagged an
 
 The 180-day clock starts at signup, not at launch. Sign up only once the site is live and complete.
 
-- [ ] **Aron:** sign up at afiliados.amazon.es as the company (business account) with its registered name and NIF `B27576347`, and the company's bank account for payments. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview as an entity
+- [x] **Aron:** applied on 28 September 2026. **The 180-day window for three qualifying sales ends on 27 March 2027.** Signed up at afiliados.amazon.es as the company (business account) with its registered name and NIF `B27576347`, and the company's bank account for payments. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview as an entity
 - [ ] **Aron:** send the tracking ID (ends `-21`) and the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
 - [ ] Set the tracking ID, the statements and "Affiliate links switched on" in the admin (**Amazon Associates**), or in `src/profiles/aron/affiliate.json`; the save deploys itself if the gate passes
 - [ ] Verify on the live site that buy buttons carry `?tag=`, and that both disclosures show
