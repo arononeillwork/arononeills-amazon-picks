@@ -59,15 +59,16 @@ Publish at least ten products before applying to Amazon Associates; their review
 
 Keep new products as drafts until they're finished; drafts are never checked this strictly and never go live.
 
-## Adding your own photo
+## Adding a photo
 
-Every product shows a simple drawing until you add a photo of your own.
+Every product shows a simple drawing until it has a photo. Two kinds are allowed:
 
-1. Take the photo: the product on a plain, light background (a white worktop or a sheet of paper works), in daylight, filling most of the frame. Landscape is best; the site crops the edges slightly on cards.
-2. In the admin, open the product, press **Photo**, and upload it straight from your phone or computer. iPhone photos are fine: the admin converts them to a small WebP before saving.
-3. **Save**. The site makes the sizes it needs when it rebuilds.
+- **The brand's official product photo**, saved from the brand's own website or press kit (not from Amazon). Check it shows the exact model and colour you link to, and fill in **Photo credit** with the brand's name.
+- **Your own photo**: the product on a plain, light background, in daylight.
 
-Only your own photos. Never an image saved from Amazon or a brand's website; Amazon's rules forbid it, and the site refuses web addresses in this field.
+In the admin, open the product, press **Photo**, upload it and **Save**. The site sizes it for every screen and blends a white background into the page.
+
+Never use an image saved from Amazon: the Associates rules forbid copying or storing Amazon's images, and breaking them can close the account.
 
 ## "At a glance"
 
@@ -91,5 +92,5 @@ Once Associates Central gives you a tracking ID (it ends in `-21`):
 
 ## Things the admin won't let you do, on purpose
 
-- Put product photos from Amazon on the site. Only your own photos, uploaded in the **Photo** field, are allowed.
+- Put product photos from Amazon on the site. Only your own photos or the brand's official ones, uploaded in the **Photo** field, are allowed.
 - Link to Amazon from the write-up. The site builds every Amazon link itself, with the right disclosure next to it.

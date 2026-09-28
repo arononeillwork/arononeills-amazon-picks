@@ -72,6 +72,7 @@ export const copy = {
     researchedNote: "I haven't used this one. It's picked from the maker's specifications and widely reported owner experience.",
     highlightsLabel: "At a glance",
     illustration: "Illustration",
+    imageBy: "Image:",
     drawbackHeading: "The honest drawback",
     detailsHeading: "The details.",
     detailsSub: "What to look for, and who it suits.",
@@ -110,7 +111,7 @@ export const copy = {
         heading: "What I don't do",
         paragraphs: [
           "No brand pays to be listed here. There are no prices on the site, because they change daily; Amazon.es shows the current one.",
-          "Photos, when there are any, are my own. Otherwise the pictures are simple drawings of that kind of product, labelled as illustrations, not pictures of the exact model. I don't copy Amazon's product images or its customer reviews.",
+          "Product photos are either my own or the manufacturer's official images, credited under each one. Products without a photo yet show a simple drawing, labelled as an illustration. I don't use Amazon's product images or copy its customer reviews.",
         ],
       },
       {

@@ -115,6 +115,7 @@ interface EntryData {
   summary: string;
   highlights?: string[];
   image?: string;
+  imageCredit?: string;
   experience: "owned" | "researched";
   asin?: string;
   picks?: { label: string; product: string; asin: string; why: string }[];
@@ -183,7 +184,10 @@ for (const file of entryFiles) {
   if (AMAZON_URL.test(body)) problems.push("links to Amazon from the body (only amazon.ts builds Amazon links)");
   if (/!\[/.test(body)) problems.push("has an image in the body (own photos only, via <Picture>)");
   if (data.image && !/^\.\/images\/[^/]+\.(webp|jpe?g|png|avif)$/i.test(data.image)) {
-    problems.push(`image must be an uploaded photo in ./images/, not ${data.image} (own photos only)`);
+    problems.push(`image must be a photo stored in ./images/, not ${data.image} (own or manufacturer photos only)`);
+  }
+  if (data.imageCredit && AMAZON_VARIANT.test(data.imageCredit)) {
+    problems.push("image credited to Amazon (Amazon's product images aren't allowed; use the manufacturer's or your own)");
   }
   if (data.experience === "researched" && (FIRST_PERSON_USE.test(body) || strings.some((s) => FIRST_PERSON_USE.test(s)))) {
     problems.push("researched entry implies personal use");

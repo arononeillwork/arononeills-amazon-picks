@@ -117,7 +117,15 @@ const products = {
       public_folder: "./images",
       choose_url: false,
       accept: "image/jpeg,image/png,image/webp,image/heic,image/avif",
-      hint: "Your own photo only, ideally the product on a plain, light background. Never an image copied from Amazon or a brand's website. Without a photo the site shows a drawing.",
+      hint: "Your own photo, or the brand's official product photo from its own website or press kit (then fill in Photo credit). Never an image saved from Amazon: its rules forbid it. Check the photo shows the exact model and colour. Without a photo the site shows a drawing.",
+    },
+    {
+      name: "imageCredit",
+      label: "Photo credit",
+      widget: "string",
+      required: false,
+      pattern: plainText("The credit"),
+      hint: "Only when the photo isn't yours: the brand's name, e.g. “Therabody”. Shown under the photo.",
     },
     {
       name: "experience",

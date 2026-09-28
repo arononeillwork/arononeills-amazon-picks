@@ -35,8 +35,10 @@ const kit = defineCollection({
         summary: z.string().min(1).max(160),
         /** Two to four short facts shown beside the buy button, e.g. "Five speeds, stated 55 dB". */
         highlights: z.preprocess(blank, z.array(z.string().min(1).max(44).refine(noAmazon, NO_AMAZON)).min(2).max(4).optional()),
-        /** Aron's own photo, saved beside the entry in ./images/ by the admin. Never an Amazon or brand image. */
+        /** Aron's own photo or the manufacturer's official product photo, saved in ./images/. Never an image from Amazon. */
         image: z.preprocess(blank, image().optional()),
+        /** Who the photo belongs to when it isn't Aron's, e.g. "Therabody". Shown under the photo. */
+        imageCredit: z.preprocess(blank, z.string().min(1).max(40).optional()),
         /** owned: only what Aron has actually said. researched: never implies personal use. */
         experience: z.enum(["owned", "researched"]),
         asin: z.preprocess(blank, asin.optional()),
