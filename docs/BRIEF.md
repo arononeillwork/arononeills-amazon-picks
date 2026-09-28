@@ -29,7 +29,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
 | Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
-| Catalogue | 18 products in 5 categories (Aron added six and replaced the TENS pick, 28 September 2026) |
+| Catalogue | 19 products in 5 categories (Aron added seven and replaced the TENS pick, 28 September 2026) |
 | Catalogue shape | Category landing pages plus one filterable list of everything |
 | Language | English (for the expat audience) unless the owner decides otherwise |
 | Deployment rule | Nothing deploys until the owner explicitly says so and the preflight passes |
@@ -48,12 +48,12 @@ Catalogue (category → entries):
 | Category | Slug | Entries |
 | --- | --- | --- |
 | On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes |
-| Recovery | `recovery` | **tens-unit**, massage-gun, foam-roller, foot-massage-ball |
+| Recovery | `recovery` | **tens-unit**, **theragun-sense**, massage-gun, foam-roller, foot-massage-ball |
 | Carry and charge | `carry` | **power-bank**, laptop (three picks), water-bottle, work-backpack |
 | At home | `at-home` | **espresso-machine**, **coffee-canister**, **multi-cooker**, **usb-power-strip** |
 | Out in the sun | `sun` | **sunscreen**, **face-sunscreen** |
 
-Bold entries are published (8 of 18, 28 September 2026). Aron chose the six new products and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`).
+Bold entries are published (9 of 19, 28 September 2026). Aron chose the seven new products (the Theragun Sense came later the same day) and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`).
 
 Situation tags: `long-shifts`, `after-work`, `commute`, `travel`, `at-home`.
 

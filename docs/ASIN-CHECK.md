@@ -24,6 +24,7 @@ If it's right, tell Claude (or set `draft: false` in the entry file yourself). I
 | `water-bottle.md` | Hydro Flask Standard Mouth 709 ml, Flex Cap | https://www.amazon.es/dp/B01KXHGWQU | |
 | `work-backpack.md` | Thule Paramount Backpack 27L | https://www.amazon.es/dp/B09FPYMTQ9 | Paramount Backpack, not the Paramount Commuter |
 | `tens-unit.md` | iWarmbase 3-in-1 TENS/EMS/Massage | https://www.amazon.es/dp/B0FJRXMVK9 | **Done**: chosen by Aron, 28 September 2026. Published as researched; if it's the one you use, send a few lines and it becomes "I own this" |
+| `theragun-sense.md` | Therabody Theragun Sense (2nd generation) | https://www.amazon.es/dp/B0FNX9TF9R | **Done**: chosen by Aron, 28 September 2026 |
 | `espresso-machine.md` | Sage The Oracle Jet | https://www.amazon.es/dp/B0DFGRJMBC | **Done**: chosen by Aron, 28 September 2026 |
 | `coffee-canister.md` | Fellow Atmos Vacuum Canister 1.2 L, glass | https://www.amazon.es/dp/B07NPMNW84 | **Done**: chosen by Aron, 28 September 2026 |
 | `multi-cooker.md` | Ninja Combi 12-in-1 SFP700EU | https://www.amazon.es/dp/B0CZPKSGFV | **Done**: chosen by Aron, 28 September 2026 |

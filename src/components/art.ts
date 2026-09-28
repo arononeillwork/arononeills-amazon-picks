@@ -255,4 +255,16 @@ export const art: Record<string, string> = {
     <rect class="hl" x="168" y="122" width="7" height="126" rx="3.5"/>
     <path class="a" d="M292 158 C292 158 270 186 270 200 A22 22 0 0 0 314 200 C314 186 292 158 292 158 Z"/>
     <circle class="hl" cx="284" cy="200" r="5"/>`,
+
+  "theragun-sense": `
+    <ellipse class="sh" cx="210" cy="262" rx="120" ry="10"/>
+    <path class="ln-ad" d="M160 96 L292 96 L228 222 Z" fill="none" stroke-width="30" stroke-linejoin="round"/>
+    <circle class="a" cx="228" cy="206" r="6"/>
+    <rect class="k" x="248" y="84" width="44" height="26" rx="7"/>
+    <path class="ln-a" d="M254 97 h7 l4 -6 l5 12 l5 -12 l4 6 h7" fill="none" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect class="b" x="98" y="72" width="120" height="50" rx="25"/>
+    <rect class="hl" x="112" y="80" width="84" height="7" rx="3.5"/>
+    <rect class="s" x="68" y="86" width="36" height="22" rx="6"/>
+    <circle class="a" cx="58" cy="97" r="26"/>
+    <circle class="hl" cx="50" cy="88" r="7"/>`,
 };
