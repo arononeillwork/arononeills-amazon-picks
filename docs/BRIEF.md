@@ -19,8 +19,9 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Area | Decision |
 | --- | --- |
 | Business model | Amazon affiliate recommendations only |
-| Framework | Astro 7, fully static output |
-| Hosting | Vercel Pro ($20/month, from launch). Claude deploys every update |
+| Framework | Astro 7. Every public page is prerendered static HTML; the `@astrojs/vercel` adapter exists only for the two admin sign-in endpoints (`/api/auth/`, `/api/callback/`) |
+| Admin | Sveltia CMS at `/admin/`, self-hosted. Edits products and the Associates settings as commits to the GitHub repo; see `docs/ADMIN.md` |
+| Hosting | Vercel Pro ($20/month, from launch), connected to the GitHub repo. Every push, including every admin save, builds with `npm run preflight`; a failing gate fails the deployment and the live site stays on the last good version |
 | Address | `https://arononeillspicks.vercel.app`. No custom domain |
 | Marketplace | Amazon.es |
 | Associates account | **The café company** (Easy Beans, NIF `B27576347`) runs the site and holds the Associates account. Aron's decision, 28 September 2026, replacing the earlier persona física plan |
@@ -85,7 +86,7 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 
 ### Not done
 
-- Legal details: the company runs the site. NIF `B27576347` (control digit checks out), address C. Pizarro, 8, 29670 San Pedro de Alcántara and email easybeanscafe@gmail.com are set. Still placeholders: the company's registered name (razón social) and its Registro Mercantil entry (tomo, folio, hoja), both required on a company's legal notice. Aron to confirm the address is the domicilio social on the company's NIF card
+- Legal details: Easy Beans Coffee, S.L., NIF `B27576347`, C. Pizarro, 8, 29670 San Pedro de Alcántara, easybeanscafe@gmail.com (all confirmed by Aron, 28 September 2026). Still missing: the Registro Mercantil entry (tomo, folio, hoja) from the escritura, which LSSI-CE art. 10.1.b expects on a company's legal notice. The preflight warns until `legal.registry` is set; the privacy page shows it once it is
 - The TENS entry is Aron's (owned) and waits for his words, brand/model and ASIN. It's a draft, so it doesn't block launch
 - All eleven researched entries are written (200–400 words, pass every content check) but stay `draft: true` because nobody has yet seen their ASINs resolve on amazon.es. Aron confirms them with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
 - Calendar (deferred): the Supabase sign-up hook, URL configuration and SMTP are not yet set in the dashboard, and the live magic-link round trip has never been tested. None of this blocks launch while `features.apartment` is false
@@ -100,7 +101,9 @@ astro.config.ts              static output, trailingSlash: "always", sitemap exc
 vercel.json                  trailing slashes, immutable asset caching, noindex header on /apartment
 package.json                 scripts: dev, build, preview, check, preflight; Node >= 22.12
 .env.example                 SITE_PROFILE, PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY
-scripts/preflight.ts         the deploy gate
+scripts/preflight.ts         the deploy gate (reads .vercel/output, where the adapter writes what Vercel serves)
+scripts/vercel-headers.ts    copies vercel.json headers into .vercel/output/config.json (the adapter drops them)
+docs/ADMIN.md                how Aron uses the admin, and its one-time sign-in setup
 supabase/schema.sql          matches the live database; safe to re-run
 supabase/tests/access.sql    17-case access-control test
 public/favicon.svg
@@ -113,7 +116,8 @@ src/
     active.ts                profile registry; SITE_PROFILE selects one
     theme.ts                 palette to CSS variables
   profiles/aron/
-    site.ts                  identity, legal, palette, features, affiliate switch and tag
+    site.ts                  identity, legal, palette, features, admin repo
+    affiliate.json           Associates switch, tracking ID and disclosures (edited from the admin)
     catalogue.ts             3 categories, 4 situation tags
     copy.ts                  all non-entry copy
     kit/*.md                 one file per product; filename is the URL slug
@@ -121,6 +125,7 @@ src/
     amazon.ts                the only place an Amazon URL is built
     kit.ts                   loads and orders entries (drafts left out of production); entry URLs
     supabase.ts              auth-js + postgrest-js clients
+    github-oauth.ts          shared pieces of the admin's "Sign in with GitHub" popup flow
   layouts/Base.astro         head, theme injection, speculation rules, nav, footer
   components/
     EntryRow.astro           list row; links to the entry, never to Amazon
@@ -130,6 +135,8 @@ src/
     apartment.css            calendar styles, bundled on /apartment/ only
   pages/                     index, kit/, kit/[category]/, kit/[category]/[product],
                              disclosure, privacy, 404, robots.txt
+  pages/admin/               the admin page and its generated config.yml
+  pages/api/                 auth.ts and callback.ts, the only on-demand (server) routes
   routes/apartment.astro     the calendar page, injected only when features.apartment is on
   styles/global.css
 ```
@@ -205,6 +212,8 @@ Each of these was found by testing rather than by the build passing. Keep the fi
 - **Invented experience.** The first TENS draft contained made-up details in Aron's voice. They were replaced with prompts. Don't repeat this
 - **Implicit auth flow is deliberate.** PKCE fails when a friend requests a link on one device and opens it on another or in a mail app's browser
 - **Unused islands still ship.** A page that isn't generated still gets its island bundled if the file sits in `src/pages/`. The calendar lives in `src/routes/` and is injected from `astro.config.ts` so that switching it off really removes it
+- **The adapter drops vercel.json headers.** `@astrojs/vercel` writes its own `.vercel/output/config.json` without them; `scripts/vercel-headers.ts` puts them back and the preflight checks they're there
+- **The admin editor is 2 MB of JavaScript.** It's copied into `public/admin/cms/` (gitignored) at build; `tsconfig.json` excludes it or `astro check` runs out of memory
 - **The project archive never arrived.** The first build lived only in a claude.ai sandbox. Everything now lives in this repository; push after every working session
 
 ## 7. The work, in order
@@ -274,13 +283,14 @@ Acceptance: `npm run preflight` passes: every published entry passes every check
 
 Only after Aron explicitly says to host it.
 
-- [ ] **Aron:** upgrade to Vercel Pro. Pro belongs to a team, so Vercel will ask him to create one. (Claude can start the purchase through the Vercel connector, but only with Aron's explicit go-ahead)
-- [ ] Link or create project `arononeillspicks` in the Pro team. Framework: Astro. Node 22.x
-- [ ] Add production env var `SITE_PROFILE=aron` (plus `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_PUBLISHABLE_KEY` from `.env.example` once the calendar is on)
-- [ ] `npm run preflight`, then `vercel pull --yes --environment=production`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Building locally and deploying prebuilt means what ships is exactly what passed the gate
+- [ ] **Aron:** upgrade the Vercel account to Pro: the free 14-day trial in the dashboard, or approve the purchase through the Vercel connector
+- [ ] Create project `arononeillspicks` connected to `arononeillwork/arononeills-amazon-picks`. Framework: Astro. Build command: `npm run preflight`. Node 22.x. Env var `SITE_PROFILE=aron` (plus the Supabase pair once the calendar is on). If Vercel's GitHub app can't see the repo, **Aron** grants it access in GitHub → Settings → Applications → Vercel
+- [ ] The production branch is the repo's default branch (currently `claude/sharp-heisenberg-mtevsr`); the admin commits there
 - [ ] Confirm the production URL loads while logged out of Vercel. Deployment Protection may cover previews; it must not cover production
-- [ ] If Vercel assigns a different address because the name is taken, update `identity.url` in `site.ts` and the Supabase URL configuration, then redeploy before anything is registered with Amazon
-- [ ] Smoke test live: every route, the filter, the 404, `robots.txt`, `sitemap-index.xml` (and the apartment round trip from Phase 2 once the calendar is on)
+- [ ] If Vercel assigns a different address because the name is taken, update `identity.url` in `site.ts`, the admin OAuth callback URL, and the Supabase URL configuration, then redeploy before anything is registered with Amazon
+- [ ] **Aron:** set up admin sign-in (`docs/ADMIN.md`): a GitHub OAuth app plus `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET` in Vercel, or a fine-grained token
+- [ ] **Aron:** in the admin, check each product's Amazon.es link and publish it (at least ten before Phase 6)
+- [ ] Smoke test live: every route, the filter, the 404, `robots.txt`, `sitemap-index.xml`, `/admin/` and the sign-in popup (and the apartment round trip from Phase 2 once the calendar is on)
 
 The first deploy goes out with `affiliate.enabled: false`. Links are untagged and link-level disclosures are replaced by a neutral "Opens Amazon.es" note, which is correct until Amazon issues a tag.
 
@@ -290,7 +300,7 @@ The 180-day clock starts at signup, not at launch. Sign up only once the site is
 
 - [ ] **Aron:** sign up at afiliados.amazon.es as the company (business account) with its registered name and NIF `B27576347`, and the company's bank account for payments. Site URL `https://arononeillspicks.vercel.app`. Complete the tax interview as an entity
 - [ ] **Aron:** send the tracking ID (ends `-21`) and the exact disclosure wording Associates Central shows. Amazon.es's standard Spanish statement is "En calidad de Afiliado de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables"; both the English and Spanish statements are configured and shown together until confirmed
-- [ ] Set `affiliate.tag`, `affiliate.sitewideStatement` and `affiliate.enabled: true`, then preflight and deploy
+- [ ] Set the tracking ID, the statements and "Affiliate links switched on" in the admin (**Amazon Associates**), or in `src/profiles/aron/affiliate.json`; the save deploys itself if the gate passes
 - [ ] Verify on the live site that buy buttons carry `?tag=`, and that both disclosures show
 
 Acceptance: tagged links live within a day of signup.
@@ -317,7 +327,7 @@ Stripe is not needed for any of this: Amazon takes the payment from the buyer an
 
 ```bash
 npm run dev          # localhost:4321
-npm run build        # static build to dist/
+npm run build        # astro build + vercel-headers, into .vercel/output
 npm run check        # astro check (TypeScript 6)
 npm run preflight    # build, then the deploy gate; exits non-zero on any failure
 ```
