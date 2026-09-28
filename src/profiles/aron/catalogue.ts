@@ -27,6 +27,12 @@ export const catalogue = {
       tone: "purple",
     },
     {
+      slug: "quiet",
+      name: "Peace and quiet",
+      intro: "For loud shifts, noisy commutes and switching off afterwards: earplugs and headphones that turn the world down.",
+      tone: "teal",
+    },
+    {
       slug: "sun",
       name: "Out in the sun",
       intro: "For terrace shifts, commutes and days off under the Andalusian sun.",

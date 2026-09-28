@@ -90,7 +90,7 @@ export const siteSchema = z.object({
 export type SiteConfig = z.infer<typeof siteSchema>;
 
 /** Soft colours a category can use for its cards and drawings (global.css, .tone-*). */
-export const TONES = ["blue", "green", "orange", "purple", "yellow", "grey"] as const;
+export const TONES = ["blue", "green", "orange", "purple", "yellow", "teal", "grey"] as const;
 
 export const catalogueSchema = z.object({
   categories: z

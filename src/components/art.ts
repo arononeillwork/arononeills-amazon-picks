@@ -267,8 +267,49 @@ export const art: Record<string, string> = {
     <rect class="s" x="68" y="86" width="36" height="22" rx="6"/>
     <circle class="a" cx="58" cy="97" r="26"/>
     <circle class="hl" cx="50" cy="88" r="7"/>`,
+
+  "loop-earplugs": `
+    <ellipse class="sh" cx="206" cy="252" rx="130" ry="10"/>
+    <circle class="ln-ad" cx="262" cy="118" r="44" fill="none" stroke-width="18"/>
+    <rect class="ad" x="276" y="150" width="30" height="26" rx="10" transform="rotate(35 291 163)"/>
+    <ellipse class="s" cx="312" cy="190" rx="24" ry="19" transform="rotate(35 312 190)"/>
+    <circle class="ln-a" cx="150" cy="150" r="50" fill="none" stroke-width="20"/>
+    <circle class="ln-b" cx="150" cy="150" r="50" fill="none" stroke-width="4" opacity="0.35"/>
+    <rect class="a" x="166" y="186" width="34" height="30" rx="11" transform="rotate(35 183 201)"/>
+    <ellipse class="s" cx="208" cy="228" rx="28" ry="22" transform="rotate(35 208 228)"/>
+    <ellipse class="hl" cx="200" cy="220" rx="9" ry="6" transform="rotate(35 200 220)"/>`,
+
+  "sony-wh-1000xm6": `
+    <ellipse class="sh" cx="200" cy="262" rx="124" ry="10"/>
+    <path class="ln-k" d="M110 172 C110 64 290 64 290 172" fill="none" stroke-width="16" stroke-linecap="round"/>
+    <path class="ln-s" d="M132 142 C140 94 260 94 268 142" fill="none" stroke-width="7" stroke-linecap="round"/>
+    <rect class="k" x="80" y="150" width="66" height="104" rx="31"/>
+    <rect class="s" x="138" y="162" width="18" height="80" rx="9"/>
+    <rect class="k" x="254" y="150" width="66" height="104" rx="31"/>
+    <rect class="s" x="244" y="162" width="18" height="80" rx="9"/>
+    <circle class="a" cx="113" cy="238" r="4"/>
+    <rect class="hl" x="92" y="166" width="6" height="64" rx="3"/>
+    <rect class="hl" x="266" y="166" width="6" height="64" rx="3"/>`,
+
+  lunchbox: `
+    <ellipse class="sh" cx="204" cy="262" rx="156" ry="12"/>
+    <rect class="a" x="92" y="40" width="226" height="62" rx="20" transform="rotate(-6 205 71)"/>
+    <rect class="hl" x="110" y="52" width="150" height="8" rx="4" transform="rotate(-6 185 56)"/>
+    <rect class="b" x="66" y="92" width="268" height="164" rx="28"/>
+    <rect class="s" x="82" y="108" width="136" height="132" rx="16"/>
+    <rect class="s" x="230" y="108" width="88" height="60" rx="14"/>
+    <rect class="s" x="230" y="180" width="88" height="60" rx="14"/>
+    <circle class="a" cx="118" cy="146" r="16"/>
+    <circle class="ad" cx="164" cy="140" r="20"/>
+    <circle class="a" cx="178" cy="196" r="15"/>
+    <circle class="ad" cx="122" cy="204" r="18"/>
+    <rect class="ad" x="244" y="124" width="60" height="10" rx="5"/>
+    <rect class="a" x="244" y="142" width="46" height="10" rx="5"/>
+    <circle class="k" cx="274" cy="210" r="20"/>
+    <circle class="a" cx="274" cy="210" r="11"/>`,
 };
 
-// The MacBooks share the laptop drawing until they have photos.
+// Products that share a drawing until they have photos.
 art["macbook-neo"] = art.laptop;
 art["macbook-pro-14"] = art.laptop;
+art["sony-wh-1000xm5"] = art["sony-wh-1000xm6"];

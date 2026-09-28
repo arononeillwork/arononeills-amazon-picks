@@ -460,6 +460,14 @@ a:hover {
   --tone-text: #7d5800;
 }
 
+.tone-teal {
+  --tone-bg: #e2f4f3;
+  --tone-soft: #bde5e2;
+  --tone-accent: #1c9e98;
+  --tone-deep: #0f5d59;
+  --tone-text: #0f5d59;
+}
+
 .tone-grey {
   --tone-bg: #f0f0f3;
   --tone-soft: #d9d9de;
@@ -1400,6 +1408,9 @@ a:hover {
 .tone-yellow .art-drawing .a { fill: url(#g-a-yellow) var(--tone-accent); }
 .tone-yellow .art-drawing .ad { fill: url(#g-ad-yellow) var(--tone-deep); }
 .tone-yellow .art-drawing .s { fill: url(#g-s-yellow) var(--tone-soft); }
+.tone-teal .art-drawing .a { fill: url(#g-a-teal) var(--tone-accent); }
+.tone-teal .art-drawing .ad { fill: url(#g-ad-teal) var(--tone-deep); }
+.tone-teal .art-drawing .s { fill: url(#g-s-teal) var(--tone-soft); }
 .tone-grey .art-drawing .a { fill: url(#g-a-grey) var(--tone-accent); }
 .tone-grey .art-drawing .ad { fill: url(#g-ad-grey) var(--tone-deep); }
 .tone-grey .art-drawing .s { fill: url(#g-s-grey) var(--tone-soft); }

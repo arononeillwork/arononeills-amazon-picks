@@ -29,7 +29,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
 | Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
-| Catalogue | 21 products in 5 categories (Aron added nine, including two MacBooks, and replaced the TENS pick, 28 September 2026) |
+| Catalogue | 25 products in 6 categories (Aron added thirteen, including two MacBooks, two Sony headphones, Loop earplugs and a bento box, and replaced the TENS pick, 28 September 2026) |
 | Site name | Masthead **"Aron's Picks"**. Aron asked for "Aron's Amazon Picks" (28 September 2026); Amazon's trademark rules forbid "Amazon" in an Associate's site name, so the word is left out (§5) |
 | Catalogue shape | Category landing pages plus one filterable list of everything |
 | Language | English (for the expat audience) unless the owner decides otherwise |
@@ -50,11 +50,12 @@ Catalogue (category → entries):
 | --- | --- | --- |
 | On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes |
 | Recovery | `recovery` | **tens-unit**, **theragun-sense**, massage-gun, foam-roller, foot-massage-ball |
-| Carry and charge | `carry` | **power-bank**, **macbook-neo**, **macbook-pro-14**, laptop (three picks), water-bottle, work-backpack |
+| Carry and charge | `carry` | **power-bank**, **macbook-neo**, **macbook-pro-14**, **lunchbox**, laptop (three picks), water-bottle, work-backpack |
 | At home | `at-home` | **espresso-machine**, **coffee-canister**, **multi-cooker**, **usb-power-strip** |
+| Peace and quiet | `quiet` | **loop-earplugs**, **sony-wh-1000xm6**, **sony-wh-1000xm5** |
 | Out in the sun | `sun` | **sunscreen**, **face-sunscreen** |
 
-Bold entries are published (11 of 21, 28 September 2026). Aron chose the nine new products (the Theragun Sense and the two MacBooks came later the same day) and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`).
+Bold entries are published (15 of 25, 28 September 2026). Aron chose the thirteen new products (the Theragun Sense, the MacBooks, the headphones, the earplugs and the bento box came later the same day) and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`; the tones are listed in `TONES` in `src/config/schema.ts`, and each needs its `.tone-*` block and drawing gradients in `global.css`). Aron called the bento box a microwavable lunch box; it's stainless steel, so the entry says plainly it must not go in the microwave.
 
 Situation tags: `long-shifts`, `after-work`, `commute`, `travel`, `at-home`.
 
@@ -126,7 +127,7 @@ src/
   profiles/aron/
     site.ts                  identity, legal, palette, features, admin repo
     affiliate.json           Associates switch, tracking ID and disclosures (edited from the admin)
-    catalogue.ts             5 categories (each with a colour tone), 5 situation tags
+    catalogue.ts             6 categories (each with a colour tone), 5 situation tags
     copy.ts                  all non-entry copy
     kit/*.md                 one file per product; filename is the URL slug
     kit/images/              Aron's own product photos, uploaded from the admin
