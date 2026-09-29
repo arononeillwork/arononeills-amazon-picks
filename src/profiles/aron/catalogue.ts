@@ -5,7 +5,7 @@ export const catalogue = {
     {
       slug: "on-your-feet",
       name: "On your feet",
-      intro: "What sits between you and a hard floor for ten hours: shoes, insoles, socks and the mat behind the counter.",
+      intro: "What gets you through ten hours on a hard floor: shoes, insoles, socks, the mat behind the counter and a band that counts the steps.",
       tone: "blue",
     },
     {

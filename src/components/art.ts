@@ -307,6 +307,20 @@ export const art: Record<string, string> = {
     <rect class="a" x="244" y="142" width="46" height="10" rx="5"/>
     <circle class="k" cx="274" cy="210" r="20"/>
     <circle class="a" cx="274" cy="210" r="11"/>`,
+
+  "xiaomi-smart-band-10": `
+    <ellipse class="sh" cx="200" cy="264" rx="104" ry="10"/>
+    <path class="k" d="M170 100 L176 22 Q200 14 224 22 L230 100 Z"/>
+    <path class="k" d="M170 200 L176 250 Q200 258 224 250 L230 200 Z"/>
+    <circle class="s" cx="200" cy="44" r="4"/>
+    <circle class="s" cx="200" cy="60" r="4"/>
+    <rect class="b" x="146" y="62" width="108" height="176" rx="50"/>
+    <rect class="k" x="156" y="74" width="88" height="152" rx="42"/>
+    <circle class="ln-s" cx="200" cy="134" r="26" fill="none" stroke-width="7" opacity="0.35"/>
+    <circle class="ln-a" cx="200" cy="134" r="26" fill="none" stroke-width="7" stroke-dasharray="118 200" stroke-linecap="round" transform="rotate(-90 200 134)"/>
+    <rect class="scr" x="178" y="178" width="44" height="8" rx="4"/>
+    <rect class="scr" x="186" y="194" width="28" height="6" rx="3" opacity="0.6"/>
+    <rect class="hl" x="164" y="96" width="6" height="92" rx="3"/>`,
 };
 
 // Products that share a drawing until they have photos.

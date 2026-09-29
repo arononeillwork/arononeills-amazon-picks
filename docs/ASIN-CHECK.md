@@ -31,6 +31,7 @@ If it's right, tell Claude (or set `draft: false` in the entry file yourself). I
 | `sony-wh-1000xm6.md` | Sony WH-1000XM6 | https://www.amazon.es/dp/B0F2TT8Q7M | **Done**: chosen by Aron, 28 September 2026 |
 | `sony-wh-1000xm5.md` | Sony WH-1000XM5 | https://www.amazon.es/dp/B09Y2MYL5C | **Done**: chosen by Aron, 28 September 2026 |
 | `lunchbox.md` | Everusely stainless-steel bento box, 0.8 L, lavender | https://www.amazon.es/dp/B09TGDJBVP | **Done**: chosen by Aron, 28 September 2026. Stainless steel: not microwave-safe |
+| `xiaomi-smart-band-10.md` | Xiaomi Smart Band 10, black (BHR07PYGL) | https://www.amazon.es/dp/B0DYF82545 | **Done**: chosen by Aron, 29 September 2026 |
 | `espresso-machine.md` | Sage The Oracle Jet | https://www.amazon.es/dp/B0DFGRJMBC | **Done**: chosen by Aron, 28 September 2026 |
 | `coffee-canister.md` | Fellow Atmos Vacuum Canister 1.2 L, glass | https://www.amazon.es/dp/B07NPMNW84 | **Done**: chosen by Aron, 28 September 2026 |
 | `multi-cooker.md` | Ninja Combi 12-in-1 SFP700EU | https://www.amazon.es/dp/B0CZPKSGFV | **Done**: chosen by Aron, 28 September 2026 |
@@ -38,4 +39,4 @@ If it's right, tell Claude (or set `draft: false` in the entry file yourself). I
 | `sunscreen.md` | Altruist Sunscreen SPF 50, unscented | https://www.amazon.es/dp/B0CWPH59MQ | **Done**: chosen by Aron, 28 September 2026 |
 | `face-sunscreen.md` | Altruist Face Fluid SPF 50 | https://www.amazon.es/dp/B0B5273DN1 | **Done**: chosen by Aron, 28 September 2026 |
 
-Opening these links yourself is fine. Buying through them doesn't count toward the three qualifying sales, and the links aren't tagged yet anyway.
+Opening these links yourself is fine. Buying through them doesn't count toward the three qualifying sales: purchases by the company, its owners, staff, friends and family never do.

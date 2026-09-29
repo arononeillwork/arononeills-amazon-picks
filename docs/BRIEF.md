@@ -1,6 +1,6 @@
 # Build brief: arononeillspicks
 
-Status as of 28 September 2026. Owner: Aron O'Neill. Operator and Associates account holder: the café company (NIF `B27576347`).
+Status as of 29 September 2026. Owner: Aron O'Neill. Operator and Associates account holder: the café company (NIF `B27576347`).
 
 This brief records what exists, what has been verified, the rules the site must never break, and the remaining work in order. Read all of it before changing anything; several sections exist because something went wrong once already.
 
@@ -29,7 +29,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 | Database | Supabase project `arononeillspicks`, used only by the apartment calendar |
 | Auth | Magic link, implicit flow; allowlist enforced by a sign-up hook and Postgres RLS |
 | Apartment | Free use by invited friends. No money ever changes hands. **Switched off for launch** (`features.apartment: false`); the code, database and tests stay ready |
-| Catalogue | 25 products in 6 categories (Aron added thirteen, including two MacBooks, two Sony headphones, Loop earplugs and a bento box, and replaced the TENS pick, 28 September 2026) |
+| Catalogue | 26 products in 6 categories (Aron added fourteen, including two MacBooks, two Sony headphones, Loop earplugs, a bento box and a Xiaomi Smart Band 10, and replaced the TENS pick, 28–29 September 2026) |
 | Site name | Masthead **"Aron's Picks"**. Aron asked for "Aron's Amazon Picks" (28 September 2026); Amazon's trademark rules forbid "Amazon" in an Associate's site name, so the word is left out (§5) |
 | Catalogue shape | Category landing pages plus one filterable list of everything |
 | Language | English (for the expat audience) unless the owner decides otherwise |
@@ -40,7 +40,7 @@ The goal for launch is a site that passes Amazon's review: at least ten genuine,
 
 ### Built and verified
 
-A production build contains home, `/kit/` (filterable list), one page per category that has a published entry, one page per published entry, `/disclosure/`, `/privacy/` and `/404`, plus `robots.txt` and a sitemap. `/apartment/` is only built while the calendar is switched on. With the calendar off and the eight entries published so far, that is 18 pages and 16 Amazon links; with all eighteen published it will be 29 pages and 37 links. `astro check` reports 0 errors, 0 warnings, 0 hints.
+A production build contains home, `/kit/` (filterable list), one page per category that has a published entry, one page per published entry, `/disclosure/`, `/privacy/` and `/404`, plus `robots.txt` and a sitemap. `/apartment/` is only built while the calendar is switched on. With the calendar off and the sixteen entries published so far, the preflight counts 28 HTML pages (the admin included) and 32 Amazon links; with all twenty-six published it will be 38 pages and 53 links. `astro check` reports 0 errors, 0 warnings, 0 hints.
 
 With the calendar off, the build ships no JavaScript except the 0.6 KB `/kit/` filter: `astro.config.ts` only loads Preact and injects `src/routes/apartment.astro` when `features.apartment` is true, and the privacy page only describes Supabase processing while the calendar exists.
 
@@ -48,14 +48,14 @@ Catalogue (category → entries):
 
 | Category | Slug | Entries |
 | --- | --- | --- |
-| On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes |
+| On your feet | `on-your-feet` | anti-fatigue-mat, compression-socks, insoles, work-shoes, **xiaomi-smart-band-10** |
 | Recovery | `recovery` | **tens-unit**, **theragun-sense**, massage-gun, foam-roller, foot-massage-ball |
 | Carry and charge | `carry` | **power-bank**, **macbook-neo**, **macbook-pro-14**, **lunchbox**, laptop (three picks), water-bottle, work-backpack |
 | At home | `at-home` | **espresso-machine**, **coffee-canister**, **multi-cooker**, **usb-power-strip** |
 | Peace and quiet | `quiet` | **loop-earplugs**, **sony-wh-1000xm6**, **sony-wh-1000xm5** |
 | Out in the sun | `sun` | **sunscreen**, **face-sunscreen** |
 
-Bold entries are published (15 of 25, 28 September 2026). Aron chose the thirteen new products (the Theragun Sense, the MacBooks, the headphones, the earplugs and the bento box came later the same day) and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`; the tones are listed in `TONES` in `src/config/schema.ts`, and each needs its `.tone-*` block and drawing gradients in `global.css`). Aron called the bento box a microwavable lunch box; it's stainless steel, so the entry says plainly it must not go in the microwave.
+Bold entries are published (16 of 26, 29 September 2026). Aron chose the thirteen new products (the Theragun Sense, the MacBooks, the headphones, the earplugs and the bento box came later the same day) and the iWarmbase TENS unit himself and opened their amazon.es links; they were written as researched entries and published the same day. The TENS entry was switched from an owned draft (waiting for Aron's words) to a researched entry for the iWarmbase unit; if it is the one he uses, his words turn it back into an owned entry (the old prompts are in git history). Each category has a colour tone (`tone` in `catalogue.ts`; the tones are listed in `TONES` in `src/config/schema.ts`, and each needs its `.tone-*` block and drawing gradients in `global.css`). Aron called the bento box a microwavable lunch box; it's stainless steel, so the entry says plainly it must not go in the microwave. The Xiaomi Smart Band 10 (29 September 2026) sits under On your feet because it counts the steps of a shift; it's `health: true` because it shows heart-rate, blood-oxygen and sleep readings, and its health note repeats Xiaomi's warning that it isn't a medical device.
 
 Situation tags: `long-shifts`, `after-work`, `commute`, `travel`, `at-home`.
 
@@ -71,6 +71,12 @@ Performance, measured by the preflight from the build with env vars set:
 Design (28 September 2026, second revamp at Aron's request: "modern, not blocky"): the system font stack puts San Francisco first, so Apple devices use their built-in font; everyone else gets Inter (variable, Latin subset, self-hosted from `src/assets/fonts/`). **Light only** (Aron's choice, 28 September 2026: the site ignores the device's dark mode; `theme.ts` emits only the light palette). Light grey page with raised white cards. The home page opens with a bright hero (soft pastel colour drifting behind, a gradient headline, stats and three products floating on white cards), then a scrolling strip of promises and a sticky row of category buttons (plain anchor links) above one shelf per category holding **every** published product (a swipeable row on phones, a grid on desktop), with a spotlight on one product (`featured: true`, ticked in the admin) after the second shelf, and the trust cards. No logo mark: the masthead is text only. Category pages open with a tone banner and a collage of their products; `/kit/` has a sticky glass filter bar. Product pages lead with the picture, "at a glance" facts and a raised buy card; the write-up folds into tap-to-open panels (native `<details>`) and the health note is open by default. Sections fade up on scroll with CSS scroll-driven animations; all motion stops for people who prefer reduced motion. Catalogue pages still ship no JavaScript.
 
 Pictures: the entry's photo when it has one (`image`, stored in `kit/images/`, served as AVIF/WebP in three sizes by `<Picture>`, shown contained on a light panel with the white background blended away; `imageCredit` names the brand under manufacturer photos), otherwise a drawing of that kind of product (`src/components/art.ts`, inline SVG shaded with per-tone gradients defined once in `Base.astro`, labelled "Illustration" on the product page), otherwise the category icon. Photos are Aron's own or the manufacturer's official images from the brand's own site or press kit (Aron's decision, 28 September 2026), self-hosted and credited. Amazon's product photos are never used: the Associates agreement forbids copying or storing them, and the only permitted route is the Product Advertising API, which Amazon opens once the account has qualifying sales. The preflight rejects remote images and Amazon credits.
+
+Adding photos: put each image in `photos-inbox/` named after its entry (`sony-wh-1000xm6.jpg`) and run `npm run photos` (`scripts/photos.ts`, using sharp). It flattens the image onto white, trims the border, centres it on a 1600 × 1200 white canvas, saves `kit/images/<slug>.webp`, sets `image` and `imageCredit` (the brand, or none for Aron's own photos via `photos-inbox/credits.json`) and removes the original. Check every photo shows the exact model and colour the Amazon link sells before committing. `photos-inbox/README.md` has the rules for Aron.
+
+Prices: none are shown. The buy button reads "Check price on Amazon.es". Amazon only permits prices fetched live from its API (the Creators API, which replaced the Product Advertising API in 2026), and access opens only after three qualifying sales; reports say about ten sales in thirty days keep it open. Once Aron has credentials, the plan is a build-time fetch of price and official image per ASIN, a daily Vercel rebuild so nothing is older than 24 hours, and Amazon's "price at [time]" disclaimer beside each price. Until then, never type a price by hand.
+
+Home "why" section (29 September 2026, Aron's request): "Why these picks. Chosen to make long days easier.", with three cards: chosen for efficiency, chosen for health and comfort, and honest about the downsides.
 
 Lighthouse (mobile, production build, 28 September 2026, after the second revamp): 100 performance, accessibility, best practices and SEO on home, `/kit/`, a category page, a product page and `/privacy/`, CLS 0.
 
@@ -97,7 +103,7 @@ Owner row seeded: `arononeillwork@gmail.com`, `is_owner = true` (Aron to confirm
 - Legal details: Easy Beans Coffee, S.L., NIF `B27576347`, C. Pizarro, 8, 29670 San Pedro de Alcántara, easybeanscafe@gmail.com (all confirmed by Aron, 28 September 2026). Still missing: the Registro Mercantil entry (tomo, folio, hoja) from the escritura, which LSSI-CE art. 10.1.b expects on a company's legal notice. The preflight warns until `legal.registry` is set; the privacy page shows it once it is
 - If the iWarmbase is the TENS unit Aron uses, two or three lines from him turn that entry into an owned one
 - Ten researched entries (the original picks other than the power bank) are written and pass every content check but stay `draft: true` until Aron opens their amazon.es links with `docs/ASIN-CHECK.md`; backups and sources are in `docs/research/2026-09-26-products.md`
-- No product has a photo yet; every entry shows its drawing. Official manufacturer images are waiting on network access: this container's egress policy blocks the brand sites (and Amazon), so Aron must allow them in the environment's network settings before they can be fetched
+- No product has a photo yet; every entry shows its drawing. Aron wants real product photos for every item (29 September 2026). Two routes: he allows the brand sites in the environment's network settings so Claude can fetch the official images, or he saves them himself and hands them over (Google Drive folder, `photos-inbox/` on GitHub, or the admin). Either way they then go through `npm run photos`. The iWarmbase TENS unit has no brand site, so it needs Aron's own photo or keeps its drawing
 - Calendar (deferred): the Supabase sign-up hook, URL configuration and SMTP are not yet set in the dashboard, and the live magic-link round trip has never been tested. None of this blocks launch while `features.apartment` is false
 
 ## 4. Repository map
@@ -108,10 +114,12 @@ docs/BRIEF.md                this file
 astro.config.ts              static output, trailingSlash: "always", sitemap excludes /apartment;
                              injects the calendar route and Preact only when features.apartment is on
 vercel.json                  trailing slashes, immutable asset caching, noindex header on /apartment
-package.json                 scripts: dev, build, preview, check, preflight; Node >= 22.12
+package.json                 scripts: dev, build, preview, check, preflight, photos; Node >= 22.12
 .env.example                 SITE_PROFILE, PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY
 scripts/preflight.ts         the deploy gate (reads .vercel/output, where the adapter writes what Vercel serves)
 scripts/vercel-headers.ts    copies vercel.json headers into .vercel/output/config.json (the adapter drops them)
+scripts/photos.ts            `npm run photos`: turns photos-inbox/<slug>.jpg into kit/images/<slug>.webp and sets the entry's image fields
+photos-inbox/                where product photos wait for `npm run photos`; README.md has the rules
 docs/ADMIN.md                how Aron uses the admin, and its one-time sign-in setup
 supabase/schema.sql          matches the live database; safe to re-run
 supabase/tests/access.sql    17-case access-control test
@@ -182,7 +190,7 @@ draft: true | false
 - "Amazon", "amzn" or any variant never appears in the site name, title, URL, subdomain or social handles. `src/config/schema.ts` and `src/content.config.ts` enforce this at build; the preflight re-checks every built `<title>` and internal URL
 - Every Amazon link is built by `src/lib/amazon.ts`. No shorteners, no redirects through the site, no cloaking
 - Every affiliate link sits inside a `data-affiliate-block` with a link-level disclosure directly above it, and the sitewide statement appears in the footer of every page. The preflight checks both
-- No prices anywhere, in text or filters. Amazon only allows prices pulled live from its Product Advertising API
+- No prices anywhere, in text or filters. Amazon only allows prices pulled live from its API (now the Creators API), refreshed at least every 24 hours
 - No Amazon product images, and no copied Amazon customer reviews. Photos are Aron's own or the manufacturer's official images (credited, self-hosted); never download or store images from Amazon
 - Links keep `noopener` but must not gain `noreferrer`; Amazon may check that clicks come from the registered site. `vercel.json` sets `Referrer-Policy: strict-origin-when-cross-origin`, which sends the site's origin
 - Home, category and list pages link to entries, never straight to Amazon, so every affiliate link has its disclosure beside it

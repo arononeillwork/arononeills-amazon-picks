@@ -60,7 +60,7 @@ The 180 days to make three qualifying sales start from this signup.
 2. Paste the **Tracking ID**, replace the two statements with Amazon's exact wording, and tick **Affiliate links switched on**.
 3. Press **Save** and wait a minute.
 4. Open any product page and check three things:
-   - The **View on Amazon.es** button's address ends in `?tag=` followed by your ID.
+   - The **Check price on Amazon.es** button's address ends in `?tag=` followed by your ID.
    - A note above the button says it's an affiliate link.
    - Amazon's statements appear at the bottom of the page.
 
