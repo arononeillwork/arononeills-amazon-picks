@@ -187,6 +187,8 @@ for (const file of entryFiles) {
   if (PRICE.test(body) || strings.some((s) => PRICE.test(s))) problems.push("mentions a price or currency (Amazon forbids static prices)");
   if (AMAZON_URL.test(body)) problems.push("links to Amazon from the body (only amazon.ts builds Amazon links)");
   if (/!\[/.test(body)) problems.push("has an image in the body (own photos only, via <Picture>)");
+  // Every product on the site shows its real photo: the maker's official image or Aron's own.
+  if (!data.image) problems.push("no product photo (the maker's official image or Aron's own; add it with npm run photos)");
   if (data.image && !/^\.\/images\/[^/]+\.(webp|jpe?g|png|avif)$/i.test(data.image)) {
     problems.push(`image must be a photo stored in ./images/, not ${data.image} (own or manufacturer photos only)`);
   }

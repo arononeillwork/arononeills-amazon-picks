@@ -10,6 +10,8 @@ highlights:
   - "Five speeds, stated 55 dB"
   - "About four hours per charge"
   - "About 0.73 kg, USB-C"
+image: "./images/massage-gun.webp"
+imageCredit: "Hyperice"
 experience: researched
 asin: B0G82W9ZZK
 drawback: "Only two heads, and it can stall when you lean in hard on big thigh muscles."

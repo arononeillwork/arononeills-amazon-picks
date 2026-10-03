@@ -10,6 +10,8 @@ highlights:
   - "SRC slip-resistant sole"
   - "Oil-resistant outsole (FO)"
   - "Washable microfibre upper"
+image: "./images/work-shoes.webp"
+imageCredit: "DIAN"
 experience: researched
 asin: B09253K4MH
 drawback: "Sizing is inconsistent, so check the size chart and be ready to exchange."

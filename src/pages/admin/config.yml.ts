@@ -135,7 +135,7 @@ const products = {
       public_folder: "./images",
       choose_url: false,
       accept: "image/jpeg,image/png,image/webp,image/heic,image/avif",
-      hint: "Your own photo, or the brand's official product photo from its own website or press kit (then fill in Photo credit). Never an image saved from Amazon: its rules forbid it. Check the photo shows the exact model and colour. Without a photo the site shows a drawing.",
+      hint: "Your own photo, or the brand's official product photo from its own website or press kit (then fill in Photo credit). Never an image saved from Amazon: its rules forbid it. Check the photo shows the exact model and colour. A product can't be published without one: the deploy check stops it.",
     },
     {
       name: "imageCredit",

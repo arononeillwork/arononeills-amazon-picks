@@ -10,6 +10,8 @@ highlights:
   - "Ball, duo ball and mini roller"
   - "Medium-firm EPP foam"
   - "Small enough for a work bag"
+image: "./images/foot-massage-ball.webp"
+imageCredit: "BLACKROLL"
 experience: researched
 asin: B01M7XPBJM
 drawback: "All three pieces are medium-firm, so there's no softer one to start on if your feet are very tender."

@@ -10,6 +10,8 @@ highlights:
   - "Gel under the heel and arch"
   - "Trim-to-fit outline"
   - "Men's and women's sizes"
+image: "./images/insoles.webp"
+imageCredit: "Scholl"
 experience: researched
 asin: B07FCCDN45
 drawback: "The arch is soft, so flat feet that need firm support may find it too yielding."

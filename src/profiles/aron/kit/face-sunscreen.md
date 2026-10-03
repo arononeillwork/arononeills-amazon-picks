@@ -13,7 +13,7 @@ highlights:
 image: "./images/face-sunscreen.webp"
 imageCredit: "Altruist"
 experience: researched
-asin: B0B5273DN1
+asin: B086VR76TB
 drawback: "So runny it's easy to pour out too much, and a 50 ml bottle goes quickly at the full amount."
 health: true
 healthNote: "EU guidance for every sunscreen: don't stay too long in the sun even with sunscreen on, keep babies and young children out of direct sunlight, and reapply often, especially after sweating, swimming or towelling. Most people apply far less than the amount the SPF is tested at, so be generous. Keep it out of your eyes, stop using it if it irritates your skin, and ask a pharmacist or doctor first if you have a skin condition or have reacted to sunscreen before."

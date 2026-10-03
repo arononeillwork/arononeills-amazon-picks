@@ -10,8 +10,10 @@ highlights:
   - "45 x 15 cm, medium hardness"
   - "EPP foam, about 240 g"
   - "Long enough for the upper back"
+image: "./images/foam-roller.webp"
+imageCredit: "BLACKROLL"
 experience: researched
-asin: B01CEIGD06
+asin: B01D1V69X6
 drawback: "Firm even in medium, and the listing sells several hardnesses, so it's easy to order the wrong one."
 health: false
 order: 3

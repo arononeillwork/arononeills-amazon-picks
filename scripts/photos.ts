@@ -12,7 +12,7 @@
  * Only the brand's official product photos or Aron's own. Never an image saved
  * from Amazon: the Associates agreement forbids copying or storing them.
  *
- * The credit defaults to the brand (the first word of the entry's `product`).
+ * The credit defaults to the entry's `brand` (or, without one, the first word of its `product`).
  * Override it in photos-inbox/credits.json, e.g. { "tens-unit": "" } for one
  * of Aron's own photos, which carries no credit.
  */
@@ -101,8 +101,8 @@ for (const file of files) {
     failed++;
     continue;
   }
-  const data = parseYaml(match[1]) as { product?: string };
-  const credit = slug in credits ? credits[slug] : (data.product ?? "").split(/\s+/)[0];
+  const data = parseYaml(match[1]) as { product?: string; brand?: string };
+  const credit = slug in credits ? credits[slug] : (data.brand ?? (data.product ?? "").split(/\s+/)[0]);
   if (credit && AMAZON_VARIANT.test(credit)) {
     console.log(`skip  ${file}: images from Amazon aren't allowed`);
     failed++;

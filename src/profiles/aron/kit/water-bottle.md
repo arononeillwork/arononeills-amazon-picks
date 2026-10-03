@@ -10,6 +10,8 @@ highlights:
   - "Up to 24 hours cold (maker's rating)"
   - "Leakproof Flex Cap"
   - "Fits most cup holders"
+image: "./images/water-bottle.webp"
+imageCredit: "Hydro Flask"
 experience: researched
 asin: B01KXHGWQU
 drawback: "The coating chips if it's dropped, and the narrow mouth is too tight for most ice cubes."

@@ -9,6 +9,8 @@ highlights:
   - "Three picks, by use"
   - "16 GB memory on all three"
   - "From under 1 kg to 1.6 kg"
+image: "./images/laptop.webp"
+imageCredit: "Lenovo, ASUS and Apple"
 experience: researched
 picks:
   - label: "On a tight budget"

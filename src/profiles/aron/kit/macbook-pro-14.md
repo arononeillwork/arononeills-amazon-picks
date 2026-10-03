@@ -13,7 +13,7 @@ highlights:
 image: "./images/macbook-pro-14.webp"
 imageCredit: "Apple"
 experience: researched
-asin: B0GR1NZFNK
+asin: B0GR1FQGHV
 drawback: "At about 1.55 kg it's heavier than an Air, and far more machine than invoices and email need."
 health: false
 order: 6
