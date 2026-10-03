@@ -8,6 +8,8 @@ highlights:
   - "0.8 L, three compartments"
   - "Leakproof pot for sauces"
   - "Dishwasher- and freezer-safe"
+image: "./images/lunchbox.webp"
+imageCredit: "Everusely"
 experience: researched
 asin: B09TGDJBVP
 drawback: "Stainless steel can't go in the microwave, so food has to be tipped onto a plate to reheat. The compartments aren't sealed from each other, so wet food and sauces can run between them, and it doesn't keep food warm or cold."

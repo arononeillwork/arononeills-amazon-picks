@@ -8,6 +8,8 @@ highlights:
   - "Five speeds, on-screen routines"
   - "Heart-rate sensor for breathwork"
   - "About two hours per charge"
+image: "./images/theragun-sense.webp"
+imageCredit: "Therabody"
 experience: researched
 asin: B0FNX9TF9R
 drawback: "It is built for relaxation rather than deep work, with less punch than Therabody's pro models, so people who want heavy pressure on big thigh muscles may find it too gentle. It comes with only two attachments, and the heart-rate sensor is only used for the breathing routines."

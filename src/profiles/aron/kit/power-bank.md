@@ -8,6 +8,8 @@ highlights:
   - "90 Wh: under the 100 Wh cabin limit"
   - "140 W USB-C charges laptops"
   - "Three ports and a charge display"
+image: "./images/power-bank.webp"
+imageCredit: "UGREEN"
 experience: researched
 asin: B0BJQ7F16T
 drawback: "At around 510 g it is heavy for a power bank and belongs in a bag, not a pocket. There is no built-in cable, the 145 W is shared between its three ports, and refilling it takes about two hours from a 65 W charger and much longer from a phone charger."

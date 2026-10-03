@@ -8,6 +8,8 @@ highlights:
   - "Up to 21 days per charge"
   - "Bright 1.72-inch screen, readable in sun"
   - "About 16 g, water-resistant to 5 ATM"
+image: "./images/xiaomi-smart-band-10.webp"
+imageCredit: "Xiaomi"
 experience: researched
 asin: B0DYF82545
 drawback: "There's no built-in GPS, so runs and rides need your phone for distance and route, and there's no NFC for paying from the wrist. The 21 days is for typical use: Xiaomi's own figures drop to about nine days with the always-on display and eight with heavy use."

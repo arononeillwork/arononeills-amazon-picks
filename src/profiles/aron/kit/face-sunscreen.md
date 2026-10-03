@@ -8,6 +8,8 @@ highlights:
   - "SPF 50 with a PPD 52 UVA rating"
   - "Thin fluid that absorbs fast"
   - "Niacinamide and vitamin E"
+image: "./images/face-sunscreen.webp"
+imageCredit: "Altruist"
 experience: researched
 asin: B0B5273DN1
 drawback: "Because it is so runny, it is easy to pour out too much, and used at the amount the SPF is tested at, a 50 ml bottle doesn't last long with daily use. Some users find it stings if sweat carries it into the eyes."

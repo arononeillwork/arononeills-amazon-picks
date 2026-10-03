@@ -8,6 +8,8 @@ highlights:
   - "12 functions, 12.5-litre pan"
   - "Steams and air-fries at once"
   - "Trays go in the dishwasher"
+image: "./images/multi-cooker.webp"
+imageCredit: "Ninja"
 experience: researched
 asin: B0CZPKSGFV
 drawback: "At about 39 x 38 x 33 cm and 10.5 kg it takes a big share of a worktop, and its door swings open to the side, so it needs clearance there. It lets off a lot of steam in the combination modes, so it wants to sit near an extractor rather than under a wall cupboard, and the inside is fiddly to wipe around the heating element."

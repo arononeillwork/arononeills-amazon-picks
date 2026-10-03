@@ -8,6 +8,8 @@ highlights:
   - "Built-in grinder, 45 settings"
   - "Grinds, doses and tamps by itself"
   - "Hands-free milk: dairy, soy, almond, oat"
+image: "./images/espresso-machine.webp"
+imageCredit: "Sage"
 experience: researched
 asin: B0DFGRJMBC
 drawback: "It is a big, heavy machine, about 42.5 cm tall and 12 kg, and a serious investment. Reviewers report that the built-in grinder holds back a few grams of coffee between shots and can be a little messy, and that it takes some tinkering with grind and dose to get the best from each new bag of beans."

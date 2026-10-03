@@ -3,7 +3,7 @@
  * photos-inbox/ named after its entry (espresso-machine.jpg, sunscreen.png, ...)
  * and for each one:
  *
- *   - flattens it onto white and trims the empty border,
+ *   - flattens it onto white, makes an off-white backdrop pure white and trims the empty border,
  *   - centres it on a 4:3 white canvas with room around it, at most 1600 px wide,
  *   - saves it as src/profiles/<profile>/kit/images/<slug>.webp,
  *   - sets `image` and `imageCredit` in the entry, and
@@ -32,6 +32,7 @@ const WIDTH = 1600;
 const HEIGHT = 1200;
 // The product fills at most this share of the canvas, so every picture has the same breathing room.
 const FILL = 0.84;
+const MAX_ENLARGE = 2;
 
 const credits: Record<string, string> = existsSync(join(INBOX, "credits.json"))
   ? JSON.parse(readFileSync(join(INBOX, "credits.json"), "utf8"))
@@ -50,6 +51,38 @@ function setField(frontmatter: string, key: string, value: string | undefined): 
   const without = frontmatter.replace(line, "");
   if (value === undefined) return without;
   return without.replace(/^experience:/m, `${key}: ${JSON.stringify(value)}\nexperience:`);
+}
+
+/**
+ * Makes an off-white studio backdrop pure white. The site blends white into the
+ * card colour, so a backdrop of #fcfcfc shows as a grey box. Only near-white,
+ * near-neutral pixels connected to the image's edge change, so white parts of
+ * the product itself stay as they are.
+ */
+async function whitenBackdrop(image: Buffer): Promise<Buffer> {
+  const { data, info } = await sharp(image).raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  const isBackdrop = (p: number) => {
+    const i = p * channels;
+    const lo = Math.min(data[i], data[i + 1], data[i + 2]);
+    return lo >= 236 && Math.max(data[i], data[i + 1], data[i + 2]) - lo <= 12;
+  };
+  const seen = new Uint8Array(width * height);
+  const stack: number[] = [];
+  for (let x = 0; x < width; x++) stack.push(x, (height - 1) * width + x);
+  for (let y = 0; y < height; y++) stack.push(y * width, y * width + width - 1);
+  while (stack.length) {
+    const p = stack.pop()!;
+    if (seen[p] || !isBackdrop(p)) continue;
+    seen[p] = 1;
+    data.fill(255, p * channels, p * channels + 3);
+    const x = p % width;
+    if (x > 0) stack.push(p - 1);
+    if (x < width - 1) stack.push(p + 1);
+    if (p >= width) stack.push(p - width);
+    if (p < (height - 1) * width) stack.push(p + width);
+  }
+  return sharp(data, { raw: info }).png().toBuffer();
 }
 
 let failed = 0;
@@ -78,14 +111,16 @@ for (const file of files) {
 
   try {
     const input = join(INBOX, file);
-    const flat = await sharp(input).rotate().flatten({ background: "#ffffff" }).toBuffer();
+    const flat = await whitenBackdrop(await sharp(input).rotate().flatten({ background: "#ffffff" }).toBuffer());
     const trimmed = await sharp(flat)
       .trim({ background: "#ffffff", threshold: 14 })
       .toBuffer()
       .catch(() => flat);
     const { width = 0, height = 0 } = await sharp(trimmed).metadata();
+    // Every product fills the same share of the frame; small originals are enlarged, but at most twice.
+    const scale = Math.min((WIDTH * FILL) / width, (HEIGHT * FILL) / height, MAX_ENLARGE);
     const fitted = await sharp(trimmed)
-      .resize(Math.round(WIDTH * FILL), Math.round(HEIGHT * FILL), { fit: "inside", withoutEnlargement: true })
+      .resize(Math.round(width * scale), Math.round(height * scale))
       .toBuffer();
     await sharp({ create: { width: WIDTH, height: HEIGHT, channels: 3, background: "#ffffff" } })
       .composite([{ input: fitted, gravity: "center" }])

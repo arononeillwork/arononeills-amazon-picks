@@ -8,6 +8,8 @@ highlights:
   - "M5 Pro, 24 GB memory, 1 TB storage"
   - "Up to 22 h video playback (Apple)"
   - "HDMI, SD card slot and MagSafe"
+image: "./images/macbook-pro-14.webp"
+imageCredit: "Apple"
 experience: researched
 asin: B0GR1NZFNK
 drawback: "At about 1.55 kg it is noticeably heavier than a MacBook Air or the MacBook Neo, and it is far more machine than invoices and email need. Reviewers also note that it runs warm under long, heavy workloads."

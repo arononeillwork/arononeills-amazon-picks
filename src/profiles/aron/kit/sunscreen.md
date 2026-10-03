@@ -8,6 +8,8 @@ highlights:
   - "SPF 50 with a PPD 52 UVA rating"
   - "Fragrance-free and water-resistant"
   - "One bottle for face and body"
+image: "./images/sunscreen.webp"
+imageCredit: "Altruist"
 experience: researched
 asin: B0CWPH59MQ
 drawback: "The finish is dewy rather than matte, closer to a rich moisturiser, which people with oily skin often dislike. It can pill around the hairline and neck if layered quickly over other products, and some users find it stings when sweat carries it into the eyes."

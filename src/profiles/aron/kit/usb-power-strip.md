@@ -8,6 +8,8 @@ highlights:
   - "5 sockets plus 5 USB ports"
   - "Up to 100 W over USB, shared"
   - "2 m cable and a main switch"
+image: "./images/usb-power-strip.webp"
+imageCredit: "VOOMY"
 experience: researched
 asin: B0D44VR3TY
 drawback: "The 100 W is shared across all five USB ports, so a laptop and a couple of phones charging together each get less than full speed, and the two USB-A ports top out at 18 W. There is one switch for everything, so anything that should stay on, such as a router, is better plugged in elsewhere."

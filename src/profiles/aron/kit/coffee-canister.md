@@ -8,6 +8,8 @@ highlights:
   - "Vacuum pump built into the lid"
   - "Indicator shows when it's sealed"
   - "Holds about 450 g of beans"
+image: "./images/coffee-canister.webp"
+imageCredit: "Fellow"
 experience: researched
 asin: B07NPMNW84
 drawback: "The pump lives in the lid, so the lid can't go in the dishwasher or under a running tap and has to be wiped clean. Sealing takes a fair few twists each time, and the clear glass lets light in, so it belongs in a cupboard rather than on a sunny shelf."

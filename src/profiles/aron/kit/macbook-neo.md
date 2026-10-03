@@ -8,6 +8,8 @@ highlights:
   - "Up to 16 hours of battery (Apple)"
   - "13-inch Liquid Retina display"
   - "About 1.2 kg, with Touch ID"
+image: "./images/macbook-neo.webp"
+imageCredit: "Apple"
 experience: researched
 asin: B0GR6HXPJ7
 drawback: "It only comes with 8 GB of memory, which limits heavy multitasking, and one of its two USB-C ports runs at slow USB 2.0 speeds. The keyboard isn't backlit, and reviewers found battery life drops to four or five hours under heavy use."
