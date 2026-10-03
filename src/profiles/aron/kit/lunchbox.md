@@ -14,7 +14,7 @@ image: "./images/lunchbox.webp"
 imageCredit: "Everusely"
 experience: researched
 asin: B09TGDJBVP
-drawback: "Stainless steel can't go in the microwave, so food has to be tipped onto a plate to reheat. The compartments aren't sealed from each other, so wet food and sauces can run between them, and it doesn't keep food warm or cold."
+drawback: "Steel can't go in the microwave, and the compartments don't seal off from each other."
 health: false
 order: 7
 reviewed: 2026-09-28

@@ -12,7 +12,7 @@ highlights:
   - "Water-resistant nylon"
 experience: researched
 asin: B09FPYMTQ9
-drawback: "The shoulder straps are wide, and some people with broader shoulders find they pull, while there is no hip belt for heavier loads. The fold-top also takes a few seconds longer to open than a simple zip."
+drawback: "No hip belt for heavy loads, and the fold-top is slower to open than a zip."
 health: false
 order: 4
 reviewed: 2026-09-26

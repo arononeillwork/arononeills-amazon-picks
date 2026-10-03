@@ -12,7 +12,7 @@ highlights:
   - "Fits most cup holders"
 experience: researched
 asin: B01KXHGWQU
-drawback: "The powder-coated finish dents and chips if the bottle is dropped on a hard floor, and the narrow standard mouth is too tight for most ice cubes and harder to scrub. You also have to unscrew the cap to drink, which is slower than a flip-top."
+drawback: "The coating chips if it's dropped, and the narrow mouth is too tight for most ice cubes."
 health: false
 order: 3
 reviewed: 2026-09-26

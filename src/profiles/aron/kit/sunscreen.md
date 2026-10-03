@@ -14,7 +14,7 @@ image: "./images/sunscreen.webp"
 imageCredit: "Altruist"
 experience: researched
 asin: B0CWPH59MQ
-drawback: "The finish is dewy rather than matte, closer to a rich moisturiser, which people with oily skin often dislike. It can pill around the hairline and neck if layered quickly over other products, and some users find it stings when sweat carries it into the eyes."
+drawback: "A dewy finish, closer to a rich moisturiser, which people with oily skin often dislike."
 health: true
 healthNote: "EU guidance for every sunscreen: don't stay too long in the sun even with sunscreen on, keep babies and young children out of direct sunlight, and reapply often, especially after sweating, swimming or towelling. Most people apply far less than the amount the SPF is tested at, so be generous. Keep it out of your eyes, stop using it if it irritates your skin, and ask a pharmacist or doctor first if you have a skin condition or have reacted to sunscreen before."
 order: 1

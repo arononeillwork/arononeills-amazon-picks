@@ -14,7 +14,7 @@ image: "./images/loop-earplugs.webp"
 imageCredit: "Loop"
 experience: researched
 asin: B0D4DFQTMJ
-drawback: "They turn noise down rather than block it, so they're not the right choice for sleep or for very loud machinery. Getting a good seal takes a little trial with the tip sizes, and at this size they're easy to lose."
+drawback: "They turn noise down rather than block it, so they're not for sleep or very loud machinery."
 health: false
 order: 1
 reviewed: 2026-09-28

@@ -12,7 +12,7 @@ highlights:
   - "Men's and women's sizes"
 experience: researched
 asin: B07FCCDN45
-drawback: "The arch is soft rather than firmly structured, so people with flat feet, or anyone who wants strong arch control, often find it too yielding. The insole is also fairly thick and can crowd a snug shoe."
+drawback: "The arch is soft, so flat feet that need firm support may find it too yielding."
 health: false
 order: 3
 reviewed: 2026-09-26

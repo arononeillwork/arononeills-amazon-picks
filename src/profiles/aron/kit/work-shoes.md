@@ -12,7 +12,7 @@ highlights:
   - "Washable microfibre upper"
 experience: researched
 asin: B09253K4MH
-drawback: "Fit is the common complaint: some wearers find the toe box narrow while others say it runs large, so check the size chart and be ready to exchange. The smooth microfibre upper also shows scuffs and stains and creases with wear."
+drawback: "Sizing is inconsistent, so check the size chart and be ready to exchange."
 health: false
 order: 4
 reviewed: 2026-09-26

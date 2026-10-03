@@ -14,7 +14,7 @@ image: "./images/macbook-neo.webp"
 imageCredit: "Apple"
 experience: researched
 asin: B0GR6HXPJ7
-drawback: "It only comes with 8 GB of memory, which limits heavy multitasking, and one of its two USB-C ports runs at slow USB 2.0 speeds. The keyboard isn't backlit, and reviewers found battery life drops to four or five hours under heavy use."
+drawback: "Only 8 GB of memory, and one of its two USB-C ports runs at slow USB 2.0 speeds."
 health: false
 order: 5
 reviewed: 2026-09-28

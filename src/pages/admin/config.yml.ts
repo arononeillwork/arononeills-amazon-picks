@@ -190,8 +190,9 @@ const products = {
       name: "drawback",
       label: "The honest drawback",
       widget: "text",
+      maxlength: 120,
       pattern: plainText("The drawback"),
-      hint: "Every product needs one. Put widely reported weaknesses in your own words; never copy Amazon reviews.",
+      hint: "Every product needs one: one short sentence with the main weakness, in your own words. Never copy Amazon reviews.",
     },
     {
       name: "health",

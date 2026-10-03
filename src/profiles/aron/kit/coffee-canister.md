@@ -14,7 +14,7 @@ image: "./images/coffee-canister.webp"
 imageCredit: "Fellow"
 experience: researched
 asin: B07NPMNW84
-drawback: "The pump lives in the lid, so the lid can't go in the dishwasher or under a running tap and has to be wiped clean. Sealing takes a fair few twists each time, and the clear glass lets light in, so it belongs in a cupboard rather than on a sunny shelf."
+drawback: "The pump sits in the lid, so the lid can't go in the dishwasher and has to be wiped clean."
 health: false
 order: 2
 reviewed: 2026-09-28

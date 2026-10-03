@@ -12,7 +12,7 @@ highlights:
   - "Wipe-clean top, 50 x 99 cm"
 experience: researched
 asin: B00M8O122G
-drawback: "It is polyurethane foam, not the nitrile rubber used in fry kitchens, so hot oil and heavy grease will wear it out faster. Some buyers also report the surface denting or the edges starting to lift after long use."
+drawback: "It's foam, not kitchen-grade rubber, so hot oil and grease wear it out faster."
 health: false
 order: 1
 reviewed: 2026-09-26

@@ -12,7 +12,7 @@ highlights:
   - "Long enough for the upper back"
 experience: researched
 asin: B01CEIGD06
-drawback: "Even the medium version feels firm on a first go, and its smooth surface lacks the ridges some people prefer. The same listing sells several hardness levels, so it is easy to order the wrong one by mistake."
+drawback: "Firm even in medium, and the listing sells several hardnesses, so it's easy to order the wrong one."
 health: false
 order: 3
 reviewed: 2026-09-26

@@ -14,7 +14,7 @@ image: "./images/sony-wh-1000xm5.webp"
 imageCredit: "Sony"
 experience: researched
 asin: B09Y2MYL5C
-drawback: "Unlike the models before and after it, they don't fold, so the case is bulky in a bag. Reviewers also find the build a little plasticky and the touch controls occasionally fussy."
+drawback: "They don't fold flat, so the case takes up a lot of room in a bag."
 health: false
 order: 3
 reviewed: 2026-09-28

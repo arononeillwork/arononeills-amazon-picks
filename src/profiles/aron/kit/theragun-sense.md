@@ -14,7 +14,7 @@ image: "./images/theragun-sense.webp"
 imageCredit: "Therabody"
 experience: researched
 asin: B0FNX9TF9R
-drawback: "It is built for relaxation rather than deep work, with less punch than Therabody's pro models, so people who want heavy pressure on big thigh muscles may find it too gentle. It comes with only two attachments, and the heart-rate sensor is only used for the breathing routines."
+drawback: "Built for relaxation, so it can feel too gentle if you want deep pressure on big muscles."
 health: true
 healthNote: "Makers of percussive massagers, Therabody included, advise asking a doctor before use if you are pregnant, have diabetes with complications such as neuropathy, wear a pacemaker or other implanted device, have had recent surgery or an injury, have epilepsy, or have joint replacements, metal pins or plates. Use it only on soft tissue, never on the head, the front of the neck or bony areas, and stop at the first sign of pain, numbness or bruising. Speak to your GP first if you have varicose veins or a history of blood clots."
 order: 2

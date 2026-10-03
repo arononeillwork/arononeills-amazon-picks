@@ -12,7 +12,7 @@ highlights:
   - "About 0.73 kg, USB-C"
 experience: researched
 asin: B0G82W9ZZK
-drawback: "At about 0.73 kg it is heavier than the smallest mini guns, and it comes with only two heads. It also has less stall force than full-size models, so people who like very deep pressure on big thigh muscles may find it stops when they lean in."
+drawback: "Only two heads, and it can stall when you lean in hard on big thigh muscles."
 health: true
 healthNote: "Hyperice's safety instructions for the Hypervolt range say not to use it, or any percussion device, without a doctor's approval if you are pregnant, have diabetes with complications such as neuropathy or retinal damage, wear a pacemaker, have had recent surgery or injury, have epilepsy or migraines, herniated discs, spondylolisthesis, spondylolysis or spondylosis, or have recent joint replacements, an IUD, or metal pins or plates. Use it only on soft tissue, never on the head or bony areas, and stop at the first sign of pain or bruising. Also speak to your GP first if you have varicose veins or a history of blood clots."
 order: 2

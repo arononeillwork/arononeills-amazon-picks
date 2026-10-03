@@ -12,7 +12,7 @@ highlights:
   - "Small enough for a work bag"
 experience: researched
 asin: B01M7XPBJM
-drawback: "All three pieces share the same medium-firm grade, so there is no softer option to start on if your feet are very tender. The smooth foam also grips less on a hard floor than a spiky rubber ball, so it can skid away under your foot."
+drawback: "All three pieces are medium-firm, so there's no softer one to start on if your feet are very tender."
 health: false
 order: 4
 reviewed: 2026-09-26

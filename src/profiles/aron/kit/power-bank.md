@@ -14,7 +14,7 @@ image: "./images/power-bank.webp"
 imageCredit: "UGREEN"
 experience: researched
 asin: B0BJQ7F16T
-drawback: "At around 510 g it is heavy for a power bank and belongs in a bag, not a pocket. There is no built-in cable, the 145 W is shared between its three ports, and refilling it takes about two hours from a 65 W charger and much longer from a phone charger."
+drawback: "Heavy at about 510 g, with no built-in cable, so it lives in a bag rather than a pocket."
 health: false
 order: 1
 reviewed: 2026-09-28

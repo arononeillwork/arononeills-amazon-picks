@@ -12,7 +12,7 @@ highlights:
   - "Silver-fibre yarn, knee-high"
 experience: researched
 asin: B01FZQZYNQ
-drawback: "Like most firm compression hosiery they take real effort to pull on, and the knit feels warm on a hot Spanish summer day. Buyers who pick a size from shoe size alone, without measuring the ankle, often end up with the wrong fit."
+drawback: "Firm to pull on and warm in summer, and sizing needs your ankle measured, not just your shoe size."
 health: true
 healthNote: "Relaxsan advises against wearing its compression hosiery overnight, or if you have serious arterial circulation problems, peripheral arterial occlusion, a recent or deep-vein thrombosis, weeping skin conditions on the legs, or an allergy to the materials. Diabetes with nerve damage in the feet and heart failure also call for a doctor's approval first. Speak to your GP or a pharmacist before you start, and take them off if your toes go numb, tingle or change colour."
 order: 2

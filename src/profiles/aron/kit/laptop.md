@@ -23,7 +23,7 @@ picks:
     product: "Apple MacBook Air 13-inch M5, 16 GB, 512 GB"
     asin: B0GR1MZP3L
     why: "Fanless and silent, rated by Apple at up to 18 hours of video playback, and once both are signed in to the same Apple account it shares messages, photos of receipts and passwords with an iPhone."
-drawback: "The Lenovo's battery and screen are only adequate, and the Zenbook runs Windows on Arm, so check that any older accounting software, printer drivers or card-reader tools you rely on have Arm versions. The MacBook cannot run Windows-only programs at all."
+drawback: "The Zenbook runs Windows on Arm and the MacBook can't run Windows programs, so check your software first."
 health: false
 order: 2
 reviewed: 2026-09-26

@@ -14,7 +14,7 @@ image: "./images/xiaomi-smart-band-10.webp"
 imageCredit: "Xiaomi"
 experience: researched
 asin: B0DYF82545
-drawback: "There's no built-in GPS, so runs and rides need your phone for distance and route, and there's no NFC for paying from the wrist. The 21 days is for typical use: Xiaomi's own figures drop to about nine days with the always-on display and eight with heavy use."
+drawback: "No GPS or NFC, and the 21-day battery drops to about nine days with the always-on display."
 health: true
 healthNote: "A fitness band, not a medical device: Xiaomi says its heart-rate, blood-oxygen, sleep and stress readings must not be used to diagnose anything. If the skin under the strap turns red or swollen, stop wearing it and see a doctor, and check with a doctor before starting a new exercise programme."
 order: 5

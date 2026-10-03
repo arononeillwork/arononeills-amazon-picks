@@ -182,7 +182,7 @@ image: ./images/photo.webp           # optional, Aron's own photo (the admin upl
 featured: true                       # optional, the home page spotlight (one entry)
 experience: owned | researched
 asin: B0XXXXXXXX                     # or `picks:` (exactly three: label, product, asin, why)
-drawback: "honest, specific"
+drawback: "honest, specific"         # one short sentence, <= 120 chars (the product page's pull quote)
 health: false                        # true requires healthNote
 healthNote: "manufacturer contraindications"
 order: 1                             # position within the category

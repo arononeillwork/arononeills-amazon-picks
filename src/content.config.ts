@@ -48,7 +48,8 @@ const kit = defineCollection({
         asin: z.preprocess(blank, asin.optional()),
         /** Multi-option entries (the laptop): exactly three use-case picks instead of one ASIN. */
         picks: z.preprocess(blank, z.array(pick).length(3).optional()),
-        drawback: z.string().min(1),
+        /** One short sentence: the pull quote on the product page. */
+        drawback: z.string().min(1).max(120),
         health: z.boolean().default(false),
         healthNote: z.preprocess(blank, z.string().min(1).optional()),
         /** Position within its category. The admin sets it when products are dragged into order; new ones sort last. */

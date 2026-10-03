@@ -14,7 +14,7 @@ image: "./images/macbook-pro-14.webp"
 imageCredit: "Apple"
 experience: researched
 asin: B0GR1NZFNK
-drawback: "At about 1.55 kg it is noticeably heavier than a MacBook Air or the MacBook Neo, and it is far more machine than invoices and email need. Reviewers also note that it runs warm under long, heavy workloads."
+drawback: "At about 1.55 kg it's heavier than an Air, and far more machine than invoices and email need."
 health: false
 order: 6
 reviewed: 2026-09-28
