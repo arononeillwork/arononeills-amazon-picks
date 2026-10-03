@@ -112,6 +112,8 @@ interface EntryData {
   title: string;
   category: string;
   product: string;
+  brand?: string;
+  name?: string;
   summary: string;
   highlights?: string[];
   image?: string;
@@ -170,6 +172,8 @@ for (const file of entryFiles) {
     data.healthNote,
     ...(data.picks ?? []).flatMap((p) => [p.label, p.product, p.why]),
     ...(data.highlights ?? []),
+    data.brand,
+    data.name,
   ].map((s) => s ?? "");
   const problems: string[] = [];
 
@@ -198,7 +202,9 @@ for (const file of entryFiles) {
     if (claim) problems.push(`health entry uses treatment language ("${TREATMENT.exec(claim)![0]}")`);
   }
   if (strings[3].trim().length < 30) problems.push("drawback is too thin to be honest");
-  if (strings.slice(0, 2).some((s) => AMAZON_VARIANT.test(s))) problems.push('title or product contains "Amazon"');
+  if ([data.title, data.product, data.brand, data.name].some((s) => s && AMAZON_VARIANT.test(s))) {
+    problems.push('title, product, brand or name contains "Amazon"');
+  }
 
   const reviewed = new Date(data.reviewed);
   const limit = data.picks ? 3 : 6;

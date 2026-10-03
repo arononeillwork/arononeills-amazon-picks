@@ -1,6 +1,8 @@
 ---
 title: "A steel bento box for a proper packed lunch on a long shift"
 product: "Everusely stainless-steel bento box, 0.8 L, lavender"
+brand: "Everusely"
+name: "Steel Bento Box"
 category: carry
 tags: [long-shifts, commute]
 summary: "A 0.8-litre stainless-steel lunch box with three compartments and a leakproof sauce pot. Dishwasher- and freezer-safe, but not for the microwave."

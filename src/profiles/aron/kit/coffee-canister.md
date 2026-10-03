@@ -1,6 +1,8 @@
 ---
 title: "An airtight jar that keeps coffee beans fresh for longer"
 product: "Fellow Atmos Vacuum Canister, 1.2 L, clear glass"
+brand: "Fellow"
+name: "Atmos Canister 1.2 L"
 category: at-home
 tags: [at-home]
 summary: "A 1.2-litre glass canister with a vacuum pump built into its lid: twist it to draw the air out, and an indicator shows when it's sealed."

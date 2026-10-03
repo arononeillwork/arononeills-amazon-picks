@@ -1,6 +1,8 @@
 ---
 title: "An insulated bottle that stays cold through a whole shift"
 product: "Hydro Flask Standard Mouth 709 ml with Flex Cap"
+brand: "Hydro Flask"
+name: "Standard Mouth 709 ml"
 category: carry
 tags: [long-shifts, commute]
 summary: "A 709 ml double-wall steel bottle rated to keep drinks cold for up to 24 hours, with a leakproof Flex Cap and a slim body that fits cup holders."

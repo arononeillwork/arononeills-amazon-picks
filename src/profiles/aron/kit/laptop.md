@@ -1,6 +1,7 @@
 ---
 title: "Three laptops for the admin side of a small business"
 product: "Lenovo IdeaPad Slim 3, ASUS Zenbook A14 or Apple MacBook Air M5"
+name: "Three laptop picks"
 category: carry
 tags: [commute, travel]
 summary: "Three current laptops for invoices, bookings and spreadsheets: a no-frills 15-inch Lenovo, a sub-1 kg ASUS and a silent, fanless MacBook Air."

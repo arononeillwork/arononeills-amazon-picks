@@ -1,6 +1,8 @@
 ---
 title: "Slip-resistant work shoes certified for wet café floors"
 product: "DIAN Marsella Unisex Work Shoe, EN ISO 20347 SRC"
+brand: "DIAN"
+name: "Marsella Work Shoe"
 category: on-your-feet
 tags: [long-shifts, commute]
 summary: "A light work shoe from a Spanish maker, certified SRC for slip resistance, with an oil-resistant sole and a washable microfibre upper."

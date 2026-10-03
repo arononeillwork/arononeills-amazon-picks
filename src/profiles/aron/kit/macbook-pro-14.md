@@ -1,6 +1,8 @@
 ---
 title: "A powerful MacBook Pro for heavy work away from a desk"
 product: "Apple MacBook Pro 14-inch, M5 Pro, 24 GB, 1 TB, Space Black"
+brand: "Apple"
+name: "MacBook Pro 14-inch"
 category: carry
 tags: [commute, travel]
 summary: "A 14-inch MacBook Pro with the M5 Pro chip, 24 GB of memory, a 1 TB drive, a bright Liquid Retina XDR screen and up to 22 hours of video playback."

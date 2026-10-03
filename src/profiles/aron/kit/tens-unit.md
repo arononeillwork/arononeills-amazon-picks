@@ -1,6 +1,8 @@
 ---
 title: "A TENS and EMS unit for the evening after a long shift"
 product: "iWarmbase 3-in-1 TENS, EMS and Massage Unit, 2 channels"
+brand: "iWarmbase"
+name: "3-in-1 TENS Unit"
 category: recovery
 tags: [after-work, long-shifts]
 summary: "A small unit with TENS, EMS and massage settings, 27 programmes and 30 intensity levels, two channels and eight sticky pads in the box."

@@ -12,17 +12,22 @@ interface Props {
   entry: Entry;
   /** The big picture on the product page: loads first, and labels a drawing as an illustration. */
   hero?: boolean;
-  /** No panel behind the picture, for drawings placed on an already coloured tile. */
+  /** A large picture near the top of a page (the home page's lead tile): loads first, no label. */
+  priority?: boolean;
+  /** No panel behind the picture: it sits on its tile or card. */
   bare?: boolean;
   /** Morph between pages with a view transition. Off where the same product appears twice on one page. */
   morph?: boolean;
+  /** The `sizes` hint for the photo, when the default card size doesn't fit. */
+  sizes?: string;
   class?: string;
 }
 
-const { entry, hero = false, bare = false, morph = true, class: className } = Astro.props;
+const { entry, hero = false, priority = false, bare = false, morph = true, sizes, class: className } = Astro.props;
 const { image, imageCredit, product, category } = entry.data;
 const tone = categoryBySlug(category).tone;
 const drawing = art[entry.id];
+const large = hero || priority;
 ---
 
 <div
@@ -35,11 +40,11 @@ const drawing = art[entry.id];
         src={image}
         formats={["avif", "webp"]}
         fallbackFormat={image.format === "png" ? "png" : "jpg"}
-        widths={hero ? [640, 960, 1280] : [360, 540, 720]}
-        sizes={hero ? "(min-width: 960px) 600px, 100vw" : "(min-width: 1080px) 280px, (min-width: 640px) 30vw, 45vw"}
+        widths={large ? [640, 960, 1280] : [360, 540, 720]}
+        sizes={sizes ?? (large ? "(min-width: 960px) 600px, 100vw" : "(min-width: 1080px) 300px, (min-width: 640px) 40vw, 76vw")}
         alt={hero ? product : ""}
-        loading={hero ? "eager" : "lazy"}
-        fetchpriority={hero ? "high" : "auto"}
+        loading={large ? "eager" : "lazy"}
+        fetchpriority={large ? "high" : "auto"}
         class="art-photo"
       />
     ) : drawing ? (

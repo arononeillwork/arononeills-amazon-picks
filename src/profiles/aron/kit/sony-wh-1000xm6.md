@@ -1,6 +1,8 @@
 ---
 title: "Noise-cancelling headphones for switching off on the way home"
 product: "Sony WH-1000XM6 wireless noise-cancelling headphones"
+brand: "Sony"
+name: "WH-1000XM6"
 category: quiet
 tags: [commute, travel, after-work]
 summary: "Sony's latest flagship headphones: top-tier noise cancelling from twelve microphones, up to 30 hours of battery with it on, and a folding design for travel."

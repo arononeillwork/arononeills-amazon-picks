@@ -1,6 +1,8 @@
 ---
 title: "A power bank that charges a laptop and flies in cabin bags"
 product: "UGREEN Nexode Power Bank 25,000 mAh 145 W"
+brand: "UGREEN"
+name: "Nexode 25,000 mAh"
 category: carry
 tags: [travel, commute]
 summary: "A 25,000 mAh, 90 Wh power bank with 140 W USB-C Power Delivery, enough for most laptops and still under the 100 Wh cabin limit."

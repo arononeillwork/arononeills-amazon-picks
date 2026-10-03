@@ -1,6 +1,8 @@
 ---
 title: "A massage gun that guides you through winding down after a shift"
 product: "Therabody Theragun Sense (2nd generation)"
+brand: "Therabody"
+name: "Theragun Sense"
 category: recovery
 tags: [after-work]
 summary: "A relaxation-focused massage gun with five speeds, on-screen guided routines, a heart-rate sensor for breathing exercises and about two hours of battery."

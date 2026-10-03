@@ -1,6 +1,8 @@
 ---
 title: "A light, simple MacBook for the admin side of a physical job"
 product: "Apple MacBook Neo 13-inch, A18 Pro, 512 GB, Touch ID, Indigo"
+brand: "Apple"
+name: "MacBook Neo"
 category: carry
 tags: [commute, travel]
 summary: "Apple's entry-level MacBook: a 13-inch Liquid Retina screen, the A18 Pro chip, Touch ID and up to 16 hours of battery, at about 1.2 kg."

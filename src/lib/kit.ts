@@ -32,5 +32,8 @@ export async function getShelves() {
 
 export const entryHref = (entry: Entry) => `/kit/${entry.data.category}/${entry.id}/`;
 
+/** The short name cards and headings show ("MacBook Neo"); the full `product` stays for the details and screen readers. */
+export const displayName = (entry: Entry) => entry.data.name ?? entry.data.product;
+
 const dateFormat = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 export const formatDate = (date: Date) => dateFormat.format(date);

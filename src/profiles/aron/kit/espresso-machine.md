@@ -1,6 +1,8 @@
 ---
 title: "Proper espresso at home without learning to tamp"
 product: "Sage The Oracle Jet, brushed stainless steel"
+brand: "Sage"
+name: "The Oracle Jet"
 category: at-home
 tags: [at-home]
 summary: "An espresso machine that grinds, doses and tamps for you, then steams milk hands-free, so a flat white at home takes little more than a tap on the screen."

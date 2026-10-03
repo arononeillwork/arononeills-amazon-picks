@@ -1,6 +1,8 @@
 ---
 title: "A fitness band that counts every step of a long shift"
 product: "Xiaomi Smart Band 10, black"
+brand: "Xiaomi"
+name: "Smart Band 10"
 category: on-your-feet
 tags: [long-shifts, after-work]
 summary: "A light fitness band with a bright 1.72-inch screen that counts steps, tracks heart rate and sleep, and runs up to 21 days between charges."

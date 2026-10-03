@@ -6,7 +6,7 @@ import PicksBlock from "../../../components/PicksBlock.astro";
 import ProductArt from "../../../components/ProductArt.astro";
 import ProductCard from "../../../components/ProductCard.astro";
 import { categoryBySlug, copy } from "../../../config/active";
-import { formatDate, getKit, type Entry } from "../../../lib/kit";
+import { displayName, formatDate, getKit, type Entry } from "../../../lib/kit";
 
 export async function getStaticPaths() {
   const kit = await getKit();
@@ -38,7 +38,7 @@ const sections = (entry.rendered?.html ?? "")
 ---
 
 <Base title={data.title} description={data.summary} ogType="article">
-  <article class="pdp">
+  <article class={`pdp tone-${category.tone}`}>
     <div class="container">
       <p class="crumbs">
         <a href="/kit/">All kit</a><span aria-hidden="true">›</span><a href={`/kit/${category.slug}/`}>{category.name}</a>
@@ -48,15 +48,13 @@ const sections = (entry.rendered?.html ?? "")
           <ProductArt entry={entry} hero />
         </div>
         <div class="pdp-info">
-          <p class={`label-pill tone-${category.tone}`}>
-            <Icon name={category.slug} />
-            {category.name}
-          </p>
-          <h1 class="pdp-title">{data.product}</h1>
+          <p class={`pdp-eyebrow tone-${category.tone}`}>{data.brand ?? category.name}</p>
+          <h1 class="pdp-title">{displayName(entry)}</h1>
           <p class="pdp-sub">{data.title}</p>
+          {data.name && <p class="pdp-model">{data.product}</p>}
           {
             data.highlights && (
-              <ul class="highlights" aria-label={copy.entry.highlightsLabel}>
+              <ul class="facts" aria-label={copy.entry.highlightsLabel}>
                 {data.highlights.map((highlight) => (
                   <li>
                     <Icon name="check" />
@@ -66,7 +64,7 @@ const sections = (entry.rendered?.html ?? "")
               </ul>
             )
           }
-          <div class="buy-card">
+          <div class="pdp-buy">
             {data.asin && <BuyBlock asin={data.asin} product={data.product} />}
             {
               data.picks && (
@@ -106,15 +104,15 @@ const sections = (entry.rendered?.html ?? "")
 
     <section class="section pdp-more">
       <div class="container narrow">
-        <div class="drawback-card">
-          <span class="why-icon"><Icon name="balance" /></span>
-          <div>
-            <h2>{copy.entry.drawbackHeading}</h2>
-            <p>{data.drawback}</p>
-          </div>
+        <div class="drawback reveal">
+          <h2 class="drawback-label">
+            <Icon name="balance" />
+            {copy.entry.drawbackHeading}
+          </h2>
+          <p class="drawback-text">{data.drawback}</p>
         </div>
 
-        <h2 class="shelf-title details-title">{copy.entry.detailsHeading} <span>{copy.entry.detailsSub}</span></h2>
+        <h2 class="details-title">{copy.entry.detailsHeading} <span>{copy.entry.detailsSub}</span></h2>
         <div class="accordion">
           {
             data.health && (
@@ -145,7 +143,7 @@ const sections = (entry.rendered?.html ?? "")
           data.asin && (
             <div class="buy-end">
               <div>
-                <p class="buy-end-name">{data.product}</p>
+                <p class="buy-end-name">{displayName(entry)}</p>
                 <p class="buy-end-sub">{data.title}</p>
               </div>
               <BuyBlock asin={data.asin} product={data.product} />
@@ -159,7 +157,7 @@ const sections = (entry.rendered?.html ?? "")
       related.length > 0 && (
         <section class="section">
           <div class="container">
-            <h2 class="shelf-title">
+            <h2 class="h2 related-title">
               {copy.entry.relatedHeading} {category.name}.
             </h2>
             <ul class="product-grid related">

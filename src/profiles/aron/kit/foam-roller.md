@@ -1,6 +1,8 @@
 ---
 title: "A medium-firm foam roller long enough for back and legs"
 product: "BLACKROLL Standard 45 Fascia Roller, medium hardness, 45 x 15 cm"
+brand: "BLACKROLL"
+name: "Standard 45 Roller"
 category: recovery
 tags: [after-work]
 summary: "A 45 cm roller of medium hardness in tough, German-made EPP foam, long enough to lie across for the upper back and wide enough for both legs."

@@ -50,7 +50,7 @@ Publish at least ten products before applying to Amazon Associates; their review
 
 ## Adding a new product
 
-**Products → New**. Every field explains itself. The form won't save if something breaks the site's rules, for example "Amazon" in a headline, a price, a malformed product code, or square brackets. A few rules are only checked when the site rebuilds, so a published product can still fail the build:
+**Products → New**. Every field explains itself. Fill in **Brand** and **Short name** too (for example "Apple" and "MacBook Neo"): the cards and the page heading show those, and the full product name appears under the heading. The form won't save if something breaks the site's rules, for example "Amazon" in a headline, a price, a malformed product code, or square brackets. A few rules are only checked when the site rebuilds, so a published product can still fail the build:
 
 - The write-up must be 200 to 400 words.
 - If you tick **Do you own it? → No**, the write-up must not suggest you've used it ("I use", "my feet" and so on).

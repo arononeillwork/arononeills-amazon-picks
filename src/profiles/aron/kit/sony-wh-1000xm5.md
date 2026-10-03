@@ -1,6 +1,8 @@
 ---
 title: "Sony's previous flagship: excellent noise cancelling for less"
 product: "Sony WH-1000XM5 wireless noise-cancelling headphones"
+brand: "Sony"
+name: "WH-1000XM5"
 category: quiet
 tags: [commute, travel]
 summary: "The 2022 flagship that set the standard for noise cancelling: up to 30 hours of battery with it on, about 250 g, and still widely recommended."

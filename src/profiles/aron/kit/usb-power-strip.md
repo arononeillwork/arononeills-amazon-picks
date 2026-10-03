@@ -1,6 +1,8 @@
 ---
 title: "One power strip for the phones, the tablet and the laptop"
 product: "VOOMY 100 W USB Power Strip, 5 sockets, 3 USB-C and 2 USB-A"
+brand: "VOOMY"
+name: "100 W USB Power Strip"
 category: at-home
 tags: [at-home]
 summary: "Five mains sockets and five USB ports sharing up to 100 W, on a 2 m cable with a main switch, surge protection on the USB side and overload cut-out."

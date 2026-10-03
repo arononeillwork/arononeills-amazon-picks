@@ -24,6 +24,8 @@ export const copy = {
       "No prices: Amazon.es shows today's",
       "Chosen for ten-hour shifts",
     ],
+    bentoLabel: "A few of the picks",
+    trustLabel: "What to expect",
     jumpLabel: "Jump to a category",
     allKit: "All kit",
     seeAll: "See all",

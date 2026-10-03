@@ -4,7 +4,7 @@ import Icon from "../components/Icon.astro";
 import ProductArt from "../components/ProductArt.astro";
 import ProductCard from "../components/ProductCard.astro";
 import { categoryBySlug, copy, site } from "../config/active";
-import { entryHref, getShelves } from "../lib/kit";
+import { displayName, entryHref, getShelves, type Entry } from "../lib/kit";
 
 const { kit, categories } = await getShelves();
 const inCategory = (slug: string) => kit.filter((e) => e.data.category === slug);
@@ -14,73 +14,76 @@ const latest = kit
   .sort((a, b) => b.entry.data.reviewed.getTime() - a.entry.data.reviewed.getTime() || a.index - b.index)
   .map(({ entry }) => entry);
 const spotlight = kit.find((e) => e.data.featured) ?? latest[0];
-// Three products float in the hero, one per category where possible.
-const floating = [...new Map(latest.map((e) => [e.data.category, e])).values(), ...latest]
-  .filter((e, i, all) => all.indexOf(e) === i)
-  .slice(0, 3);
-// The spotlight sits between the category shelves, after the second one.
+
+// The hero bento: five products, photos first, one per category where possible,
+// leaving out the spotlight, which gets its own band further down.
+const pool = [...latest.filter((e) => e.data.image), ...latest.filter((e) => !e.data.image)].filter((e) => e !== spotlight);
+const bento: Entry[] = [];
+for (const entry of pool) {
+  if (bento.length < 5 && !bento.some((e) => e.data.category === entry.data.category)) bento.push(entry);
+}
+for (const entry of pool) {
+  if (bento.length < 5 && !bento.includes(entry)) bento.push(entry);
+}
+// The spotlight band sits between the category shelves, after the second one.
 const spotlightAfter = Math.min(1, categories.length - 1);
 ---
 
 <Base>
   <section class="hero">
-    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <p class="chip-glass">{copy.home.eyebrow}</p>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="hero-head">
+        <p class="hero-eyebrow">{copy.home.eyebrow}</p>
         <h1 class="hero-title">{copy.home.title}</h1>
         <p class="hero-lead">{copy.home.lead}</p>
         <div class="hero-ctas">
           {kit.length > 0 && <a class="button button-lg" href="#shop">{copy.home.cta}</a>}
-          <a class="button-ghost" href="/disclosure/">{copy.home.secondary}</a>
+          <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
         </div>
-        {
-          kit.length > 0 && (
-            <ul class="hero-stats">
-              <li>
-                <strong>{kit.length}</strong> {copy.home.stats.picks}
-              </li>
-              <li>
-                <strong>{categories.length}</strong> {copy.home.stats.categories}
-              </li>
-              <li>
-                <strong>0</strong> {copy.home.stats.sponsored}
-              </li>
-            </ul>
-          )
-        }
       </div>
       {
-        floating.length > 0 && (
-          <ul class="hero-stack">
-            {floating.map((entry) => (
-              <li class="float-card">
-                <ProductArt entry={entry} morph={false} />
-                <a class="tile-link float-name" href={entryHref(entry)}>
-                  {entry.data.product}
-                </a>
-              </li>
-            ))}
+        bento.length >= 3 && (
+          <ul class="bento" aria-label={copy.home.bentoLabel}>
+            {bento.map((entry, index) => {
+              const category = categoryBySlug(entry.data.category);
+              return (
+                <li class:list={["tile", `tone-${category.tone}`, { "tile-lead": index === 0 }]}>
+                  <div class="tile-text">
+                    <p class="tile-eyebrow">{entry.data.brand ?? category.name}</p>
+                    <p class="tile-name">
+                      <a class="tile-link" href={entryHref(entry)}>
+                        {displayName(entry)}
+                      </a>
+                    </p>
+                    {index === 0 && <p class="tile-sub">{entry.data.title}</p>}
+                  </div>
+                  <ProductArt
+                    entry={entry}
+                    bare
+                    morph={false}
+                    priority={index === 0}
+                    sizes={index === 0 ? "(min-width: 900px) 560px, 92vw" : "(min-width: 900px) 270px, 46vw"}
+                    class="tile-art"
+                  />
+                </li>
+              );
+            })}
           </ul>
         )
       }
-    </div>
-  </section>
-
-  <div class="marquee" role="region" aria-label="What to expect">
-    <ul class="marquee-track">
-      {
-        [0, 1].map((copyIndex) =>
+      <ul class="trust" aria-label={copy.home.trustLabel}>
+        {
           copy.home.promises.map((promise) => (
-            <li aria-hidden={copyIndex === 1 ? "true" : undefined}>
+            <li>
               <Icon name="check" />
               {promise}
             </li>
-          )),
-        )
-      }
-    </ul>
-  </div>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 
   {
     kit.length === 0 ? (
@@ -95,19 +98,17 @@ const spotlightAfter = Math.min(1, categories.length - 1);
     ) : (
       <div id="shop">
         {/* Sticky row of categories, like a store's local nav. Plain anchor links: no JavaScript. */}
-        <nav class="jump-nav" aria-label={copy.home.jumpLabel}>
+        <nav class="catbar" aria-label={copy.home.jumpLabel}>
           <ul class="container">
             {categories.map((category) => (
               <li>
-                <a class={`jump-link tone-${category.tone}`} href={`#${category.slug}`}>
-                  <Icon name={category.slug} />
+                <a class={`cat-chip tone-${category.tone}`} href={`#${category.slug}`}>
                   {category.name}
                 </a>
               </li>
             ))}
             <li>
-              <a class="jump-link jump-all" href="/kit/">
-                <Icon name="grid" />
+              <a class="cat-chip cat-all" href="/kit/">
                 {copy.home.allKit}
               </a>
             </li>
@@ -116,26 +117,24 @@ const spotlightAfter = Math.min(1, categories.length - 1);
 
         {categories.map((category, index) => {
           const entries = inCategory(category.slug);
+          const tone = spotlight && categoryBySlug(spotlight.data.category).tone;
           return (
             <>
               <section class="shelf" id={category.slug} aria-labelledby={`${category.slug}-title`}>
-                <div class="container section-head">
-                  <div class="shelf-title-wrap">
-                    <span class={`bento-icon tone-${category.tone}`}>
-                      <Icon name={category.slug} />
-                    </span>
-                    <div>
-                      <h2 class="h2" id={`${category.slug}-title`}>
-                        {category.name}.
-                      </h2>
-                      <p class="shelf-sub">{category.intro}</p>
-                    </div>
+                <div class="container shelf-head">
+                  <div>
+                    <h2 class="h2" id={`${category.slug}-title`}>
+                      {category.name}.
+                    </h2>
+                    <p class="shelf-sub">{category.intro}</p>
                   </div>
-                  <a class="link-chevron" href={`/kit/${category.slug}/`}>
-                    {copy.home.seeAll} ({entries.length})
-                  </a>
+                  {entries.length > 1 && (
+                    <a class="link-chevron" href={`/kit/${category.slug}/`}>
+                      {copy.home.seeAll} {entries.length}
+                    </a>
+                  )}
                 </div>
-                <ul class="shelf-row">
+                <ul class="container shelf-row">
                   {entries.map((entry) => (
                     <ProductCard entry={entry} showCategory={false} />
                   ))}
@@ -143,33 +142,34 @@ const spotlightAfter = Math.min(1, categories.length - 1);
               </section>
 
               {index === spotlightAfter && spotlight && (
-                <section class="section section-tight">
-                  <div class="container">
-                    <div class={`spotlight reveal tone-${categoryBySlug(spotlight.data.category).tone}`}>
-                      <div class="spotlight-art">
-                        <ProductArt entry={spotlight} bare morph={false} />
-                      </div>
-                      <div class="spotlight-copy">
-                        <p class="label-pill">
-                          <Icon name="sparkle" />
-                          {copy.home.spotlight} · {categoryBySlug(spotlight.data.category).name}
-                        </p>
-                        <h2>{spotlight.data.product}</h2>
-                        <p class="spotlight-sub">{spotlight.data.title}</p>
-                        {spotlight.data.highlights && (
-                          <ul class="highlights">
-                            {spotlight.data.highlights.map((highlight) => (
-                              <li>
-                                <Icon name="check" />
-                                {highlight}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        <a class="button" href={entryHref(spotlight)}>
-                          {copy.home.spotlightCta}
-                        </a>
-                      </div>
+                <section class={`band tone-${tone}`} aria-labelledby="spotlight-title">
+                  <div class="container band-grid">
+                    <div class="band-art reveal">
+                      <ProductArt entry={spotlight} bare morph={false} sizes="(min-width: 900px) 560px, 92vw" />
+                    </div>
+                    <div class="band-copy">
+                      <p class="band-eyebrow">
+                        <Icon name="sparkle" />
+                        {copy.home.spotlight}
+                        {spotlight.data.brand && <span>· {spotlight.data.brand}</span>}
+                      </p>
+                      <h2 class="band-title" id="spotlight-title">
+                        {displayName(spotlight)}
+                      </h2>
+                      <p class="band-sub">{spotlight.data.title}</p>
+                      {spotlight.data.highlights && (
+                        <ul class="facts">
+                          {spotlight.data.highlights.map((highlight) => (
+                            <li>
+                              <Icon name="check" />
+                              {highlight}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <a class="button" href={entryHref(spotlight)}>
+                        {copy.home.spotlightCta}
+                      </a>
                     </div>
                   </div>
                 </section>
@@ -181,14 +181,14 @@ const spotlightAfter = Math.min(1, categories.length - 1);
     )
   }
 
-  <section class="section">
+  <section class="section why">
     <div class="container">
       <h2 class="h2 reveal">{copy.home.whyHeading} <span>{copy.home.whySub}</span></h2>
       <p class="why-about reveal">{site.owner.about}</p>
       <ul class="why-grid">
         {
           copy.home.why.map((point) => (
-            <li class="why-card reveal">
+            <li class="reveal">
               <span class="why-icon">
                 <Icon name={point.icon} />
               </span>

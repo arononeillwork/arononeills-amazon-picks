@@ -1,6 +1,8 @@
 ---
 title: "A cushioned mat for the spot behind the counter"
 product: "Sky Solutions Anti-Fatigue Mat, 19 mm, 50 x 99 cm"
+brand: "Sky Solutions"
+name: "Anti-Fatigue Mat"
 category: on-your-feet
 tags: [long-shifts]
 summary: "A 19 mm high-density foam mat with bevelled edges and a wipe-clean diamond top, sized for the stretch in front of a coffee machine or sink."

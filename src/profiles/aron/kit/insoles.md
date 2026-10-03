@@ -1,6 +1,8 @@
 ---
 title: "Cushioned insoles for work shoes on hard floors"
 product: "Scholl GelActiv Work Insoles"
+brand: "Scholl"
+name: "GelActiv Work Insoles"
 category: on-your-feet
 tags: [long-shifts]
 summary: "Gel-cushioned insoles made for work shoes and hard floors, with a supportive arch shape, a trim-to-fit outline and separate men's and women's sizes."

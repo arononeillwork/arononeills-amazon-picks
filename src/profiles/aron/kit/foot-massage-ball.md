@@ -1,6 +1,8 @@
 ---
 title: "A firm ball and mini roller for tired soles after a shift"
 product: "BLACKROLL Blackbox Mini set: Mini roller, Ball 08 and Duoball 08"
+brand: "BLACKROLL"
+name: "Blackbox Mini Set"
 category: recovery
 tags: [after-work, travel]
 summary: "Three firm, smooth EPP tools in one box: an 8 cm ball, a peanut-shaped duo ball and a 15 cm mini roller, all sized for feet and calves."

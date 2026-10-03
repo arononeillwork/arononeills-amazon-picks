@@ -1,14 +1,15 @@
 ---
-// A product as a raised card: its picture, then the name and the need it
-// meets. Links to the entry page, never straight to Amazon, so every affiliate
-// link sits beside its disclosure. The data-* attributes drive the filter on /kit/.
-import Icon from "./Icon.astro";
+// A product as a store tile: the brand, the short name and the need it meets
+// above a big picture. Links to the entry page, never straight to Amazon, so
+// every affiliate link sits beside its disclosure. The data-* attributes drive
+// the filter on /kit/.
 import ProductArt from "./ProductArt.astro";
 import { categoryBySlug, copy } from "../config/active";
-import { entryHref, type Entry } from "../lib/kit";
+import { displayName, entryHref, type Entry } from "../lib/kit";
 
 interface Props {
   entry: Entry;
+  /** Name the category too (the full list, where categories mix). */
   showCategory?: boolean;
   /** h2 on pages where the cards sit directly under the page's h1 (the lists), h3 under a section heading. */
   heading?: "h2" | "h3";
@@ -18,15 +19,15 @@ interface Props {
 const { entry, showCategory = true, heading: Heading = "h3", morph = true } = Astro.props;
 const { data } = entry;
 const category = categoryBySlug(data.category);
+const eyebrow = [data.brand, showCategory ? category.name : undefined].filter(Boolean).join(" · ") || category.name;
 ---
 
 <li class={`card tone-${category.tone}`} data-category={data.category} data-tags={data.tags.join(" ")}>
-  <ProductArt entry={entry} morph={morph} />
-  {data.experience === "owned" && <span class="pill">{copy.entry.ownedShort}</span>}
-  <div class="card-body">
-    {showCategory && <p class="card-eyebrow">{category.name}</p>}
-    <Heading class="card-title"><a class="tile-link" href={entryHref(entry)}>{data.product}</a></Heading>
+  <div class="card-text">
+    <p class="card-eyebrow">{eyebrow}</p>
+    <Heading class="card-title"><a class="tile-link" href={entryHref(entry)}>{displayName(entry)}</a></Heading>
     <p class="card-sub">{data.title}</p>
   </div>
-  <span class="card-go" aria-hidden="true"><Icon name="chevron" /></span>
+  <ProductArt entry={entry} morph={morph} bare class="card-art" />
+  {data.experience === "owned" && <span class="pill">{copy.entry.ownedShort}</span>}
 </li>

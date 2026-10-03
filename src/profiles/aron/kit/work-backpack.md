@@ -1,6 +1,8 @@
 ---
 title: "A weatherproof backpack for a laptop and a change of clothes"
 product: "Thule Paramount Backpack 27L"
+brand: "Thule"
+name: "Paramount 27L"
 category: carry
 tags: [commute, travel]
 summary: "A 27-litre fold-top backpack in water-resistant nylon, with a padded 16-inch laptop sleeve, back-panel access and room for a change of clothes."

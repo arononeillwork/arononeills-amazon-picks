@@ -1,6 +1,8 @@
 ---
 title: "A quiet, light massage gun for evenings in a flat"
 product: "Hyperice Hypervolt Go 3"
+brand: "Hyperice"
+name: "Hypervolt Go 3"
 category: recovery
 tags: [after-work, travel]
 summary: "A compact percussion massager with five speeds, a stated 55 dB running noise and about four hours of battery, light enough to use one-handed."

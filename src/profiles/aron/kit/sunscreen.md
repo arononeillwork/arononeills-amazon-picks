@@ -1,6 +1,8 @@
 ---
 title: "A high-protection, fragrance-free sunscreen for outdoor days"
 product: "Altruist Dermatologist Sunscreen SPF 50, unscented"
+brand: "Altruist"
+name: "Sunscreen SPF 50"
 category: sun
 tags: [commute, travel]
 summary: "A fragrance-free SPF 50 sunscreen from a dermatologist-founded brand, with a very high UVA rating and a water-resistant, moisturiser-like feel."

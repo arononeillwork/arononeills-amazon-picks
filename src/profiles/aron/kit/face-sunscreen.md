@@ -1,6 +1,8 @@
 ---
 title: "A light face sunscreen for hot shifts and sunny commutes"
 product: "Altruist Face Fluid SPF 50, 50 ml"
+brand: "Altruist"
+name: "Face Fluid SPF 50"
 category: sun
 tags: [commute, long-shifts]
 summary: "A runny, fast-absorbing SPF 50 face fluid with a very high UVA rating, niacinamide and vitamin E, and no fragrance."

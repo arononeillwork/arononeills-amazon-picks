@@ -30,6 +30,10 @@ const kit = defineCollection({
       .strictObject({
         title: z.string().min(1).max(70).refine(noAmazon, NO_AMAZON),
         product: z.string().min(1).refine(noAmazon, NO_AMAZON),
+        /** The maker, shown small above the name, e.g. "Apple". */
+        brand: z.preprocess(blank, z.string().min(1).max(24).refine(noAmazon, NO_AMAZON).optional()),
+        /** The short name cards and headings use, e.g. "MacBook Neo". Falls back to `product`. */
+        name: z.preprocess(blank, z.string().min(1).max(28).refine(noAmazon, NO_AMAZON).optional()),
         category: z.enum(categories),
         tags: z.array(z.enum(tags)).min(1).max(3),
         summary: z.string().min(1).max(160),

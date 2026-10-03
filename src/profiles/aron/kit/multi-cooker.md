@@ -1,6 +1,8 @@
 ---
 title: "Dinner in one pan without standing at the hob after a shift"
 product: "Ninja Combi 12-in-1 Multi-Cooker, Oven and Air Fryer SFP700EU"
+brand: "Ninja"
+name: "Combi 12-in-1"
 category: at-home
 tags: [after-work, at-home]
 summary: "A 12-in-1 countertop cooker that steams and air-fries at the same time, so pasta, a sauce and something crispy can cook together in one pan."

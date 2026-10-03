@@ -1,6 +1,8 @@
 ---
 title: "Earplugs that turn a loud bar or kitchen down without muffling it"
 product: "Loop Experience 2 high-fidelity earplugs"
+brand: "Loop"
+name: "Experience 2"
 category: quiet
 tags: [long-shifts, commute]
 summary: "Reusable earplugs rated at 17 dB that lower the volume evenly, so you can still hear orders and conversation, with four tip sizes and a keychain case."

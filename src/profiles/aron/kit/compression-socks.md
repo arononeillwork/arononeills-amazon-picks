@@ -1,6 +1,8 @@
 ---
 title: "Graduated compression socks for long days standing"
 product: "Relaxsan 830 Graduated Compression Socks, 18-22 mmHg, X-Static silver fibre"
+brand: "Relaxsan"
+name: "830 Compression Socks"
 category: on-your-feet
 tags: [long-shifts, travel]
 summary: "Unisex knee-high socks with 18-22 mmHg graduated compression and silver-fibre yarn, sized by ankle measurement, for long standing shifts and flights."
