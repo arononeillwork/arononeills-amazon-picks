@@ -11,21 +11,11 @@ export interface Section {
 
 export const copy = {
   home: {
-    eyebrow: "From someone on their feet ten hours a day",
     title: "Kit for long days.",
-    lead: "Picked for people who stand, lift and carry for a living: what's worth buying, who it suits, and what it gets wrong.",
+    lead: "Hand-picked for people who work on their feet.",
     cta: "Browse the kit",
-    secondary: "How this site works",
-    stats: { picks: "picks live", categories: "categories", sponsored: "sponsored" },
-    promises: [
-      "Owned or researched, always labelled",
-      "An honest drawback on every pick",
-      "No brand pays to be here",
-      "No prices: Amazon.es shows today's",
-      "Chosen for ten-hour shifts",
-    ],
-    bentoLabel: "A few of the picks",
-    trustLabel: "What to expect",
+    collectionLabel: "A few of the picks",
+    photosBy: "Photos:",
     jumpLabel: "Jump to a category",
     allKit: "All kit",
     seeAll: "See all",

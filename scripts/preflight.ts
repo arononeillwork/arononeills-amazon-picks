@@ -222,6 +222,18 @@ for (const file of entryFiles) {
     published.push({ slug, category: data.category });
   }
 }
+// The home page's hero picture shows products from hero.json; each must be on the site.
+const heroDir = join(ROOT, "src/profiles", name, "hero");
+if (existsSync(join(heroDir, "hero.json"))) {
+  const hero = JSON.parse(readFileSync(join(heroDir, "hero.json"), "utf8")) as { layouts: Record<string, { items: { slug: string }[] }> };
+  const live = new Set(published.map((entry) => entry.slug));
+  const missing = [...new Set(Object.values(hero.layouts).flatMap((layout) => layout.items.map((item) => item.slug)))].filter((slug) => !live.has(slug));
+  const images = ["collection-wide.webp", "collection-square.webp"].filter((file) => !existsSync(join(heroDir, file)));
+  if (missing.length) fail("hero", `shows ${missing.join(", ")}, not published; change hero.json and run npm run hero`);
+  else if (images.length) fail("hero", `${images.join(" and ")} missing; run npm run hero`);
+  else pass("hero", "every product in the collection picture is published");
+}
+
 // Fewer than ten can go live (products are published from the admin after launch),
 // but Amazon's review expects at least ten substantial ones before signing up.
 if (published.length < 10) {

@@ -13,10 +13,12 @@ interface Props {
   showCategory?: boolean;
   /** h2 on pages where the cards sit directly under the page's h1 (the lists), h3 under a section heading. */
   heading?: "h2" | "h3";
+  /** The need it meets, under the name. Off on the home page's shelves, which keep to name and picture. */
+  sub?: boolean;
   morph?: boolean;
 }
 
-const { entry, showCategory = true, heading: Heading = "h3", morph = true } = Astro.props;
+const { entry, showCategory = true, heading: Heading = "h3", sub = true, morph = true } = Astro.props;
 const { data } = entry;
 const category = categoryBySlug(data.category);
 const eyebrow = [data.brand, showCategory ? category.name : undefined].filter(Boolean).join(" · ") || category.name;
@@ -26,7 +28,7 @@ const eyebrow = [data.brand, showCategory ? category.name : undefined].filter(Bo
   <div class="card-text">
     <p class="card-eyebrow">{eyebrow}</p>
     <Heading class="card-title"><a class="tile-link" href={entryHref(entry)}>{displayName(entry)}</a></Heading>
-    <p class="card-sub">{data.title}</p>
+    {sub && <p class="card-sub">{data.title}</p>}
   </div>
   <ProductArt entry={entry} morph={morph} bare class="card-art" />
   {data.experience === "owned" && <span class="pill">{copy.entry.ownedShort}</span>}

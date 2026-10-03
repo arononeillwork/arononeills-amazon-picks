@@ -1,0 +1,48 @@
+---
+// The home page's hero picture: products cut out and arranged together
+// (scripts/hero.ts makes it). Phones get the square arrangement, wider screens
+// the wide one, each as AVIF or WebP at a few sizes. It's the first thing on
+// the page, so it loads first.
+import { getImage } from "astro:assets";
+
+interface Props {
+  wide: ImageMetadata;
+  square: ImageMetadata;
+  alt: string;
+  /** The photo credit line, e.g. "Photos: Apple, Sage, Sony". */
+  credit?: string;
+}
+
+const { wide, square, alt, credit } = Astro.props;
+const PHONE = "(max-width: 699px)";
+
+const sizesOf = (image: ImageMetadata, widths: number[]) => widths.filter((w) => w <= image.width);
+const variants = async (image: ImageMetadata, widths: number[]) =>
+  Promise.all(
+    (["avif", "webp"] as const).map(async (format) => ({
+      type: `image/${format}`,
+      image: await getImage({ src: image, format, widths: sizesOf(image, widths) }),
+    })),
+  );
+
+const phone = await variants(square, [480, 720, 960, 1200]);
+const desktop = await variants(wide, [960, 1440, 1920, 2400]);
+const fallback = desktop[1].image;
+---
+
+<figure class="hero-collection">
+  <picture>
+    {
+      phone.map(({ type, image }) => (
+        <source media={PHONE} type={type} srcset={image.srcSet.attribute} sizes="100vw" width={square.width} height={square.height} />
+      ))
+    }
+    {
+      desktop.map(({ type, image }) => (
+        <source type={type} srcset={image.srcSet.attribute} sizes="(min-width: 1320px) 1240px, 96vw" width={wide.width} height={wide.height} />
+      ))
+    }
+    <img src={fallback.src} alt={alt} width={wide.width} height={wide.height} loading="eager" fetchpriority="high" decoding="async" />
+  </picture>
+  {credit && <figcaption>{credit}</figcaption>}
+</figure>

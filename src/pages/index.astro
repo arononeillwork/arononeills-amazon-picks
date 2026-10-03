@@ -1,10 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
+import HeroCollection from "../components/HeroCollection.astro";
 import Icon from "../components/Icon.astro";
 import ProductArt from "../components/ProductArt.astro";
 import ProductCard from "../components/ProductCard.astro";
-import { categoryBySlug, copy, site } from "../config/active";
-import { displayName, entryHref, getShelves, type Entry } from "../lib/kit";
+import { activeProfile, categoryBySlug, copy, site } from "../config/active";
+import { displayName, entryHref, getShelves } from "../lib/kit";
 
 const { kit, categories } = await getShelves();
 const inCategory = (slug: string) => kit.filter((e) => e.data.category === slug);
@@ -14,75 +15,35 @@ const latest = kit
   .sort((a, b) => b.entry.data.reviewed.getTime() - a.entry.data.reviewed.getTime() || a.index - b.index)
   .map(({ entry }) => entry);
 const spotlight = kit.find((e) => e.data.featured) ?? latest[0];
-
-// The hero bento: five products, photos first, one per category where possible,
-// leaving out the spotlight, which gets its own band further down.
-const pool = [...latest.filter((e) => e.data.image), ...latest.filter((e) => !e.data.image)].filter((e) => e !== spotlight);
-const bento: Entry[] = [];
-for (const entry of pool) {
-  if (bento.length < 5 && !bento.some((e) => e.data.category === entry.data.category)) bento.push(entry);
-}
-for (const entry of pool) {
-  if (bento.length < 5 && !bento.includes(entry)) bento.push(entry);
-}
 // The spotlight band sits between the category shelves, after the second one.
 const spotlightAfter = Math.min(1, categories.length - 1);
+
+// The hero picture, made by `npm run hero` from hero.json in the profile.
+// The preflight checks every product in it is published.
+const heroDir = `../profiles/${activeProfile}/hero`;
+const heroImages = import.meta.glob<{ default: ImageMetadata }>("../profiles/*/hero/collection-*.webp", { eager: true });
+const heroConfigs = import.meta.glob<{ default: { layouts: { wide: { items: { slug: string }[] } } } }>("../profiles/*/hero/hero.json", {
+  eager: true,
+});
+const wide = heroImages[`${heroDir}/collection-wide.webp`]?.default;
+const square = heroImages[`${heroDir}/collection-square.webp`]?.default;
+const shown = (heroConfigs[`${heroDir}/hero.json`]?.default.layouts.wide.items ?? []).flatMap(
+  ({ slug }) => kit.find((e) => e.id === slug) ?? [],
+);
+const heroAlt = `${copy.home.collectionLabel}: ${shown.map((e) => [e.data.brand, displayName(e)].filter(Boolean).join(" ")).join(", ")}`;
+const makers = [...new Set(shown.flatMap((e) => (e.data.imageCredit ? [e.data.imageCredit] : [])))];
+const heroCredit = makers.length ? `${copy.home.photosBy} ${makers.join(", ")}` : undefined;
 ---
 
 <Base>
   <section class="hero">
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="container">
-      <div class="hero-head">
-        <p class="hero-eyebrow">{copy.home.eyebrow}</p>
-        <h1 class="hero-title">{copy.home.title}</h1>
-        <p class="hero-lead">{copy.home.lead}</p>
-        <div class="hero-ctas">
-          {kit.length > 0 && <a class="button button-lg" href="#shop">{copy.home.cta}</a>}
-          <a class="link-chevron" href="/disclosure/">{copy.home.secondary}</a>
-        </div>
-      </div>
-      {
-        bento.length >= 3 && (
-          <ul class="bento" aria-label={copy.home.bentoLabel}>
-            {bento.map((entry, index) => {
-              const category = categoryBySlug(entry.data.category);
-              return (
-                <li class:list={["tile", `tone-${category.tone}`, { "tile-lead": index === 0 }]}>
-                  <div class="tile-text">
-                    <p class="tile-eyebrow">{entry.data.brand ?? category.name}</p>
-                    <p class="tile-name">
-                      <a class="tile-link" href={entryHref(entry)}>
-                        {displayName(entry)}
-                      </a>
-                    </p>
-                    {index === 0 && <p class="tile-sub">{entry.data.title}</p>}
-                  </div>
-                  <ProductArt
-                    entry={entry}
-                    bare
-                    morph={false}
-                    priority={index === 0}
-                    sizes={index === 0 ? "(min-width: 900px) 560px, 92vw" : "(min-width: 900px) 270px, 46vw"}
-                    class="tile-art"
-                  />
-                </li>
-              );
-            })}
-          </ul>
-        )
-      }
-      <ul class="trust" aria-label={copy.home.trustLabel}>
-        {
-          copy.home.promises.map((promise) => (
-            <li>
-              <Icon name="check" />
-              {promise}
-            </li>
-          ))
-        }
-      </ul>
+    <div class="container hero-head">
+      <h1 class="hero-title">{copy.home.title}</h1>
+      <p class="hero-lead">{copy.home.lead}</p>
+      {kit.length > 0 && <a class="button button-lg" href="#shop">{copy.home.cta}</a>}
     </div>
+    {wide && square && shown.length > 0 && <HeroCollection wide={wide} square={square} alt={heroAlt} credit={heroCredit} />}
   </section>
 
   {
@@ -122,12 +83,9 @@ const spotlightAfter = Math.min(1, categories.length - 1);
             <>
               <section class="shelf" id={category.slug} aria-labelledby={`${category.slug}-title`}>
                 <div class="container shelf-head">
-                  <div>
-                    <h2 class="h2" id={`${category.slug}-title`}>
-                      {category.name}.
-                    </h2>
-                    <p class="shelf-sub">{category.intro}</p>
-                  </div>
+                  <h2 class="h2" id={`${category.slug}-title`}>
+                    {category.name}.
+                  </h2>
                   {entries.length > 1 && (
                     <a class="link-chevron" href={`/kit/${category.slug}/`}>
                       {copy.home.seeAll} {entries.length}
@@ -136,7 +94,7 @@ const spotlightAfter = Math.min(1, categories.length - 1);
                 </div>
                 <ul class="container shelf-row">
                   {entries.map((entry) => (
-                    <ProductCard entry={entry} showCategory={false} />
+                    <ProductCard entry={entry} showCategory={false} sub={false} />
                   ))}
                 </ul>
               </section>
@@ -157,16 +115,6 @@ const spotlightAfter = Math.min(1, categories.length - 1);
                         {displayName(spotlight)}
                       </h2>
                       <p class="band-sub">{spotlight.data.title}</p>
-                      {spotlight.data.highlights && (
-                        <ul class="facts">
-                          {spotlight.data.highlights.map((highlight) => (
-                            <li>
-                              <Icon name="check" />
-                              {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                       <a class="button" href={entryHref(spotlight)}>
                         {copy.home.spotlightCta}
                       </a>

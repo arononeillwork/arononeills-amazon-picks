@@ -14,3 +14,6 @@ folder.
 - JPG, PNG or WebP, ideally 1500 px or larger. iPhone HEIC photos: export as JPG first.
 - For your own photos, add `photos-inbox/credits.json` with `{ "product-name": "" }`
   so no brand credit is shown.
+- If the product is one of those in the home page's collection picture
+  (`src/profiles/aron/hero/hero.json`), run `npm run hero` afterwards so the
+  picture uses the new photo too.
