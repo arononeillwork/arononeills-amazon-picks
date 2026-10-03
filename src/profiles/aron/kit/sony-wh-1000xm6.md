@@ -10,6 +10,8 @@ highlights:
   - "Up to 30 h with noise cancelling on"
   - "Three minutes' charge, three hours' play"
   - "Folds flat for the bag"
+image: "./images/sony-wh-1000xm6.webp"
+imageCredit: "Sony"
 experience: researched
 asin: B0F2TT8Q7M
 drawback: "They can't play audio over the USB-C cable, and reviewers find the folding hinges feel less sturdy than the rest of the build. The call microphones also struggle in wind and street noise."
