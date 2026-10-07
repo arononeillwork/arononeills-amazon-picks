@@ -50,12 +50,15 @@ Publish at least ten products before applying to Amazon Associates; their review
 
 ## Adding a new product
 
-**Products → New**. Every field explains itself. Fill in **Brand** and **Short name** too (for example "Apple" and "MacBook Neo"): the cards and the page heading show those, and the full product name appears under the heading. The form won't save if something breaks the site's rules, for example "Amazon" in a headline, a price, a malformed product code, or square brackets. A few rules are only checked when the site rebuilds, so a published product can still fail the build:
+The quickest way is to let Claude do it: in Claude Code, type `/add-product` followed by the Amazon.es link (a share link from the app works too). Claude reads the listing, checks it isn't already on the site, finds the maker's official photo, writes the entry, runs the site's checks and publishes it. If the maker has no photo it can use, it stops and asks you for your own.
+
+To do it by hand: **Products → New**. Every field explains itself. Fill in **Brand** and **Short name** too (for example "Apple" and "MacBook Neo"): the cards and the page heading show those, and the full product name appears under the heading. The form won't save if something breaks the site's rules, for example "Amazon" in a headline, a price, a malformed product code, or square brackets. A few rules are only checked when the site rebuilds, so a published product can still fail the build:
 
 - The write-up must be 200 to 400 words.
 - If you tick **Do you own it? → No**, the write-up must not suggest you've used it ("I use", "my feet" and so on).
 - Health products need a specific health note, and their write-up can't say the product treats, cures, relieves or prevents anything.
 - Each product needs either one product code or exactly three picks.
+- Each product needs a photo: the maker's official image or your own.
 
 Keep new products as drafts until they're finished; drafts are never checked this strictly and never go live.
 

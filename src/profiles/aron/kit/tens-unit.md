@@ -11,12 +11,12 @@ highlights:
   - "27 programmes, 30 intensity levels"
   - "Two channels, eight pads included"
 experience: researched
-asin: B0FJRXMVK9
+asin: B0H83C9TYS
 drawback: "A budget unit with next to no independent testing, and the sticky pads need replacing."
 health: true
 healthNote: "Check the manual before first use. TENS and EMS manufacturers commonly say not to use a unit if you have a pacemaker, implanted defibrillator or other implanted electronic device, a heart condition or epilepsy, or if you are pregnant, without asking a doctor first. Never place pads on the front or sides of the neck, the head, across the chest, or on broken, irritated or numb skin, and don't use it while driving or in water."
 order: 1
-reviewed: 2026-09-28
+reviewed: 2026-10-07
 draft: true
 ---
 
